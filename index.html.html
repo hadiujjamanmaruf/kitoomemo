@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kitoo Footwear — Purchase Memo</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #faf7f2;
+    --paper: #ffffff;
+    --ink: #1a1612;
+    --accent: #b5451b;
+    --gold: #c9922a;
+    --muted: #7a6f64;
+    --line: #e2d9cc;
+    --soft: #f2ece3;
+    --green: #2a6b45;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    font-family: 'DM Sans', sans-serif;
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 30px 16px;
+  }
+
+  .page {
+    max-width: 860px;
+    margin: 0 auto;
+    background: var(--paper);
+    border-radius: 4px;
+    box-shadow: 0 2px 40px rgba(0,0,0,0.10), 0 0 0 1px var(--line);
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Top accent bar */
+  .top-bar {
+    height: 6px;
+    background: linear-gradient(90deg, var(--accent) 0%, var(--gold) 50%, var(--accent) 100%);
+  }
+
+  /* Header */
+  .header {
+    padding: 36px 48px 28px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--line);
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .brand-block {}
+
+  .brand-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 38px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--ink);
+    line-height: 1;
+  }
+
+  .brand-name span {
+    color: var(--accent);
+  }
+
+  .tagline {
+    font-family: 'Space Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-top: 6px;
+  }
+
+  .address-block {
+    text-align: right;
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  .address-block strong {
+    color: var(--ink);
+    font-weight: 600;
+    font-size: 13px;
+  }
+
+  /* Memo title band */
+  .memo-title-band {
+    background: var(--soft);
+    padding: 14px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--line);
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .memo-label {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.3px;
+  }
+
+  .memo-meta {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+  }
+
+  .meta-field {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .meta-label {
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+
+  .meta-input {
+    border: none;
+    border-bottom: 1.5px solid var(--gold);
+    background: transparent;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--ink);
+    width: 130px;
+    padding: 2px 4px;
+    text-align: right;
+    outline: none;
+  }
+
+  .meta-input:focus { border-bottom-color: var(--accent); }
+
+  /* Owners section */
+  .owners-section {
+    padding: 18px 48px;
+    display: flex;
+    gap: 40px;
+    border-bottom: 1px solid var(--line);
+    flex-wrap: wrap;
+  }
+
+  .owner-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .owner-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--gold));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    color: #fff;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .owner-info {}
+  .owner-role {
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  .owner-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+  .owner-phone {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+  }
+
+  .owners-divider {
+    width: 1px;
+    height: 50px;
+    background: var(--line);
+    align-self: center;
+  }
+
+  /* Table section */
+  .table-section {
+    padding: 28px 48px 20px;
+  }
+
+  .table-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .section-label {
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 700;
+  }
+
+  .add-row-btn {
+    background: var(--soft);
+    border: 1px solid var(--line);
+    color: var(--accent);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.3px;
+  }
+
+  .add-row-btn:hover {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  thead tr {
+    background: var(--ink);
+  }
+
+  thead th {
+    font-family: 'Space Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #fff;
+    padding: 11px 10px;
+    text-align: left;
+    font-weight: 400;
+  }
+
+  thead th.num { text-align: center; width: 34px; }
+  thead th.qty { text-align: center; width: 48px; }
+  thead th.unit { text-align: center; width: 48px; }
+  thead th.rate { text-align: right; width: 90px; }
+  thead th.total { text-align: right; width: 90px; }
+  thead th.spec { width: 28%; }
+
+  tbody tr {
+    border-bottom: 1px solid var(--line);
+    transition: background 0.15s;
+  }
+
+  tbody tr:hover { background: var(--soft); }
+  tbody tr:nth-child(even) { background: #fdfbf8; }
+  tbody tr:nth-child(even):hover { background: var(--soft); }
+
+  tbody td {
+    padding: 4px 6px;
+    vertical-align: middle;
+  }
+
+  td.sl-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    text-align: center;
+    width: 40px;
+    padding-left: 10px;
+  }
+
+  td.spec-cell {
+    min-width: 130px;
+  }
+
+  td.spec-cell textarea {
+    border: none;
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--ink);
+    width: 100%;
+    padding: 6px 6px;
+    outline: none;
+    resize: none;
+    overflow: hidden;
+    border-radius: 3px;
+    transition: background 0.15s;
+    white-space: pre-wrap;
+    word-break: break-word;
+    line-height: 1.4;
+    display: block;
+  }
+
+  td.spec-cell textarea:focus {
+    background: rgba(181,69,27,0.06);
+  }
+
+  td input, td textarea {
+    border: none;
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--ink);
+    width: 100%;
+    padding: 6px 6px;
+    outline: none;
+    transition: background 0.15s;
+    border-radius: 3px;
+  }
+
+  td input:focus, td textarea:focus {
+    background: rgba(181,69,27,0.06);
+  }
+
+  td.qty-cell input, td.rate-cell input, td.total-cell input {
+    text-align: right;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+  }
+
+  td.unit-cell input {
+    text-align: center;
+    font-size: 12px;
+  }
+
+  td.total-cell input {
+    color: var(--green);
+    font-weight: 700;
+  }
+
+  td.del-cell {
+    text-align: center;
+    width: 32px;
+  }
+
+  .del-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #ccc;
+    font-size: 16px;
+    line-height: 1;
+    padding: 4px;
+    border-radius: 3px;
+    transition: color 0.2s;
+  }
+  .del-btn:hover { color: var(--accent); }
+
+  /* Totals */
+  .totals-section {
+    padding: 0 48px 28px;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .totals-box {
+    min-width: 280px;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .totals-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 9px 16px;
+    border-bottom: 1px solid var(--line);
+    font-size: 13px;
+  }
+
+  .totals-row:last-child { border-bottom: none; }
+
+  .totals-row label {
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  .totals-row .val {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .totals-row.grand {
+    background: var(--ink);
+    padding: 12px 16px;
+  }
+
+  .totals-row.grand label {
+    color: #e2d9cc;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .totals-row.grand .val {
+    color: var(--gold);
+    font-size: 16px;
+  }
+
+  .discount-input {
+    border: none;
+    border-bottom: 1px dashed var(--line);
+    background: transparent;
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: var(--ink);
+    width: 80px;
+    text-align: right;
+    outline: none;
+    padding: 1px 4px;
+  }
+
+  /* Notes */
+  .notes-section {
+    padding: 0 48px 28px;
+  }
+
+  .notes-label {
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .notes-area {
+    width: 100%;
+    min-height: 60px;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--ink);
+    padding: 10px 14px;
+    outline: none;
+    resize: vertical;
+    background: var(--soft);
+    transition: border-color 0.2s;
+  }
+  .notes-area:focus { border-color: var(--gold); }
+
+  /* Signature */
+  .sig-section {
+    padding: 20px 48px 32px;
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+
+  .sig-block {
+    flex: 1;
+    min-width: 160px;
+  }
+
+  .sig-line {
+    border-top: 1.5px solid var(--ink);
+    margin-bottom: 6px;
+    margin-top: 36px;
+  }
+
+  .sig-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .sig-role {
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  /* Bottom bar */
+  .bottom-bar {
+    background: var(--ink);
+    padding: 12px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .bottom-bar .brand-small {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    color: var(--gold);
+    font-weight: 600;
+  }
+
+  .bottom-bar .tagline-small {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #7a6f64;
+  }
+
+  /* Print button */
+  .print-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 12px 24px;
+    border-radius: 40px;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(181,69,27,0.35);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+    z-index: 100;
+  }
+
+  .print-btn:hover {
+    background: #8e2e0f;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(181,69,27,0.45);
+  }
+
+  /* Print styles — single A4 page */
+  @media print {
+    @page {
+      size: A4 portrait;
+      margin: 6mm 8mm;
+    }
+
+    html, body {
+      background: #fff !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      width: 100%;
+      height: 100%;
+    }
+
+    .page {
+      box-shadow: none !important;
+      border-radius: 0 !important;
+      max-width: 100% !important;
+      width: 100% !important;
+      page-break-after: avoid;
+      page-break-inside: avoid;
+    }
+
+    /* Hide interactive controls */
+    .print-btn { display: none !important; }
+    .add-row-btn { display: none !important; }
+    .del-btn { display: none !important; }
+    .del-cell { display: none !important; }
+
+    /* Tighten all paddings */
+    .header { padding: 10px 20px 8px !important; }
+    .memo-title-band { padding: 7px 20px !important; }
+    .owners-section { padding: 8px 20px !important; gap: 20px !important; }
+    .table-section { padding: 8px 20px 6px !important; }
+    .totals-section { padding: 0 20px 8px !important; }
+    .notes-section { padding: 0 20px 8px !important; }
+    .sig-section { padding: 6px 20px 10px !important; gap: 20px !important; }
+    .bottom-bar { padding: 7px 20px !important; }
+    .table-header-row { margin-bottom: 6px !important; }
+
+    /* Shrink fonts */
+    .brand-name { font-size: 24px !important; }
+    .tagline { font-size: 8px !important; }
+    .address-block { font-size: 9px !important; line-height: 1.5 !important; }
+    .memo-label { font-size: 13px !important; }
+    .meta-label { font-size: 7px !important; }
+    .meta-input { font-size: 10px !important; }
+    .owner-avatar { width: 28px !important; height: 28px !important; font-size: 11px !important; }
+    .owner-name { font-size: 11px !important; }
+    .owner-role { font-size: 7px !important; }
+    .owner-phone { font-size: 9px !important; }
+    .owners-divider { height: 36px !important; }
+
+    thead th { font-size: 7.5px !important; padding: 6px 6px !important; }
+    tbody td { padding: 2px 4px !important; vertical-align: top !important; }
+    td input { font-size: 10px !important; padding: 3px 4px !important; white-space: normal !important; overflow: visible !important; text-overflow: clip !important; }
+    td.spec-cell { word-break: break-word !important; white-space: normal !important; }
+    td.spec-cell textarea { font-size: 10px !important; padding: 3px 4px !important; white-space: pre-wrap !important; word-break: break-word !important; overflow: visible !important; height: auto !important; min-height: unset !important; resize: none !important; }
+    td.sl-num { font-size: 9px !important; }
+
+    .totals-box { min-width: 220px !important; }
+    .totals-row { padding: 5px 12px !important; font-size: 10px !important; }
+    .totals-row label { font-size: 9px !important; }
+    .totals-row .val { font-size: 10px !important; }
+    .totals-row.grand .val { font-size: 13px !important; }
+    .discount-input { font-size: 10px !important; width: 70px !important; }
+
+    .notes-area { min-height: 30px !important; font-size: 10px !important; padding: 5px 10px !important; }
+    .notes-label { font-size: 7px !important; margin-bottom: 4px !important; }
+
+    .sig-line { margin-top: 22px !important; }
+    .sig-name { font-size: 10px !important; }
+    .sig-role { font-size: 9px !important; }
+
+    .bottom-bar .brand-small { font-size: 11px !important; }
+    .bottom-bar .tagline-small { font-size: 7px !important; }
+    .top-bar { height: 4px !important; }
+    .section-label { font-size: 7px !important; }
+
+    /* Force colors to print */
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+    input, textarea { background: transparent !important; border-color: transparent !important; }
+  }
+
+  @media (max-width: 600px) {
+    .header, .memo-title-band, .owners-section, .table-section, .totals-section, .notes-section, .sig-section, .bottom-bar {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+    .brand-name { font-size: 26px; }
+    .owners-divider { display: none; }
+    .totals-box { min-width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="top-bar"></div>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="brand-block">
+      <div class="brand-name">Kitoo <span>Footwear</span></div>
+      <div class="tagline">Comfort in every step</div>
+    </div>
+    <div class="address-block">
+      <strong>Sandal Manufacturing Unit</strong><br>
+      Jatahara Bajar, Gomostapur<br>
+      Chapainawabganj, Bangladesh<br>
+      Raw Material: Dhaka Supply
+    </div>
+  </div>
+
+  <!-- MEMO TITLE BAND -->
+  <div class="memo-title-band">
+    <div class="memo-label">Estimated Purchase Memo</div>
+    <div class="memo-meta">
+      <div class="meta-field">
+        <span class="meta-label">Memo No.</span>
+        <input class="meta-input" type="text" placeholder="KF-0001">
+      </div>
+      <div class="meta-field">
+        <span class="meta-label">Date</span>
+        <input class="meta-input" type="date" id="memo-date">
+      </div>
+    </div>
+  </div>
+
+  <!-- OWNERS -->
+  <div class="owners-section">
+    <div class="owner-card">
+      <div class="owner-avatar">SA</div>
+      <div class="owner-info">
+        <div class="owner-role">Owner &amp; Manager</div>
+        <div class="owner-name">Suit Ahmed</div>
+        <div class="owner-phone">+880 1716-979082</div>
+      </div>
+    </div>
+    <div class="owners-divider"></div>
+    <div class="owner-card">
+      <div class="owner-avatar">AM</div>
+      <div class="owner-info">
+        <div class="owner-role">Owner &amp; Manager</div>
+        <div class="owner-name">Asadujjaman Masum</div>
+        <div class="owner-phone">+880 1885-878426</div>
+      </div>
+    </div>
+    <div class="owners-divider"></div>
+    <div class="owner-card">
+      <div class="owner-avatar">HM</div>
+      <div class="owner-info">
+        <div class="owner-role">Co-Manager</div>
+        <div class="owner-name">Hadiujjaman Maruf</div>
+        <div class="owner-phone">+880 1885-878487</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABLE -->
+  <div class="table-section">
+    <div class="table-header-row">
+      <div class="section-label">Item Details</div>
+      <button class="add-row-btn" onclick="addRow()">+ Add Item</button>
+    </div>
+
+    <table id="memo-table">
+      <thead>
+        <tr>
+          <th class="num">SL</th>
+          <th>Item Description</th>
+          <th class="spec">Specification / Size</th>
+          <th class="qty">Qty</th>
+          <th class="unit">Unit</th>
+          <th class="rate">Unit Price (৳)</th>
+          <th class="total">Amount (৳)</th>
+          <th style="width:32px"></th>
+        </tr>
+      </thead>
+      <tbody id="table-body">
+      </tbody>
+    </table>
+  </div>
+
+  <!-- TOTALS -->
+  <div class="totals-section">
+    <div class="totals-box">
+      <div class="totals-row">
+        <label>Sub Total</label>
+        <span class="val" id="subtotal">৳ 0.00</span>
+      </div>
+      <div class="totals-row">
+        <label>Transport / Carrying</label>
+        <input class="discount-input" type="number" id="transport" placeholder="0" oninput="updateTotals()">
+      </div>
+      <div class="totals-row">
+        <label>Other Charges</label>
+        <input class="discount-input" type="number" id="other" placeholder="0" oninput="updateTotals()">
+      </div>
+      <div class="totals-row">
+        <label>Discount</label>
+        <input class="discount-input" type="number" id="discount" placeholder="0" oninput="updateTotals()">
+      </div>
+      <div class="totals-row grand">
+        <label>Grand Total</label>
+        <span class="val" id="grand-total">৳ 0.00</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTES -->
+  <div class="notes-section">
+    <div class="notes-label">Remarks / Notes</div>
+    <textarea class="notes-area" placeholder="Add any special notes, supplier details, or conditions here..."></textarea>
+  </div>
+
+  <!-- SIGNATURES -->
+  <div class="sig-section">
+    <div class="sig-block">
+      <div class="sig-line"></div>
+      <div class="sig-name">Suit Ahmed</div>
+      <div class="sig-role">Owner &amp; Manager</div>
+    </div>
+    <div class="sig-block">
+      <div class="sig-line"></div>
+      <div class="sig-name">Asadujjaman Masum</div>
+      <div class="sig-role">Owner &amp; Manager</div>
+    </div>
+    <div class="sig-block">
+      <div class="sig-line"></div>
+      <div class="sig-name">Hadiujjaman Maruf</div>
+      <div class="sig-role">Co-Manager</div>
+    </div>
+    <div class="sig-block">
+      <div class="sig-line"></div>
+      <div class="sig-name">Supplier / Vendor</div>
+      <div class="sig-role">Authorized Signature</div>
+    </div>
+  </div>
+
+  <!-- BOTTOM BAR -->
+  <div class="bottom-bar">
+    <div>
+      <div class="brand-small">Kitoo Footwear</div>
+      <div class="tagline-small">Comfort in every step</div>
+    </div>
+    <div class="tagline-small">This is an estimated purchase memo — not a final invoice</div>
+  </div>
+</div>
+
+<button class="print-btn" onclick="window.print()">
+  🖨 Print Memo
+</button>
+
+<script>
+  let rowCount = 0;
+
+  function autoResize(el) {
+    el.style.height = 'auto';
+    el.style.height = el.scrollHeight + 'px';
+  }
+
+  // Set today's date
+  document.getElementById('memo-date').valueAsDate = new Date();
+
+  function addRow() {
+    rowCount++;
+    const tbody = document.getElementById('table-body');
+    const tr = document.createElement('tr');
+    tr.id = `row-${rowCount}`;
+    tr.innerHTML = `
+      <td class="sl-num">${String(rowCount).padStart(2,'0')}</td>
+      <td><input type="text" placeholder="e.g. PVC Sole Sheet"></td>
+      <td class="spec-cell"><textarea rows="1" placeholder="e.g. Size 7-10, Black" oninput="autoResize(this)"></textarea></td>
+      <td class="qty-cell"><input type="number" placeholder="0" min="0" oninput="calcRow(${rowCount})" data-qty></td>
+      <td class="unit-cell"><input type="text" placeholder="Pcs"></td>
+      <td class="rate-cell"><input type="number" placeholder="0.00" min="0" step="0.01" oninput="calcRow(${rowCount})" data-rate></td>
+      <td class="total-cell"><input type="number" placeholder="0.00" readonly data-total></td>
+      <td class="del-cell"><button class="del-btn" onclick="deleteRow(${rowCount})" title="Remove">✕</button></td>
+    `;
+    tbody.appendChild(tr);
+    tr.querySelector('input[type="text"]').focus();
+    updateTotals();
+  }
+
+  function calcRow(id) {
+    const row = document.getElementById(`row-${id}`);
+    if (!row) return;
+    const qty = parseFloat(row.querySelector('[data-qty]').value) || 0;
+    const rate = parseFloat(row.querySelector('[data-rate]').value) || 0;
+    row.querySelector('[data-total]').value = (qty * rate).toFixed(2);
+    updateTotals();
+  }
+
+  function deleteRow(id) {
+    const row = document.getElementById(`row-${id}`);
+    if (row) row.remove();
+    updateTotals();
+    renumberRows();
+  }
+
+  function renumberRows() {
+    const rows = document.querySelectorAll('#table-body tr');
+    rows.forEach((r, i) => {
+      const sl = r.querySelector('.sl-num');
+      if (sl) sl.textContent = String(i + 1).padStart(2, '0');
+    });
+  }
+
+  function updateTotals() {
+    let sub = 0;
+    document.querySelectorAll('[data-total]').forEach(el => {
+      sub += parseFloat(el.value) || 0;
+    });
+    const transport = parseFloat(document.getElementById('transport').value) || 0;
+    const other = parseFloat(document.getElementById('other').value) || 0;
+    const discount = parseFloat(document.getElementById('discount').value) || 0;
+    const grand = sub + transport + other - discount;
+
+    document.getElementById('subtotal').textContent = `৳ ${sub.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
+    document.getElementById('grand-total').textContent = `৳ ${grand.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
+  }
+
+  // Add 5 default rows
+  for (let i = 0; i < 5; i++) addRow();
+
+  // Before print: convert all inputs to readable divs so text wraps fully
+  window.addEventListener('beforeprint', () => {
+    document.querySelectorAll('#table-body tr').forEach(row => {
+      row.querySelectorAll('td input').forEach(inp => {
+        const div = document.createElement('div');
+        div.className = 'print-val';
+        div.textContent = inp.value || '';
+        div.style.cssText = `
+          font-family: inherit;
+          font-size: 10px;
+          color: inherit;
+          white-space: pre-wrap;
+          word-break: break-word;
+          line-height: 1.4;
+          padding: 2px 4px;
+        `;
+        // Preserve alignment for numeric cells
+        if (inp.closest('td.qty-cell, td.rate-cell, td.total-cell')) {
+          div.style.textAlign = 'right';
+          div.style.fontFamily = 'monospace';
+        }
+        if (inp.closest('td.unit-cell')) {
+          div.style.textAlign = 'center';
+        }
+        inp.style.display = 'none';
+        inp.parentNode.insertBefore(div, inp);
+      });
+    });
+  });
+
+  // After print: restore inputs
+  window.addEventListener('afterprint', () => {
+    document.querySelectorAll('.print-val').forEach(div => div.remove());
+    document.querySelectorAll('#table-body tr input').forEach(inp => {
+      inp.style.display = '';
+    });
+  });
+</script>
+</body>
+</html>
