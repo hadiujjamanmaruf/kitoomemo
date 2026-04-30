@@ -214,11 +214,15 @@ thead tr { background: var(--ink); }
 thead th { font-family: 'Space Mono', monospace; font-size: 8.5px; letter-spacing: 1.5px; text-transform: uppercase; color: #fff; padding: 10px 8px; text-align: left; font-weight: 400; }
 tbody td { padding: 3px 5px; vertical-align: middle; border-bottom: 1px solid var(--line); }
 
+/* ── ACTION BUTTONS & DRAG HANDLE ── */
+.drag-handle { cursor: grab; color: #b3a89e; font-size: 18px; user-select: none; padding: 4px; }
+tr.dragging { opacity: 0.6; background: var(--soft) !important; }
+
 /* ── RESPONSIVE DESIGN ── */
 @media (max-width: 768px) {
   .dash-header { padding: 0 16px; flex-direction: column; height: auto; padding-bottom: 12px; }
   .dash-brand { margin-bottom: 10px; }
-  .dash-actions { width: 100%; justify-content: space-between; overflow-x: auto; padding-bottom: 4px; }
+  .dash-actions { width: 100%; justify-content: space-between; }
   .dash-body { padding: 16px; }
   .stat-card { min-width: 45%; }
   
@@ -230,20 +234,11 @@ tbody td { padding: 3px 5px; vertical-align: middle; border-bottom: 1px solid va
   
   .editor-header { padding: 0 12px; }
   .editor-actions .download-btn span, .save-btn span { display: none; }
-  .header { flex-direction: column; align-items: center; text-align: center; padding: 20px; }
-  .address-block { text-align: center; margin-top: 15px; }
-  .owners-section { flex-direction: column; gap: 15px; padding: 20px; }
-  .owners-divider { display: none; }
-  .totals-section { padding: 20px; }
-  .totals-box { min-width: 100%; }
 }
 
 /* Toast & Modal */
 .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--ink); color: #fff; padding: 10px 20px; border-radius: 40px; font-size: 13px; font-weight: 500; z-index: 999; transition: transform 0.3s; pointer-events: none; white-space: nowrap; }
 .toast.show { transform: translateX(-50%) translateY(0); }
-.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 900; display: none; }
-.modal-overlay.show { display: flex; }
-.modal-box { background: var(--paper); border-radius: 12px; padding: 28px 32px; max-width: 360px; width: 90%; box-shadow: 0 8px 40px rgba(0,0,0,0.2); }
 </style>
 </head>
 <body>
@@ -282,10 +277,6 @@ tbody td { padding: 3px 5px; vertical-align: middle; border-bottom: 1px solid va
         <div class="stat-val" id="stat-total">0</div>
         <div class="stat-label">Total Memos</div>
       </div>
-      <div class="stat-card">
-        <div class="stat-val" id="stat-month">0</div>
-        <div class="stat-label">This Month</div>
-      </div>
       <div class="stat-card" style="width: 100%;">
         <div class="stat-val" id="stat-amount">৳0</div>
         <div class="stat-label">Total Estimated</div>
@@ -305,7 +296,7 @@ tbody td { padding: 3px 5px; vertical-align: middle; border-bottom: 1px solid va
 <!-- ═══════════════════════════════════ EDITOR ═══════════════════════════════════ -->
 <div id="screen-editor" class="screen">
   <div class="editor-header">
-    <button class="back-btn" onclick="goBack()">←</button>
+    <button class="back-btn" onclick="goBack()">← Back</button>
     <div class="editor-title" id="editor-title">New Memo</div>
     <div class="editor-actions">
       <button class="save-btn" onclick="saveMemo()">💾 <span>Save</span></button>
@@ -316,15 +307,9 @@ tbody td { padding: 3px 5px; vertical-align: middle; border-bottom: 1px solid va
   <div class="editor-body">
     <div class="page" id="memo-page">
       <div class="top-bar"></div>
-      <div class="header">
-        <div class="brand-block">
-          <div class="brand-name">Kitoo <span>Footwear</span></div>
-          <div class="tagline">Comfort in every step</div>
-        </div>
-        <div class="address-block">
-          <strong>Sandal Manufacturing Unit</strong><br>
-          Jatahara Bajar, Bangladesh
-        </div>
+      <div style="padding: 30px 40px;">
+          <h2 style="font-family:'Playfair Display'; font-size:32px;">Kitoo <span>Footwear</span></h2>
+          <p style="color:var(--gold); font-family:'Space Mono'; font-size:10px; letter-spacing:2px;">Comfort in every step</p>
       </div>
 
       <div style="padding: 15px 40px; background: var(--soft); border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
@@ -333,7 +318,7 @@ tbody td { padding: 3px 5px; vertical-align: middle; border-bottom: 1px solid va
       </div>
 
       <div class="table-section">
-        <button class="add-row-btn" onclick="addRow()" style="margin-bottom:10px;">＋ Add Item</button>
+        <button class="add-row-btn" onclick="addRow()" style="margin-bottom:10px; padding:5px 15px; cursor:pointer;">＋ Add Item</button>
         <table id="memo-table">
           <thead>
             <tr>
@@ -350,13 +335,11 @@ tbody td { padding: 3px 5px; vertical-align: middle; border-bottom: 1px solid va
         </table>
       </div>
 
-      <div class="totals-section">
-        <div class="totals-box">
-          <div class="totals-row grand">
-            <label>Grand Total</label>
-            <span class="val" id="grand-total">৳ 0.00</span>
+      <div class="totals-section" style="padding: 20px 40px; text-align:right;">
+          <div style="background:var(--ink); color:white; padding:15px; border-radius:4px; display:inline-block; min-width:200px;">
+            <p style="font-size:10px; text-transform:uppercase; letter-spacing:1px; margin-bottom:5px;">Grand Total</p>
+            <h3 id="grand-total" style="font-family:'Space Mono'; font-size:24px; color:var(--gold);">৳ 0.00</h3>
           </div>
-        </div>
       </div>
     </div>
   </div>
@@ -387,7 +370,9 @@ tbody td { padding: 3px 5px; vertical-align: middle; border-bottom: 1px solid va
   let memos = [];
   let currentId = null;
   let rowCount = 0;
+  window.dragSrcEl = null;
 
+  /* --- AUTH --- */
   onAuthStateChanged(auth, async (user) => {
     if (user) {
       document.getElementById('screen-login').classList.remove('active');
@@ -407,6 +392,7 @@ tbody td { padding: 3px 5px; vertical-align: middle; border-bottom: 1px solid va
 
   window.handleLogout = () => signOut(auth);
 
+  /* --- DATA --- */
   async function fetchMemos() {
     const q = query(collection(db, "memos"));
     const snap = await getDocs(q);
@@ -419,7 +405,6 @@ tbody td { padding: 3px 5px; vertical-align: middle; border-bottom: 1px solid va
     const list = document.getElementById('memo-list');
     document.getElementById('empty-state').style.display = memos.length ? 'none' : 'block';
     
-    // Stats calculation
     document.getElementById('stat-total').textContent = memos.length;
     const total = memos.reduce((sum, m) => sum + (parseFloat(m.grandTotal) || 0), 0);
     document.getElementById('stat-amount').textContent = '৳' + Math.round(total).toLocaleString('en-IN');
@@ -438,28 +423,57 @@ tbody td { padding: 3px 5px; vertical-align: middle; border-bottom: 1px solid va
         <div class="memo-card-actions">
           <button class="icon-btn" onclick="viewMemo('${m.id}')">👁️</button>
           <button class="icon-btn" onclick="editMemo('${m.id}')">✏️</button>
-          <button class="icon-btn del" onclick="deleteMemo('${m.id}')">🗑</button>
+          <button class="icon-btn del" style="color:red;" onclick="deleteMemo('${m.id}')">🗑</button>
         </div>
       `;
       list.appendChild(div);
     });
   };
 
-  window.addRow = (data) => {
+  /* --- EDITOR --- */
+  window.addRow = (data = null) => {
     rowCount++;
     const tr = document.createElement('tr');
     tr.id = `row-${rowCount}`;
+    tr.setAttribute('draggable', 'false');
     tr.innerHTML = `
-      <td>⋮⋮</td>
-      <td class="sl-num">${rowCount}</td>
-      <td><input type="text" value="${data?.desc || ''}" style="width:100%"></td>
-      <td><input type="number" class="qty" value="${data?.qty || ''}" oninput="updateTotals()" style="width:100%"></td>
-      <td><input type="number" class="rate" value="${data?.rate || ''}" oninput="updateTotals()" style="width:100%"></td>
+      <td class="drag-handle" onmousedown="this.closest('tr').setAttribute('draggable', 'true')" onmouseup="this.closest('tr').setAttribute('draggable', 'false')">⋮⋮</td>
+      <td class="sl-num">0</td>
+      <td><input type="text" class="desc" value="${data?.desc || ''}"></td>
+      <td><input type="number" class="qty" value="${data?.qty || ''}" oninput="updateTotals()"></td>
+      <td><input type="number" class="rate" value="${data?.rate || ''}" oninput="updateTotals()"></td>
       <td class="row-total">0.00</td>
-      <td><button onclick="this.closest('tr').remove(); updateTotals();">✕</button></td>
+      <td><button onclick="this.closest('tr').remove(); updateTotals();" style="border:none; background:none; cursor:pointer;">✕</button></td>
     `;
+    
+    // Drag and Drop Listeners
+    tr.addEventListener('dragstart', handleDragStart);
+    tr.addEventListener('dragover', handleDragOver);
+    tr.addEventListener('drop', handleDrop);
+    tr.addEventListener('dragend', handleDragEnd);
+
     document.getElementById('table-body').appendChild(tr);
     updateTotals();
+  };
+
+  function handleDragStart(e) { window.dragSrcEl = this; this.classList.add('dragging'); }
+  function handleDragOver(e) { e.preventDefault(); return false; }
+  function handleDrop(e) {
+    if (window.dragSrcEl != this) {
+      const tbody = this.parentNode;
+      const allRows = [...tbody.children];
+      if (allRows.indexOf(window.dragSrcEl) < allRows.indexOf(this)) tbody.insertBefore(window.dragSrcEl, this.nextSibling);
+      else tbody.insertBefore(window.dragSrcEl, this);
+      window.renumberRows();
+    }
+    return false;
+  }
+  function handleDragEnd() { this.classList.remove('dragging'); this.setAttribute('draggable', 'false'); window.renumberRows(); }
+
+  window.renumberRows = () => {
+    document.querySelectorAll('#table-body tr').forEach((tr, i) => {
+      tr.querySelector('.sl-num').textContent = (i + 1);
+    });
   };
 
   window.updateTotals = () => {
@@ -472,18 +486,18 @@ tbody td { padding: 3px 5px; vertical-align: middle; border-bottom: 1px solid va
       grand += t;
     });
     document.getElementById('grand-total').textContent = `৳ ${grand.toLocaleString('en-IN')}`;
+    window.renumberRows();
   };
 
   window.saveMemo = async () => {
     const rows = [];
     document.querySelectorAll('#table-body tr').forEach(tr => {
       rows.push({
-        desc: tr.querySelector('input[type="text"]').value,
+        desc: tr.querySelector('.desc').value,
         qty: tr.querySelector('.qty').value,
         rate: tr.querySelector('.rate').value
       });
     });
-
     const memoData = {
       id: currentId || 'memo-' + Date.now(),
       memoNum: document.getElementById('memo-num').value,
@@ -493,10 +507,9 @@ tbody td { padding: 3px 5px; vertical-align: middle; border-bottom: 1px solid va
       rows: rows,
       savedAt: new Date().toISOString()
     };
-
     await setDoc(doc(db, "memos", memoData.id), memoData);
     showToast("Saved!");
-    goBack();
+    window.goBack();
     fetchMemos();
   };
 
@@ -526,6 +539,23 @@ tbody td { padding: 3px 5px; vertical-align: middle; border-bottom: 1px solid va
       await deleteDoc(doc(db, "memos", id));
       fetchMemos();
     }
+  };
+
+  window.viewMemo = (id) => {
+    const m = memos.find(x => x.id === id);
+    if (!m) return;
+    const html = `<html><body style="font-family:sans-serif; padding:40px;">
+      <h2>Kitoo Footwear - Memo ${m.memoNum}</h2>
+      <p>Date: ${m.date}</p>
+      <table border="1" width="100%" style="border-collapse:collapse;">
+        <thead><tr><th>SL</th><th>Description</th><th>Qty</th><th>Rate</th><th>Total</th></tr></thead>
+        <tbody>${m.rows.map((r,i)=>`<tr><td>${i+1}</td><td>${r.desc}</td><td>${r.qty}</td><td>${r.rate}</td><td>${(r.qty*r.rate).toFixed(2)}</td></tr>`).join('')}</tbody>
+      </table>
+      <h3 align="right">Grand Total: ৳ ${m.grandTotal}</h3>
+      <button onclick="window.print()">Print Memo</button>
+      <button onclick="window.location.reload()">Back</button>
+    </body></html>`;
+    document.write(html);
   };
 
   window.goBack = () => {
