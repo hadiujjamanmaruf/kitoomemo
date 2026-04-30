@@ -275,7 +275,17 @@ td.total-cell input { color: var(--green); font-weight: 700; }
 .drag-handle { cursor: grab; color: #b3a89e; font-size: 18px; line-height: 1; text-align: center; user-select: none; transition: color 0.2s; padding: 4px; }
 .drag-handle:hover { color: var(--accent); }
 .drag-handle:active { cursor: grabbing; }
-tr.dragging { opacity: 0.6; background: var(--soft) !important; }
+
+/* ✅ FIX GHOST HIGHLIGHT AND DRAG BUG */
+body.table-dragging {
+  user-select: none;
+  -webkit-user-select: none;
+}
+body.table-dragging input, 
+body.table-dragging textarea {
+  pointer-events: none !important; /* Prevents input fields from intercepting the drag events */
+}
+tr.dragging { opacity: 0.6; background: #f2ece3 !important; }
 
 td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-right: 8px; }
 .action-btn { background: none; border: none; cursor: pointer; color: #ccc; font-size: 14px; font-weight: 600; line-height: 1; padding: 3px 4px; border-radius: 3px; transition: color 0.2s; }
@@ -308,7 +318,7 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
 .bottom-bar .brand-small { font-family: 'Playfair Display', serif; font-size: 13px; color: var(--gold); font-weight: 600; }
 .bottom-bar .tagline-small { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: #7a6f64; }
 
-/* ── STICKY FOOTER (Option 4) ── */
+/* ── STICKY FOOTER ── */
 .editor-sticky-footer {
   position: fixed;
   bottom: 0; left: 0; right: 0;
@@ -354,12 +364,7 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
   .dash-stats { gap: 10px; }
   .stat-card { min-width: 45%; padding: 12px 16px;}
   
-  .memo-card { 
-    flex-direction: column; 
-    align-items: flex-start; 
-    padding: 16px;
-    gap: 12px;
-  }
+  .memo-card { flex-direction: column; align-items: flex-start; padding: 16px; gap: 12px; }
   .memo-card-info { width: 100%; }
   .memo-card-items { white-space: normal; line-height: 1.4; color: var(--muted); }
   .memo-card-total { width: 100%; font-size: 18px; }
@@ -595,7 +600,7 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
     </div>
   </div>
 
-  <!-- ✅ STICKY FOOTER (Option 4) -->
+  <!-- ✅ STICKY FOOTER -->
   <div class="editor-sticky-footer" id="sticky-footer">
     <div>
       <div class="sticky-total-label">Grand Total</div>
@@ -647,6 +652,11 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
   let rowCount = 0;
   let deleteTargetId = null;
   window.dragSrcEl = null;
+  
+  // Drag Scroll Variables
+  let scrollInterval = null;
+  let lastClientY = 0;
+  let dragOverRow = null;
 
   /* --- AUTH --- */
   onAuthStateChanged(auth, async (user) => {
@@ -754,14 +764,14 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
   window.showDash = function() {
     document.getElementById('screen-dash').classList.add('active');
     document.getElementById('screen-editor').classList.remove('active');
-    document.getElementById('sticky-footer').classList.remove('visible'); // Hide sticky footer
+    document.getElementById('sticky-footer').classList.remove('visible');
     renderDash();
   }
 
   window.showEditor = function() {
     document.getElementById('screen-editor').classList.add('active');
     document.getElementById('screen-dash').classList.remove('active');
-    document.getElementById('sticky-footer').classList.add('visible'); // Show sticky footer
+    document.getElementById('sticky-footer').classList.add('visible');
   }
 
   window.renderDash = function() {
@@ -810,7 +820,7 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
   window.newMemo = function() {
     currentId = 'memo-' + Date.now();
     document.getElementById('editor-title').textContent = 'New Memo';
-    document.getElementById('editor-download-btn').style.display = 'none'; // Hide download
+    document.getElementById('editor-download-btn').style.display = 'none';
 
     clearEditor();
     const nextNum = memos.length + 1;
@@ -827,7 +837,7 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
     if (!m) return;
     currentId = id;
     document.getElementById('editor-title').textContent = 'Edit Memo — ' + (m.memoNum || id);
-    document.getElementById('editor-download-btn').style.display = ''; // Show download
+    document.getElementById('editor-download-btn').style.display = '';
 
     clearEditor();
 
@@ -860,28 +870,46 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
 
   window.goBack = function() { window.showDash(); }
 
-  /* --- TABLE ROWS & DRAG DROP WITH AUTO-SCROLL --- */
+  /* ═══════════════════════ TABLE ROWS & PERFECT DRAG DROP ═══════════════════════ */
+  
+  // Track mouse position globally for smooth scroll
+  document.addEventListener('dragover', (e) => { lastClientY = e.clientY; }, false);
+
   window.handleDragStart = function(e) { 
       window.dragSrcEl = this; 
       e.dataTransfer.effectAllowed = 'move'; 
       e.dataTransfer.setData('text/plain', this.id); 
+      
       this.classList.add('dragging'); 
+      document.body.classList.add('table-dragging'); // Disable child pointer events
+      
+      // ✅ Smooth Auto Scroll Logic (60 FPS)
+      if (!scrollInterval) {
+          scrollInterval = setInterval(() => {
+              const buffer = 150; 
+              const maxSpeed = 25; 
+              if (lastClientY > 0 && lastClientY < buffer) {
+                  let speed = maxSpeed * (1 - lastClientY / buffer);
+                  window.scrollBy(0, -Math.max(speed, 5));
+              } else if (lastClientY > 0 && window.innerHeight - lastClientY < buffer) {
+                  let speed = maxSpeed * (1 - (window.innerHeight - lastClientY) / buffer);
+                  window.scrollBy(0, Math.max(speed, 5));
+              }
+          }, 16); 
+      }
   };
   
   window.handleDragOver = function(e) { 
       if (e.preventDefault) e.preventDefault(); 
       e.dataTransfer.dropEffect = 'move'; 
       
-      // 🔴 AUTO-SCROLL LOGIC 🔴
-      const buffer = 100; // Distance from edge to trigger scroll
-      const speed = 20;   // Scroll speed
-      if (e.clientY < buffer) {
-          window.scrollBy(0, -speed);
-      } else if (window.innerHeight - e.clientY < buffer) {
-          window.scrollBy(0, speed);
+      // ✅ Fix Ghost borders perfectly
+      if (dragOverRow && dragOverRow !== this) {
+          dragOverRow.style['border-top'] = '';
+          dragOverRow.style['border-bottom'] = '';
       }
+      dragOverRow = this;
 
-      // Visual Drop Indicator
       const bounding = this.getBoundingClientRect(); 
       const offset = bounding.y + (bounding.height / 2); 
       if (e.clientY - offset > 0) { 
@@ -895,34 +923,46 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
   };
   
   window.handleDragLeave = function(e) { 
-      this.style['border-top'] = ''; 
-      this.style['border-bottom'] = ''; 
+      // Do nothing here, it's handled in handleDragOver to avoid flickering
   };
   
   window.handleDrop = function(e) { 
       e.stopPropagation(); 
       if (window.dragSrcEl !== this) { 
           const tbody = this.parentNode; 
-          const bounding = this.getBoundingClientRect(); 
-          const offset = bounding.y + (bounding.height / 2); 
-          if (e.clientY - offset > 0) { 
-              tbody.insertBefore(window.dragSrcEl, this.nextSibling); 
-          } else { 
-              tbody.insertBefore(window.dragSrcEl, this); 
-          } 
+          const allRows = Array.from(tbody.children);
+          
+          if (allRows.indexOf(window.dragSrcEl) < allRows.indexOf(this)) {
+              tbody.insertBefore(window.dragSrcEl, this.nextSibling);
+          } else {
+              tbody.insertBefore(window.dragSrcEl, this);
+          }
           window.renumberRows(); 
       } 
-      this.style['border-top'] = ''; 
-      this.style['border-bottom'] = ''; 
+      
+      if (dragOverRow) {
+          dragOverRow.style['border-top'] = '';
+          dragOverRow.style['border-bottom'] = '';
+          dragOverRow = null;
+      }
       return false; 
   };
   
   window.handleDragEnd = function(e) { 
       this.classList.remove('dragging'); 
+      document.body.classList.remove('table-dragging'); 
+      
+      if (scrollInterval) {
+          clearInterval(scrollInterval);
+          scrollInterval = null;
+      }
+      
       document.querySelectorAll('#table-body tr').forEach(row => { 
           row.style['border-top'] = ''; 
           row.style['border-bottom'] = ''; 
       }); 
+      
+      if (dragOverRow) dragOverRow = null;
   };
 
   window.addRow = function(data) {
@@ -1113,26 +1153,22 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
     generateDirectPDF(html, m.memoNum || 'draft');
   }
 
-  // ✅ Converts HTML perfectly to PDF
   function generateDirectPDF(htmlContent, memoNum) {
     showToast('Generating PDF... Please wait');
     
-    // Create an invisible wrapper to render the HTML properly
     const wrapper = document.createElement('div');
     wrapper.style.position = 'absolute';
     wrapper.style.left = '-9999px';
     wrapper.style.top = '0';
-    wrapper.style.width = '800px'; // Exact width for A4 formatting
+    wrapper.style.width = '800px'; 
     wrapper.style.background = '#fff';
     wrapper.innerHTML = htmlContent;
     
     document.body.appendChild(wrapper);
-
-    // Select only the memo paper to convert
     const paper = wrapper.querySelector('.paper-container');
 
     const opt = {
-      margin:       0.3, // Margin around the PDF
+      margin:       0.3, 
       filename:     `kitoo-memo-${memoNum}.pdf`,
       image:        { type: 'jpeg', quality: 1 },
       html2canvas:  { scale: 2, useCORS: true },
