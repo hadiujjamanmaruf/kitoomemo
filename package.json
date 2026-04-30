@@ -1,0 +1,20 @@
+{
+  "name": "kitoomemo",
+  "version": "1.0.0",
+  "description": "Kitoo Footwear Memo System",
+  "main": "index.html.html",
+  "scripts": {
+    "dev": "npx serve .",
+    "build": "echo 'Static HTML project - no build needed'",
+    "lint": "echo 'No linter configured for static HTML'"
+  },
+  "keywords": ["memo", "footwear", "static"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@vercel/speed-insights": "^1.0.14"
+  },
+  "devDependencies": {
+    "serve": "^14.2.0"
+  }
+}
