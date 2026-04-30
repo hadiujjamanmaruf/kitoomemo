@@ -5,370 +5,146 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kitoo Footwear — Purchase Memo</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<!-- Vercel Web Analytics -->
-<script>
-  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-</script>
-<script defer src="/_vercel/insights/script.js"></script>
-<!-- Vercel Speed Insights -->
-<script>
-  window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
-</script>
-<script defer src="/_vercel/speed-insights/script.js"></script>
 <style>
 :root {
-  --bg: #faf7f2;
-  --paper: #ffffff;
-  --ink: #1a1612;
-  --accent: #b5451b;
-  --gold: #c9922a;
-  --muted: #7a6f64;
-  --line: #e2d9cc;
-  --soft: #f2ece3;
-  --green: #2a6b45;
-  --red: #c0392b;
-  --shadow: 0 2px 20px rgba(0,0,0,0.08);
+  --bg: #faf7f2; --paper: #ffffff; --ink: #1a1612; --accent: #b5451b;
+  --gold: #c9922a; --muted: #7a6f64; --line: #e2d9cc; --soft: #f2ece3;
+  --green: #2a6b45; --red: #c0392b; --shadow: 0 2px 20px rgba(0,0,0,0.08);
 }
-
 * { box-sizing: border-box; margin: 0; padding: 0; }
-
-body {
-  background: var(--bg);
-  font-family: 'DM Sans', sans-serif;
-  color: var(--ink);
-  min-height: 100vh;
-}
-
-/* ── SCREENS ── */
+body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--ink); min-height: 100vh; }
 .screen { display: none; }
 .screen.active { display: block; }
 
-/* ════════════════════════════════
-   LOGIN SCREEN
-═══════════════════════════════ */
-.login-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  padding: 20px;
-}
-.login-box {
-  background: var(--paper);
-  padding: 40px;
-  border-radius: 12px;
-  box-shadow: var(--shadow);
-  width: 100%;
-  max-width: 400px;
-  text-align: center;
-  border: 1px solid var(--line);
-}
-.login-brand {
-  font-family: 'Playfair Display', serif;
-  font-size: 28px;
-  font-weight: 700;
-  color: var(--ink);
-  margin-bottom: 5px;
-}
-.login-brand span { color: var(--accent); }
-.login-sub {
-  font-family: 'Space Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 30px;
-}
-.login-input {
-  width: 100%;
-  padding: 14px;
-  margin-bottom: 15px;
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 14px;
-  background: var(--soft);
-  outline: none;
-  transition: border-color 0.2s;
-}
-.login-input:focus { border-color: var(--gold); }
-.login-btn-submit {
-  width: 100%;
-  background: var(--ink);
-  color: #fff;
-  border: none;
-  padding: 14px;
-  border-radius: 6px;
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 600;
-  font-size: 15px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-.login-btn-submit:hover { background: var(--accent); }
+/* ── LOGIN ── */
+.login-wrapper { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
+.login-box { background: var(--paper); padding: 40px; border-radius: 12px; box-shadow: var(--shadow); width: 100%; max-width: 400px; text-align: center; border: 1px solid var(--line); }
+.login-brand { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; margin-bottom: 5px; }
+.login-input { width: 100%; padding: 14px; margin-bottom: 15px; border: 1px solid var(--line); border-radius: 6px; background: var(--soft); outline: none; }
+.login-btn-submit { width: 100%; background: var(--ink); color: #fff; border: none; padding: 14px; border-radius: 6px; font-weight: 600; cursor: pointer; }
 
-/* ════════════════════════════════
-   DASHBOARD SCREEN
-═══════════════════════════════ */
-.dash-header {
-  background: var(--ink);
-  padding: 0 32px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 64px;
-  position: sticky;
-  top: 0;
-  z-index: 50;
-}
-
-.dash-brand { display: flex; align-items: baseline; gap: 10px; }
-.dash-brand-name { font-family: 'Playfair Display', serif; font-size: 22px; color: #fff; font-weight: 700; }
-.dash-brand-name span { color: var(--gold); }
-.dash-brand-tag { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
-
+/* ── DASHBOARD ── */
+.dash-header { background: var(--ink); padding: 0 20px; display: flex; align-items: center; justify-content: space-between; height: 64px; position: sticky; top: 0; z-index: 50; }
+.dash-brand-name { font-family: 'Playfair Display', serif; font-size: 20px; color: #fff; font-weight: 700; }
 .dash-actions { display:flex; gap:8px; align-items:center; }
+.dash-new-btn { background: var(--accent); color: #fff; border: none; font-size: 13px; font-weight: 600; padding: 8px 16px; border-radius: 40px; cursor: pointer; }
+.backup-btn { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); font-size: 12px; padding: 6px 12px; border-radius: 40px; cursor: pointer; }
 
-.dash-new-btn {
-  background: var(--accent); color: #fff; border: none; font-family: 'DM Sans', sans-serif;
-  font-size: 13px; font-weight: 600; padding: 9px 20px; border-radius: 40px;
-  cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s;
-}
-.dash-new-btn:hover { background: #8e2e0f; transform: translateY(-1px); }
+.dash-body { padding: 20px; max-width: 1000px; margin: 0 auto; }
+.dash-stats { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+.stat-card { background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 15px; flex: 1; min-width: 120px; box-shadow: var(--shadow); }
+.stat-val { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: var(--accent); }
+.stat-label { font-size: 10px; text-transform: uppercase; color: var(--muted); }
 
-.backup-btn {
-  background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.15);
-  font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; padding: 7px 14px;
-  border-radius: 40px; cursor: pointer; transition: all 0.2s;
-}
-.backup-btn:hover { background: rgba(255,255,255,0.18); color: #fff; }
-.logout-btn { background: rgba(255,0,0,0.15); border-color: rgba(255,0,0,0.3); color: #ffcccc; }
-.logout-btn:hover { background: rgba(255,0,0,0.3); color: #fff; }
-
-.dash-body { padding: 32px; max-width: 1000px; margin: 0 auto; }
-
-.dash-stats { display: flex; gap: 16px; margin-bottom: 28px; flex-wrap: wrap; }
-.stat-card {
-  background: var(--paper); border: 1px solid var(--line); border-radius: 8px;
-  padding: 16px 22px; flex: 1; min-width: 130px; box-shadow: var(--shadow);
-}
-.stat-val { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--accent); line-height: 1; }
-.stat-label { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
-
-.section-heading { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); font-weight: 700; margin-bottom: 14px; }
-
-.memo-list { display: flex; flex-direction: column; gap: 10px; }
-.memo-card {
-  background: var(--paper); border: 1px solid var(--line); border-radius: 8px;
-  padding: 16px 20px; display: flex; align-items: center; gap: 16px; box-shadow: var(--shadow);
-  transition: all 0.2s; cursor: default;
-}
-.memo-card:hover { border-color: var(--gold); transform: translateY(-1px); box-shadow: 0 4px 24px rgba(0,0,0,0.1); }
-
-.memo-card-num {
-  font-family: 'Space Mono', monospace; font-size: 11px; color: var(--accent);
-  background: var(--soft); padding: 4px 8px; border-radius: 4px; flex-shrink: 0; font-weight: 700;
-}
+.memo-card { background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 15px; display: flex; align-items: center; gap: 12px; margin-bottom: 10px; box-shadow: var(--shadow); }
 .memo-card-info { flex: 1; min-width: 0; }
-.memo-card-date { font-size: 12px; color: var(--muted); margin-bottom: 2px; }
-.memo-card-items { font-size: 13px; font-weight: 500; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.memo-card-total { font-family: 'Space Mono', monospace; font-size: 14px; font-weight: 700; color: var(--green); flex-shrink: 0; }
-.memo-card-actions { display: flex; gap: 8px; flex-shrink: 0; }
+.memo-card-num { font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; color: var(--accent); background: var(--soft); padding: 2px 6px; border-radius: 4px; }
+.memo-card-items { font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.memo-card-actions { display: flex; gap: 6px; }
+.icon-btn { border: 1px solid var(--line); background: var(--soft); border-radius: 6px; width: 32px; height: 32px; cursor: pointer; display:flex; align-items:center; justify-content:center; }
 
-.icon-btn {
-  border: 1px solid var(--line); background: var(--soft); border-radius: 6px;
-  width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
-  cursor: pointer; font-size: 14px; transition: all 0.15s; color: var(--muted);
-}
-.icon-btn:hover { border-color: var(--accent); color: var(--accent); background: #fff; }
-.icon-btn.del:hover { border-color: var(--red); color: var(--red); }
+/* ── LOGS TABLE ── */
+.log-row { font-size: 12px; border-bottom: 1px solid var(--line); padding: 10px 0; display: grid; grid-template-columns: 1fr 1fr 2fr; gap: 10px; }
+.log-time { color: var(--muted); font-family: 'Space Mono', monospace; }
+.log-user { font-weight: 600; color: var(--accent); }
 
-/* ════════════════════════════════
-   MEMO EDITOR SCREEN
-═══════════════════════════════ */
-.editor-header {
-  background: var(--ink); padding: 0 32px; display: flex; align-items: center;
-  justify-content: space-between; height: 60px; position: sticky; top: 0; z-index: 50; gap: 12px;
-}
-.back-btn {
-  background: none; border: 1px solid rgba(255,255,255,0.2); color: #fff;
-  font-family: 'DM Sans', sans-serif; font-size: 12px; padding: 6px 14px;
-  border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s; flex-shrink: 0;
-}
-.back-btn:hover { background: rgba(255,255,255,0.1); }
-.editor-title { font-family: 'Playfair Display', serif; font-size: 16px; color: #fff; flex: 1; text-align: center; }
-.editor-actions { display: flex; gap: 8px; flex-shrink: 0; }
-.save-btn { background: var(--green); color: #fff; border: none; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; padding: 7px 16px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s; }
-.save-btn:hover { background: #1e5233; }
-.download-btn { background: var(--gold); color: #fff; border: none; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; padding: 7px 16px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s; }
-.download-btn:hover { background: #a87520; }
-
-.editor-body { padding: 24px 16px 80px; }
-.page { max-width: 860px; margin: 0 auto; background: var(--paper); border-radius: 4px; box-shadow: 0 2px 40px rgba(0,0,0,0.10), 0 0 0 1px var(--line); overflow: hidden; }
-.top-bar { height: 6px; background: linear-gradient(90deg, var(--accent) 0%, var(--gold) 50%, var(--accent) 100%); }
-
-/* ── TABLES ── */
-.table-section { padding: 22px 40px 16px; overflow-x: auto; }
+/* ── EDITOR ── */
+.editor-header { background: var(--ink); padding: 0 15px; display: flex; align-items: center; justify-content: space-between; height: 60px; color: #fff; }
+.table-section { overflow-x: auto; padding: 20px 0; }
 table { width: 100%; border-collapse: collapse; min-width: 600px; }
-thead tr { background: var(--ink); }
-thead th { font-family: 'Space Mono', monospace; font-size: 8.5px; letter-spacing: 1.5px; text-transform: uppercase; color: #fff; padding: 10px 8px; text-align: left; font-weight: 400; }
-tbody td { padding: 3px 5px; vertical-align: middle; border-bottom: 1px solid var(--line); }
+th { background: var(--ink); color: #fff; font-size: 10px; padding: 10px; text-align: left; }
+td { padding: 8px; border-bottom: 1px solid var(--line); }
+input { border: 1px solid transparent; width: 100%; padding: 5px; }
+input:focus { border-color: var(--gold); outline: none; }
 
-/* ── RESPONSIVE DESIGN ── */
-@media (max-width: 768px) {
-  .dash-header { padding: 0 16px; flex-direction: column; height: auto; padding-bottom: 12px; }
-  .dash-brand { margin-bottom: 10px; }
-  .dash-actions { width: 100%; justify-content: space-between; overflow-x: auto; padding-bottom: 4px; }
-  .dash-body { padding: 16px; }
-  .stat-card { min-width: 45%; }
-  
-  .memo-card { padding: 12px; flex-wrap: wrap; gap: 10px; }
-  .memo-card-info { width: 100%; order: 1; flex: auto; }
-  .memo-card-num { order: 0; }
-  .memo-card-total { width: 100%; order: 2; border-top: 1px solid var(--soft); padding-top: 8px; }
-  .memo-card-actions { width: 100%; order: 3; justify-content: flex-end; }
-  
-  .editor-header { padding: 0 12px; }
-  .editor-actions .download-btn span, .save-btn span { display: none; }
-  .header { flex-direction: column; align-items: center; text-align: center; padding: 20px; }
-  .address-block { text-align: center; margin-top: 15px; }
-  .owners-section { flex-direction: column; gap: 15px; padding: 20px; }
-  .owners-divider { display: none; }
-  .totals-section { padding: 20px; }
-  .totals-box { min-width: 100%; }
+@media (max-width: 600px) {
+  .memo-card { flex-direction: column; align-items: flex-start; }
+  .memo-card-actions { width: 100%; justify-content: flex-end; border-top: 1px solid var(--soft); padding-top: 8px; }
 }
-
-/* Toast & Modal */
-.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--ink); color: #fff; padding: 10px 20px; border-radius: 40px; font-size: 13px; font-weight: 500; z-index: 999; transition: transform 0.3s; pointer-events: none; white-space: nowrap; }
-.toast.show { transform: translateX(-50%) translateY(0); }
-.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 900; display: none; }
-.modal-overlay.show { display: flex; }
-.modal-box { background: var(--paper); border-radius: 12px; padding: 28px 32px; max-width: 360px; width: 90%; box-shadow: 0 8px 40px rgba(0,0,0,0.2); }
 </style>
 </head>
 <body>
 
-<!-- ═══════════════════════════════════ LOGIN ═══════════════════════════════════ -->
+<!-- LOGIN SCREEN -->
 <div id="screen-login" class="screen active">
   <div class="login-wrapper">
     <div class="login-box">
       <div class="login-brand">Kitoo <span>Footwear</span></div>
-      <div class="login-sub">Secure Memo System</div>
+      <p style="font-size: 12px; color: var(--muted); margin-bottom: 20px;">Purchase Memo System</p>
       <input type="email" id="login-email" class="login-input" placeholder="Email Address">
       <input type="password" id="login-password" class="login-input" placeholder="Password">
-      <button class="login-btn-submit" onclick="handleLogin()">Login to Dashboard</button>
+      <button class="login-btn-submit" onclick="handleLogin()">Login</button>
     </div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════ DASHBOARD ═══════════════════════════════════ -->
+<!-- DASHBOARD SCREEN -->
 <div id="screen-dash" class="screen">
   <div class="dash-header">
-    <div class="dash-brand">
-      <div class="dash-brand-name">Kitoo <span>Footwear</span></div>
-      <div class="dash-brand-tag">Memo System</div>
-    </div>
+    <div class="dash-brand-name">Kitoo <span>Memo</span></div>
     <div class="dash-actions">
-      <button class="backup-btn" onclick="importBackup()">⬆ Import</button>
-      <button class="backup-btn" onclick="exportBackup()">⬇ Export</button>
-      <button class="dash-new-btn" onclick="newMemo()">＋ <span>New</span></button>
-      <button class="backup-btn logout-btn" onclick="handleLogout()">🚪</button>
+      <button id="admin-logs-btn" class="backup-btn" style="display:none; background: var(--gold);" onclick="showLogs()">📜 Logs</button>
+      <button class="dash-new-btn" onclick="newMemo()">＋ New</button>
+      <button class="backup-btn" onclick="handleLogout()">Logout</button>
     </div>
   </div>
-
   <div class="dash-body">
     <div class="dash-stats">
-      <div class="stat-card">
-        <div class="stat-val" id="stat-total">0</div>
-        <div class="stat-label">Total Memos</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-val" id="stat-month">0</div>
-        <div class="stat-label">This Month</div>
-      </div>
-      <div class="stat-card" style="width: 100%;">
-        <div class="stat-val" id="stat-amount">৳0</div>
-        <div class="stat-label">Total Estimated</div>
-      </div>
+      <div class="stat-card"><div class="stat-val" id="stat-total">0</div><div class="stat-label">Total Memos</div></div>
+      <div class="stat-card"><div class="stat-val" id="stat-amount">৳0</div><div class="stat-label">Total Estimated</div></div>
     </div>
-
-    <div class="section-label">History (Cloud)</div>
-    <div class="memo-list" id="memo-list">
-      <div class="empty-state" id="empty-state">
-        <div class="empty-icon">📋</div>
-        <div class="empty-title">Loading...</div>
-      </div>
+    <div id="memo-list">
+        <div id="empty-state" style="text-align:center; padding: 40px; color: var(--muted);">Loading...</div>
     </div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════ EDITOR ═══════════════════════════════════ -->
+<!-- LOGS SCREEN -->
+<div id="screen-logs" class="screen">
+    <div class="dash-header">
+        <button class="backup-btn" onclick="showDash()">← Back</button>
+        <div style="color:white">Activity Logs</div>
+        <div></div>
+    </div>
+    <div class="dash-body">
+        <div id="logs-container"></div>
+    </div>
+</div>
+
+<!-- EDITOR SCREEN -->
 <div id="screen-editor" class="screen">
   <div class="editor-header">
-    <button class="back-btn" onclick="goBack()">←</button>
-    <div class="editor-title" id="editor-title">New Memo</div>
-    <div class="editor-actions">
-      <button class="save-btn" onclick="saveMemo()">💾 <span>Save</span></button>
-      <button class="download-btn" onclick="downloadMemo()">⬇ <span>HTML</span></button>
-    </div>
+    <button class="backup-btn" onclick="showDash()">← Back</button>
+    <div id="editor-title">New Memo</div>
+    <button class="dash-new-btn" onclick="saveMemo()">💾 Save</button>
   </div>
-
-  <div class="editor-body">
-    <div class="page" id="memo-page">
-      <div class="top-bar"></div>
-      <div class="header">
-        <div class="brand-block">
-          <div class="brand-name">Kitoo <span>Footwear</span></div>
-          <div class="tagline">Comfort in every step</div>
+  <div class="dash-body">
+    <div style="background:white; padding:20px; border-radius:8px; box-shadow: var(--shadow);">
+        <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
+            <input type="text" id="memo-num" style="font-weight:700; width:150px;" placeholder="KF-0001">
+            <input type="date" id="memo-date" style="width:150px;">
         </div>
-        <div class="address-block">
-          <strong>Sandal Manufacturing Unit</strong><br>
-          Jatahara Bajar, Bangladesh
+        <div class="table-section">
+            <table id="memo-table">
+                <thead><tr><th style="width:40px">SL</th><th>Description</th><th style="width:80px">Qty</th><th style="width:100px">Rate</th><th style="width:100px">Total</th><th></th></tr></thead>
+                <tbody id="table-body"></tbody>
+            </table>
+            <button onclick="addRow()" style="margin-top:10px; cursor:pointer; padding:5px 10px;">＋ Add Item</button>
         </div>
-      </div>
-
-      <div style="padding: 15px 40px; background: var(--soft); border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
-        <input type="text" id="memo-num" placeholder="KF-0001" style="border:none; background:transparent; font-weight:700;">
-        <input type="date" id="memo-date" style="border:none; background:transparent;">
-      </div>
-
-      <div class="table-section">
-        <button class="add-row-btn" onclick="addRow()" style="margin-bottom:10px;">＋ Add Item</button>
-        <table id="memo-table">
-          <thead>
-            <tr>
-              <th style="width:24px"></th>
-              <th style="width:40px">SL</th>
-              <th>Description</th>
-              <th style="width:60px">Qty</th>
-              <th style="width:80px">Rate</th>
-              <th style="width:100px">Total</th>
-              <th style="width:30px"></th>
-            </tr>
-          </thead>
-          <tbody id="table-body"></tbody>
-        </table>
-      </div>
-
-      <div class="totals-section">
-        <div class="totals-box">
-          <div class="totals-row grand">
-            <label>Grand Total</label>
-            <span class="val" id="grand-total">৳ 0.00</span>
-          </div>
+        <div style="text-align:right; font-size:20px; font-weight:700; border-top:2px solid var(--ink); padding-top:10px;">
+            Total: <span id="grand-total">৳ 0.00</span>
         </div>
-      </div>
     </div>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
-<!-- ═══════════════════════════════════ SCRIPTS ═══════════════════════════════════ -->
+<!-- FIREBASE SDK -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
   import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
-  import { getFirestore, collection, doc, setDoc, getDocs, deleteDoc, query } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+  import { getFirestore, collection, doc, setDoc, getDocs, deleteDoc, query, orderBy, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyDqrZ85kxTp9ByuHdTy9R5WCZk44ItOO20",
@@ -384,17 +160,36 @@ tbody td { padding: 3px 5px; vertical-align: middle; border-bottom: 1px solid va
   const auth = getAuth(app);
   const db = getFirestore(app);
 
+  // আপনার অ্যাডমিন ইমেইল এখানে দিন
+  const ADMIN_EMAIL = "marufmarlin@gmail.com"; 
+
   let memos = [];
   let currentId = null;
-  let rowCount = 0;
 
+  /* ── ACTIVITY TRACKER ── */
+  async function logActivity(action) {
+    const user = auth.currentUser;
+    if (!user) return;
+    try {
+      await addDoc(collection(db, "activity_logs"), {
+        email: user.email,
+        action: action,
+        time: serverTimestamp(),
+        device: navigator.userAgent.slice(0, 50)
+      });
+    } catch (e) { console.error(e); }
+  }
+
+  /* ── AUTH ── */
   onAuthStateChanged(auth, async (user) => {
     if (user) {
-      document.getElementById('screen-login').classList.remove('active');
+      if(user.email === ADMIN_EMAIL) document.getElementById('admin-logs-btn').style.display = 'block';
+      logActivity("Logged In");
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
       document.getElementById('screen-dash').classList.add('active');
       await fetchMemos();
     } else {
-      document.getElementById('screen-dash').classList.remove('active');
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
       document.getElementById('screen-login').classList.add('active');
     }
   });
@@ -405,8 +200,12 @@ tbody td { padding: 3px 5px; vertical-align: middle; border-bottom: 1px solid va
     try { await signInWithEmailAndPassword(auth, email, pass); } catch (e) { alert("Login Failed!"); }
   };
 
-  window.handleLogout = () => signOut(auth);
+  window.handleLogout = () => {
+      logActivity("Logged Out");
+      signOut(auth);
+  }
 
+  /* ── MEMO LOGIC ── */
   async function fetchMemos() {
     const q = query(collection(db, "memos"));
     const snap = await getDocs(q);
@@ -417,48 +216,48 @@ tbody td { padding: 3px 5px; vertical-align: middle; border-bottom: 1px solid va
 
   window.renderDash = () => {
     const list = document.getElementById('memo-list');
-    document.getElementById('empty-state').style.display = memos.length ? 'none' : 'block';
+    const empty = document.getElementById('empty-state');
+    const items = list.querySelectorAll('.memo-card');
+    items.forEach(i => i.remove());
     
-    // Stats calculation
-    document.getElementById('stat-total').textContent = memos.length;
-    const total = memos.reduce((sum, m) => sum + (parseFloat(m.grandTotal) || 0), 0);
-    document.getElementById('stat-amount').textContent = '৳' + Math.round(total).toLocaleString('en-IN');
+    if (memos.length === 0) { empty.style.display = 'block'; empty.textContent = "No memos found"; } 
+    else { empty.style.display = 'none'; }
 
-    list.querySelectorAll('.memo-card').forEach(c => c.remove());
+    let totalAmt = 0;
     memos.sort((a,b) => new Date(b.savedAt) - new Date(a.savedAt)).forEach(m => {
+      totalAmt += parseFloat(m.grandTotal || 0);
       const div = document.createElement('div');
       div.className = 'memo-card';
       div.innerHTML = `
-        <div class="memo-card-num">${m.memoNum || 'N/A'}</div>
         <div class="memo-card-info">
-          <div class="memo-card-date">${m.date}</div>
+          <span class="memo-card-num">${m.memoNum}</span>
+          <div style="font-size:12px; color:var(--muted); margin:4px 0;">${m.date}</div>
           <div class="memo-card-items">${m.preview}</div>
         </div>
-        <div class="memo-card-total">৳ ${m.grandTotal}</div>
+        <div style="font-weight:700">৳${m.grandTotal}</div>
         <div class="memo-card-actions">
-          <button class="icon-btn" onclick="viewMemo('${m.id}')">👁️</button>
           <button class="icon-btn" onclick="editMemo('${m.id}')">✏️</button>
-          <button class="icon-btn del" onclick="deleteMemo('${m.id}')">🗑</button>
+          <button class="icon-btn" style="color:red" onclick="deleteMemo('${m.id}')">🗑</button>
         </div>
       `;
       list.appendChild(div);
     });
+    document.getElementById('stat-total').textContent = memos.length;
+    document.getElementById('stat-amount').textContent = '৳' + Math.round(totalAmt).toLocaleString();
   };
 
-  window.addRow = (data) => {
-    rowCount++;
+  window.addRow = (data = null) => {
+    const tbody = document.getElementById('table-body');
     const tr = document.createElement('tr');
-    tr.id = `row-${rowCount}`;
     tr.innerHTML = `
-      <td>⋮⋮</td>
-      <td class="sl-num">${rowCount}</td>
-      <td><input type="text" value="${data?.desc || ''}" style="width:100%"></td>
-      <td><input type="number" class="qty" value="${data?.qty || ''}" oninput="updateTotals()" style="width:100%"></td>
-      <td><input type="number" class="rate" value="${data?.rate || ''}" oninput="updateTotals()" style="width:100%"></td>
+      <td>${tbody.children.length + 1}</td>
+      <td><input type="text" class="desc" value="${data?.desc || ''}"></td>
+      <td><input type="number" class="qty" value="${data?.qty || ''}" oninput="updateTotals()"></td>
+      <td><input type="number" class="rate" value="${data?.rate || ''}" oninput="updateTotals()"></td>
       <td class="row-total">0.00</td>
       <td><button onclick="this.closest('tr').remove(); updateTotals();">✕</button></td>
     `;
-    document.getElementById('table-body').appendChild(tr);
+    tbody.appendChild(tr);
     updateTotals();
   };
 
@@ -471,19 +270,18 @@ tbody td { padding: 3px 5px; vertical-align: middle; border-bottom: 1px solid va
       tr.querySelector('.row-total').textContent = t.toFixed(2);
       grand += t;
     });
-    document.getElementById('grand-total').textContent = `৳ ${grand.toLocaleString('en-IN')}`;
+    document.getElementById('grand-total').textContent = `৳ ${grand.toFixed(2)}`;
   };
 
   window.saveMemo = async () => {
     const rows = [];
     document.querySelectorAll('#table-body tr').forEach(tr => {
       rows.push({
-        desc: tr.querySelector('input[type="text"]').value,
+        desc: tr.querySelector('.desc').value,
         qty: tr.querySelector('.qty').value,
         rate: tr.querySelector('.rate').value
       });
     });
-
     const memoData = {
       id: currentId || 'memo-' + Date.now(),
       memoNum: document.getElementById('memo-num').value,
@@ -493,10 +291,9 @@ tbody td { padding: 3px 5px; vertical-align: middle; border-bottom: 1px solid va
       rows: rows,
       savedAt: new Date().toISOString()
     };
-
     await setDoc(doc(db, "memos", memoData.id), memoData);
-    showToast("Saved!");
-    goBack();
+    logActivity(currentId ? `Edited Memo ${memoData.memoNum}` : `Created Memo ${memoData.memoNum}`);
+    window.showDash();
     fetchMemos();
   };
 
@@ -506,7 +303,7 @@ tbody td { padding: 3px 5px; vertical-align: middle; border-bottom: 1px solid va
     document.getElementById('memo-num').value = 'KF-' + (memos.length + 1).toString().padStart(4, '0');
     document.getElementById('memo-date').valueAsDate = new Date();
     addRow();
-    document.getElementById('screen-dash').classList.remove('active');
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById('screen-editor').classList.add('active');
   };
 
@@ -517,27 +314,47 @@ tbody td { padding: 3px 5px; vertical-align: middle; border-bottom: 1px solid va
     document.getElementById('memo-num').value = m.memoNum;
     document.getElementById('memo-date').value = m.date;
     m.rows.forEach(r => addRow(r));
-    document.getElementById('screen-dash').classList.remove('active');
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById('screen-editor').classList.add('active');
   };
 
   window.deleteMemo = async (id) => {
     if(confirm("Delete this memo?")) {
       await deleteDoc(doc(db, "memos", id));
+      logActivity(`Deleted a memo`);
       fetchMemos();
     }
   };
 
-  window.goBack = () => {
-    document.getElementById('screen-editor').classList.remove('active');
-    document.getElementById('screen-dash').classList.add('active');
-  };
-
-  function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.textContent = msg; t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2000);
+  /* ── ADMIN LOGS LOGIC ── */
+  window.showLogs = async () => {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-logs').classList.add('active');
+    const container = document.getElementById('logs-container');
+    container.innerHTML = "Loading logs...";
+    
+    const q = query(collection(db, "activity_logs"), orderBy("time", "desc"));
+    const snap = await getDocs(q);
+    container.innerHTML = "";
+    snap.forEach(doc => {
+        const data = doc.data();
+        const time = data.time ? new Date(data.time.seconds * 1000).toLocaleString() : 'Just now';
+        const div = document.createElement('div');
+        div.className = 'log-row';
+        div.innerHTML = `
+            <div class="log-time">${time}</div>
+            <div class="log-user">${data.email}</div>
+            <div class="log-action">${data.action}</div>
+        `;
+        container.appendChild(div);
+    });
   }
+
+  window.showDash = () => {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-dash').classList.add('active');
+  }
+
 </script>
 </body>
 </html>
