@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kitoo Footwear — Purchase Memo</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<!-- PDF Generator Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
 <!-- Vercel Web Analytics -->
 <script>
   window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
@@ -333,14 +337,14 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
   
   /* ✅ Fix for Memo Card on Mobile */
   .memo-card { 
-    flex-direction: column; /* Stack everything vertically */
-    align-items: flex-start; /* Align to the left */
+    flex-direction: column; 
+    align-items: flex-start; 
     padding: 16px;
     gap: 12px;
   }
   .memo-card-info { width: 100%; }
   
-  /* Important: Allow text to wrap naturally on phone instead of squeezing */
+  /* Important: Allow text to wrap naturally on phone */
   .memo-card-items { 
     white-space: normal; 
     line-height: 1.4;
@@ -441,7 +445,7 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
     <div class="editor-title" id="editor-title">New Memo</div>
     <div class="editor-actions">
       <button class="save-btn" onclick="saveMemo()">💾 <span>Save</span></button>
-      <button class="download-btn" onclick="downloadMemo()">⬇ <span>Download</span></button>
+      <button class="download-btn" onclick="downloadMemo()">⬇ <span>Download PDF</span></button>
     </div>
   </div>
 
@@ -614,7 +618,6 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
   import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
   import { getFirestore, collection, doc, setDoc, getDocs, deleteDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
-  // Your Firebase Configuration
   const firebaseConfig = {
     apiKey: "AIzaSyDqrZ85kxTp9ByuHdTy9R5WCZk44ItOO20",
     authDomain: "kitoomemo-a767f.firebaseapp.com",
@@ -625,20 +628,18 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
     measurementId: "G-Z3BFPZ7020"
   };
 
-  // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
   const auth = getAuth(app);
   const db = getFirestore(app);
 
-  /* ═══════════════════════ STATE ═══════════════════════ */
   let memos = [];        
   let currentId = null;  
   let rowCount = 0;
   let deleteTargetId = null;
   window.dragSrcEl = null;
 
-  /* ═══════════════════════ AUTHENTICATION ═══════════════════════ */
+  /* --- AUTH --- */
   onAuthStateChanged(auth, async (user) => {
     if (user) {
       document.getElementById('screen-login').classList.remove('active');
@@ -655,7 +656,6 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
     const email = document.getElementById('login-email').value;
     const pass = document.getElementById('login-password').value;
     if(!email || !pass) { showToast('⚠ Email & Password required'); return; }
-    
     try {
       showToast('Logging in...');
       await signInWithEmailAndPassword(auth, email, pass);
@@ -666,34 +666,25 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
   };
 
   window.handleLogout = async () => {
-    try { await signOut(auth); } 
-    catch (e) { console.error(e); }
+    try { await signOut(auth); } catch (e) { console.error(e); }
   };
 
-  /* ═══════════════════════ CLOUD DATABASE ═══════════════════════ */
+  /* --- DATA FETCHING --- */
   async function fetchMemosFromCloud() {
     try {
       const q = query(collection(db, "memos"));
       const querySnapshot = await getDocs(q);
       memos = [];
-      querySnapshot.forEach((doc) => {
-        memos.push(doc.data());
-      });
+      querySnapshot.forEach((doc) => { memos.push(doc.data()); });
       renderDash();
-    } catch(e) {
-      console.error(e);
-      showToast('⚠ Error fetching memos from Cloud');
-    }
+    } catch(e) { console.error(e); showToast('⚠ Error fetching memos from Cloud'); }
   }
 
   async function saveMemoToCloud(memoData) {
     try {
       await setDoc(doc(db, "memos", memoData.id), memoData);
       showToast('✅ Saved to Cloud!');
-    } catch(e) {
-      console.error(e);
-      showToast('⚠ Error saving to Cloud');
-    }
+    } catch(e) { console.error(e); showToast('⚠ Error saving to Cloud'); }
   }
 
   async function deleteMemoFromCloud(id) {
@@ -702,13 +693,10 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
       memos = memos.filter(m => m.id !== id);
       renderDash();
       showToast('🗑 Memo deleted from Cloud');
-    } catch(e) {
-      console.error(e);
-      showToast('⚠ Error deleting from Cloud');
-    }
+    } catch(e) { console.error(e); showToast('⚠ Error deleting from Cloud'); }
   }
 
-  /* ═══════════════════════ BACKUP (JSON) ═══════════════════════ */
+  /* --- LOCAL BACKUP --- */
   window.exportBackup = function() {
     if (!memos.length) { showToast('⚠ কোনো মেমো নেই'); return; }
     const a = document.createElement('a');
@@ -734,8 +722,7 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
             const exists = memos.find(x => x.id === m.id);
             if(!exists) {
               await setDoc(doc(db, "memos", m.id), m);
-              memos.push(m);
-              count++;
+              memos.push(m); count++;
             }
           }
           renderDash();
@@ -747,7 +734,7 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
     inp.click();
   };
 
-  /* ═══════════════════════ DASHBOARD UI ═══════════════════════ */
+  /* --- UI NAVIGATION --- */
   window.showDash = function() {
     document.getElementById('screen-dash').classList.add('active');
     document.getElementById('screen-editor').classList.remove('active');
@@ -775,15 +762,7 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
 
     Array.from(list.children).forEach(c => { if(c.id !== 'empty-state') c.remove(); });
 
-    if (memos.length === 0) {
-      empty.innerHTML = `
-        <div class="empty-icon">📋</div>
-        <div class="empty-title">No memos yet</div>
-        <div class="empty-sub">Create your first purchase memo to get started</div>
-      `;
-      empty.style.display = 'block';
-      return;
-    }
+    if (memos.length === 0) { empty.style.display = 'block'; return; }
     empty.style.display = 'none';
 
     const sorted = [...memos].sort((a, b) => new Date(b.savedAt) - new Date(a.savedAt));
@@ -815,7 +794,7 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
     return date.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
   }
 
-  /* ═══════════════════════ NEW / EDIT MEMO ═══════════════════════ */
+  /* --- EDITOR LOGIC --- */
   window.newMemo = function() {
     currentId = 'memo-' + Date.now();
     document.getElementById('editor-title').textContent = 'New Memo';
@@ -864,18 +843,16 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
 
   window.goBack = function() { window.showDash(); }
 
-  /* ═══════════════════════ TABLE ROWS & DRAG & DROP ═══════════════════════ */
+  /* --- TABLE ROWS & DRAG DROP --- */
   window.handleDragStart = function(e) {
     window.dragSrcEl = this;
     e.dataTransfer.effectAllowed = 'move';
     e.dataTransfer.setData('text/plain', this.id);
     this.classList.add('dragging');
   };
-
   window.handleDragOver = function(e) {
     if (e.preventDefault) e.preventDefault(); 
     e.dataTransfer.dropEffect = 'move';
-    
     const bounding = this.getBoundingClientRect();
     const offset = bounding.y + (bounding.height / 2);
     if (e.clientY - offset > 0) {
@@ -887,12 +864,10 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
     }
     return false;
   };
-
   window.handleDragLeave = function(e) {
     this.style['border-top'] = '';
     this.style['border-bottom'] = '';
   };
-
   window.handleDrop = function(e) {
     if (e.stopPropagation) e.stopPropagation();
     if (window.dragSrcEl !== this) {
@@ -910,7 +885,6 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
     this.style['border-bottom'] = '';
     return false;
   };
-
   window.handleDragEnd = function(e) {
     this.classList.remove('dragging');
     document.querySelectorAll('#table-body tr').forEach(row => {
@@ -996,7 +970,6 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
     el.style.height = el.scrollHeight + 'px';
   }
 
-  /* ═══════════════════════ SAVE MEMO ═══════════════════════ */
   window.saveMemo = async function() {
     const rows = collectRows();
     const grand = parseFloat(document.getElementById('grand-total').textContent.replace(/[৳,\s]/g,'')) || 0;
@@ -1043,24 +1016,20 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
     return rows;
   }
 
-  /* ═══════════════════════ VIEW & DOWNLOAD ═══════════════════════ */
+  /* ═══════════════════════ DIRECT PDF DOWNLOAD ═══════════════════════ */
   window.viewMemo = function(id) {
     const m = memos.find(x => x.id === id);
     if (!m) return;
 
     let sub = 0;
     (m.rows || []).forEach(r => { sub += parseFloat(r.total) || 0; });
-    const transport = parseFloat(m.transport) || 0;
-    const other = parseFloat(m.other) || 0;
-    const discount = parseFloat(m.discount) || 0;
-    const grand = sub + transport + other - discount;
+    const grand = sub + (parseFloat(m.transport)||0) + (parseFloat(m.other)||0) - (parseFloat(m.discount)||0);
 
     const html = buildPrintHTML(
       m.memoNum, m.date, m.rows || [],
       m.transport, m.other, m.discount, m.notes,
       `৳ ${sub.toLocaleString('en-IN', {minimumFractionDigits:2})}`,
-      `৳ ${grand.toLocaleString('en-IN', {minimumFractionDigits:2})}`,
-      false // false means do not auto-print
+      `৳ ${grand.toLocaleString('en-IN', {minimumFractionDigits:2})}`
     );
     
     const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
@@ -1069,8 +1038,9 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
   }
 
   window.downloadMemo = function() {
+    const memoNum = document.getElementById('memo-num').value || 'draft';
     const html = buildPrintHTML(
-      document.getElementById('memo-num').value,
+      memoNum,
       document.getElementById('memo-date').value,
       collectRows(),
       document.getElementById('transport').value,
@@ -1078,10 +1048,9 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
       document.getElementById('discount').value,
       document.getElementById('notes').value,
       document.getElementById('subtotal').textContent,
-      document.getElementById('grand-total').textContent,
-      true // auto-print enabled
+      document.getElementById('grand-total').textContent
     );
-    triggerDownload(html, `kitoo-memo-${document.getElementById('memo-num').value || 'draft'}.html`);
+    generateDirectPDF(html, memoNum);
   }
 
   window.downloadMemoById = function(id) {
@@ -1090,40 +1059,64 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
 
     let sub = 0;
     (m.rows || []).forEach(r => { sub += parseFloat(r.total) || 0; });
-    const transport = parseFloat(m.transport) || 0;
-    const other = parseFloat(m.other) || 0;
-    const discount = parseFloat(m.discount) || 0;
-    const grand = sub + transport + other - discount;
+    const grand = sub + (parseFloat(m.transport)||0) + (parseFloat(m.other)||0) - (parseFloat(m.discount)||0);
 
     const html = buildPrintHTML(
       m.memoNum, m.date, m.rows || [],
       m.transport, m.other, m.discount, m.notes,
       `৳ ${sub.toLocaleString('en-IN', {minimumFractionDigits:2})}`,
-      `৳ ${grand.toLocaleString('en-IN', {minimumFractionDigits:2})}`,
-      true // auto-print enabled
+      `৳ ${grand.toLocaleString('en-IN', {minimumFractionDigits:2})}`
     );
-    triggerDownload(html, `kitoo-memo-${m.memoNum || m.id}.html`);
+    generateDirectPDF(html, m.memoNum || 'draft');
   }
 
-  function triggerDownload(html, filename) {
-    const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url; a.download = filename; a.click();
-    URL.revokeObjectURL(url);
-    showToast('⬇ Downloaded!');
+  // ✅ New function to convert HTML perfectly to PDF
+  function generateDirectPDF(htmlContent, memoNum) {
+    showToast('Generating PDF... Please wait');
+    
+    // Create an invisible wrapper to render the HTML properly
+    const wrapper = document.createElement('div');
+    wrapper.style.position = 'absolute';
+    wrapper.style.left = '-9999px';
+    wrapper.style.top = '0';
+    wrapper.style.width = '800px'; // Exact width for A4 formatting
+    wrapper.style.background = '#fff';
+    wrapper.innerHTML = htmlContent;
+    
+    document.body.appendChild(wrapper);
+
+    // Select only the memo paper to convert
+    const paper = wrapper.querySelector('.paper-container');
+
+    const opt = {
+      margin:       0.3, // Margin around the PDF
+      filename:     `kitoo-memo-${memoNum}.pdf`,
+      image:        { type: 'jpeg', quality: 1 },
+      html2canvas:  { scale: 2, useCORS: true },
+      jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+    };
+
+    html2pdf().set(opt).from(paper).save().then(() => {
+      document.body.removeChild(wrapper);
+      showToast('✅ Downloaded as PDF!');
+    }).catch(err => {
+      console.error("PDF Error: ", err);
+      document.body.removeChild(wrapper);
+      showToast('⚠ Error generating PDF');
+    });
   }
 
-  function buildPrintHTML(memoNum, date, rows, transport, other, discount, notes, subtotalText, grandText, autoPrint = true) {
+  // Modified to not automatically print, as we now use html2pdf
+  function buildPrintHTML(memoNum, date, rows, transport, other, discount, notes, subtotalText, grandText) {
     const rowsHtml = rows.map((r, i) => `
       <tr>
-        <td style="text-align:center;font-family:'Space Mono',monospace;font-size:10px;color:#7a6f64;padding:6px 8px;">${String(i+1).padStart(2,'0')}</td>
-        <td style="padding:6px 8px;font-size:12px;">${escHtml(r.desc)}</td>
-        <td style="padding:6px 8px;font-size:12px;word-break:break-word;">${escHtml(r.spec)}</td>
-        <td style="padding:6px 8px;font-size:11px;text-align:right;font-family:'Space Mono',monospace;">${r.qty}</td>
-        <td style="padding:6px 8px;font-size:11px;text-align:center;">${escHtml(r.unit)}</td>
-        <td style="padding:6px 8px;font-size:11px;text-align:right;font-family:'Space Mono',monospace;">${r.rate}</td>
-        <td style="padding:6px 8px;font-size:11px;text-align:right;font-family:'Space Mono',monospace;color:#2a6b45;font-weight:700;">${parseFloat(r.total || 0).toLocaleString('en-IN', {minimumFractionDigits:2})}</td>
+        <td style="text-align:center;font-family:'Space Mono',monospace;font-size:10px;color:#7a6f64;padding:6px 8px;border-bottom:1px solid #e2d9cc;">${String(i+1).padStart(2,'0')}</td>
+        <td style="padding:6px 8px;font-size:12px;border-bottom:1px solid #e2d9cc;">${escHtml(r.desc)}</td>
+        <td style="padding:6px 8px;font-size:12px;word-break:break-word;border-bottom:1px solid #e2d9cc;">${escHtml(r.spec)}</td>
+        <td style="padding:6px 8px;font-size:11px;text-align:right;font-family:'Space Mono',monospace;border-bottom:1px solid #e2d9cc;">${r.qty}</td>
+        <td style="padding:6px 8px;font-size:11px;text-align:center;border-bottom:1px solid #e2d9cc;">${escHtml(r.unit)}</td>
+        <td style="padding:6px 8px;font-size:11px;text-align:right;font-family:'Space Mono',monospace;border-bottom:1px solid #e2d9cc;">${r.rate}</td>
+        <td style="padding:6px 8px;font-size:11px;text-align:right;font-family:'Space Mono',monospace;color:#2a6b45;font-weight:700;border-bottom:1px solid #e2d9cc;">${parseFloat(r.total || 0).toLocaleString('en-IN', {minimumFractionDigits:2})}</td>
       </tr>`).join('');
 
     return `<!DOCTYPE html>
@@ -1134,7 +1127,7 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
   @page { size: A4 portrait; margin: 6mm 8mm; }
   *{box-sizing:border-box;margin:0;padding:0;}
   body{font-family:'DM Sans',sans-serif;background:#e5e5e5;padding:20px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  .paper-container {background:#fff;max-width:860px;margin:0 auto;border:1px solid #e2d9cc;box-shadow:0 10px 30px rgba(0,0,0,0.1);}
+  .paper-container {background:#fff;max-width:800px;margin:0 auto;border:1px solid #e2d9cc;box-shadow:0 10px 30px rgba(0,0,0,0.1);}
   @media print { body{padding:0;background:#fff;} .paper-container {border:none;box-shadow:none;} }
   </style>
   </head><body>
@@ -1218,7 +1211,6 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
       <div style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:#7a6f64;">Estimated memo — not a final invoice</div>
     </div>
   </div>
-  ${autoPrint ? '<script>window.onload=()=>window.print()<\/script>' : ''}
   </body></html>`;
   }
 
@@ -1245,7 +1237,7 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
     return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
 
-  /* ═══════════════════════ DELETE ═══════════════════════ */
+  /* ═══════════════════════ MODALS & TOAST ═══════════════════════ */
   window.confirmDelete = function(id) {
     deleteTargetId = id;
     document.getElementById('modal').classList.add('show');
@@ -1261,7 +1253,6 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
     deleteTargetId = null;
   }
 
-  /* ═══════════════════════ TOAST ═══════════════════════ */
   window.showToast = function(msg) {
     const t = document.getElementById('toast');
     t.textContent = msg;
