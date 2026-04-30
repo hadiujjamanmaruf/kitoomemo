@@ -215,7 +215,7 @@ body {
 .download-btn { background: var(--gold); color: #fff; border: none; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; padding: 7px 16px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s; }
 .download-btn:hover { background: #a87520; }
 
-.editor-body { padding: 24px 16px 120px; /* Increased bottom padding for sticky footer */ }
+.editor-body { padding: 24px 16px 120px; }
 .page { max-width: 860px; margin: 0 auto; background: var(--paper); border-radius: 4px; box-shadow: 0 2px 40px rgba(0,0,0,0.10), 0 0 0 1px var(--line); overflow: hidden; }
 .top-bar { height: 6px; background: linear-gradient(90deg, var(--accent) 0%, var(--gold) 50%, var(--accent) 100%); }
 
@@ -743,6 +743,13 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
     inp.click();
   };
 
+  /* --- DATE FORMATTER --- */
+  function formatDate(d) {
+    if (!d) return '—';
+    const date = new Date(d);
+    return date.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
+  }
+
   /* --- UI NAVIGATION --- */
   window.showDash = function() {
     document.getElementById('screen-dash').classList.add('active');
@@ -975,7 +982,8 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
     showToast('Saving to cloud...');
     await saveMemoToCloud(memoData);
 
-    document.getElementById('editor-download-btn').style.display = ''; // Show download button
+    // ✅ Make download button visible after a successful save
+    document.getElementById('editor-download-btn').style.display = '';
   }
 
   function collectRows() {
@@ -1047,22 +1055,26 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
     generateDirectPDF(html, m.memoNum || 'draft');
   }
 
+  // ✅ Converts HTML perfectly to PDF
   function generateDirectPDF(htmlContent, memoNum) {
     showToast('Generating PDF... Please wait');
     
+    // Create an invisible wrapper to render the HTML properly
     const wrapper = document.createElement('div');
     wrapper.style.position = 'absolute';
     wrapper.style.left = '-9999px';
     wrapper.style.top = '0';
-    wrapper.style.width = '800px'; 
+    wrapper.style.width = '800px'; // Exact width for A4 formatting
     wrapper.style.background = '#fff';
     wrapper.innerHTML = htmlContent;
     
     document.body.appendChild(wrapper);
+
+    // Select only the memo paper to convert
     const paper = wrapper.querySelector('.paper-container');
 
     const opt = {
-      margin:       0.3,
+      margin:       0.3, // Margin around the PDF
       filename:     `kitoo-memo-${memoNum}.pdf`,
       image:        { type: 'jpeg', quality: 1 },
       html2canvas:  { scale: 2, useCORS: true },
