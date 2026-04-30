@@ -860,12 +860,70 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
 
   window.goBack = function() { window.showDash(); }
 
-  /* --- TABLE ROWS & DRAG DROP --- */
-  window.handleDragStart = function(e) { window.dragSrcEl = this; e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', this.id); this.classList.add('dragging'); };
-  window.handleDragOver = function(e) { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; const bounding = this.getBoundingClientRect(); const offset = bounding.y + (bounding.height / 2); if (e.clientY - offset > 0) { this.style['border-bottom'] = '2px solid var(--accent)'; this.style['border-top'] = ''; } else { this.style['border-top'] = '2px solid var(--accent)'; this.style['border-bottom'] = ''; } return false; };
-  window.handleDragLeave = function(e) { this.style['border-top'] = ''; this.style['border-bottom'] = ''; };
-  window.handleDrop = function(e) { e.stopPropagation(); if (window.dragSrcEl !== this) { const tbody = this.parentNode; const bounding = this.getBoundingClientRect(); const offset = bounding.y + (bounding.height / 2); if (e.clientY - offset > 0) { tbody.insertBefore(window.dragSrcEl, this.nextSibling); } else { tbody.insertBefore(window.dragSrcEl, this); } window.renumberRows(); } this.style['border-top'] = ''; this.style['border-bottom'] = ''; return false; };
-  window.handleDragEnd = function(e) { this.classList.remove('dragging'); document.querySelectorAll('#table-body tr').forEach(row => { row.style['border-top'] = ''; row.style['border-bottom'] = ''; }); };
+  /* --- TABLE ROWS & DRAG DROP WITH AUTO-SCROLL --- */
+  window.handleDragStart = function(e) { 
+      window.dragSrcEl = this; 
+      e.dataTransfer.effectAllowed = 'move'; 
+      e.dataTransfer.setData('text/plain', this.id); 
+      this.classList.add('dragging'); 
+  };
+  
+  window.handleDragOver = function(e) { 
+      if (e.preventDefault) e.preventDefault(); 
+      e.dataTransfer.dropEffect = 'move'; 
+      
+      // 🔴 AUTO-SCROLL LOGIC 🔴
+      const buffer = 100; // Distance from edge to trigger scroll
+      const speed = 20;   // Scroll speed
+      if (e.clientY < buffer) {
+          window.scrollBy(0, -speed);
+      } else if (window.innerHeight - e.clientY < buffer) {
+          window.scrollBy(0, speed);
+      }
+
+      // Visual Drop Indicator
+      const bounding = this.getBoundingClientRect(); 
+      const offset = bounding.y + (bounding.height / 2); 
+      if (e.clientY - offset > 0) { 
+          this.style['border-bottom'] = '2px solid var(--accent)'; 
+          this.style['border-top'] = ''; 
+      } else { 
+          this.style['border-top'] = '2px solid var(--accent)'; 
+          this.style['border-bottom'] = ''; 
+      } 
+      return false; 
+  };
+  
+  window.handleDragLeave = function(e) { 
+      this.style['border-top'] = ''; 
+      this.style['border-bottom'] = ''; 
+  };
+  
+  window.handleDrop = function(e) { 
+      e.stopPropagation(); 
+      if (window.dragSrcEl !== this) { 
+          const tbody = this.parentNode; 
+          const bounding = this.getBoundingClientRect(); 
+          const offset = bounding.y + (bounding.height / 2); 
+          if (e.clientY - offset > 0) { 
+              tbody.insertBefore(window.dragSrcEl, this.nextSibling); 
+          } else { 
+              tbody.insertBefore(window.dragSrcEl, this); 
+          } 
+          window.renumberRows(); 
+      } 
+      this.style['border-top'] = ''; 
+      this.style['border-bottom'] = ''; 
+      return false; 
+  };
+  
+  window.handleDragEnd = function(e) { 
+      this.classList.remove('dragging'); 
+      document.querySelectorAll('#table-body tr').forEach(row => { 
+          row.style['border-top'] = ''; 
+          row.style['border-bottom'] = ''; 
+      }); 
+  };
 
   window.addRow = function(data) {
     rowCount++;
