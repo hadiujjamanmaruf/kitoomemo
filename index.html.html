@@ -257,7 +257,7 @@ body {
 table { width: 100%; border-collapse: collapse; }
 thead tr { background: var(--ink); }
 thead th { font-family: 'Space Mono', monospace; font-size: 8.5px; letter-spacing: 1.5px; text-transform: uppercase; color: #fff; padding: 10px 8px; text-align: left; font-weight: 400; }
-thead th:last-child { text-align: right; }
+thead th:last-child { text-align: center; }
 thead th.num { text-align: center; width: 36px; }
 thead th.qty, thead th.rate, thead th.total { text-align: right; }
 
@@ -276,9 +276,12 @@ td input:focus, td textarea:focus { background: rgba(181,69,27,0.06); }
 td.qty-cell input, td.rate-cell input, td.total-cell input { text-align: right; font-family: 'Space Mono', monospace; font-size: 11px; }
 td.unit-cell input { text-align: center; font-size: 11px; }
 td.total-cell input { color: var(--green); font-weight: 700; }
-td.del-cell { text-align: center; width: 28px; }
-.del-btn { background: none; border: none; cursor: pointer; color: #ccc; font-size: 14px; line-height: 1; padding: 3px; border-radius: 3px; transition: color 0.2s; }
-.del-btn:hover { color: var(--accent); }
+
+/* ── ACTION BUTTONS (UP, DOWN, DELETE) ── */
+td.action-cell { white-space: nowrap; text-align: center; width: 70px; padding-right: 8px; }
+.action-btn { background: none; border: none; cursor: pointer; color: #ccc; font-size: 14px; font-weight: 600; line-height: 1; padding: 3px 4px; border-radius: 3px; transition: color 0.2s; }
+.action-btn:hover { color: var(--accent); }
+.action-btn.del:hover { color: var(--red); }
 
 .totals-section { padding: 0 40px 22px; display: flex; justify-content: flex-end; }
 .totals-box { min-width: 260px; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
@@ -476,7 +479,7 @@ td.del-cell { text-align: center; width: 28px; }
               <th>Unit</th>
               <th class="rate">Unit Price (৳)</th>
               <th class="total">Amount (৳)</th>
-              <th style="width:28px"></th>
+              <th style="width:70px"></th>
             </tr>
           </thead>
           <tbody id="table-body"></tbody>
@@ -662,7 +665,6 @@ td.del-cell { text-align: center; width: 28px; }
     }
   }
 
-
   /* ═══════════════════════ BACKUP (JSON) ═══════════════════════ */
   window.exportBackup = function() {
     if (!memos.length) { showToast('⚠ কোনো মেমো নেই'); return; }
@@ -818,7 +820,7 @@ td.del-cell { text-align: center; width: 28px; }
 
   window.goBack = function() { window.showDash(); }
 
-  /* ═══════════════════════ TABLE ROWS ═══════════════════════ */
+  /* ═══════════════════════ TABLE ROWS & MOVEMENT ═══════════════════════ */
   window.addRow = function(data) {
     rowCount++;
     const tbody = document.getElementById('table-body');
@@ -832,11 +834,27 @@ td.del-cell { text-align: center; width: 28px; }
       <td class="unit-cell"><input type="text" placeholder="Pcs" value="${data ? escHtml(data.unit) : ''}"></td>
       <td class="rate-cell"><input type="number" placeholder="0.00" min="0" step="0.01" value="${data ? data.rate : ''}" oninput="calcRow(${rowCount})" data-rate></td>
       <td class="total-cell"><input type="number" placeholder="0.00" readonly value="${data ? data.total : ''}" data-total></td>
-      <td class="del-cell"><button class="del-btn" onclick="deleteRow(${rowCount})" title="Remove">✕</button></td>
+      <td class="action-cell">
+        <button class="action-btn" onclick="moveRow(this, -1)" title="Move Up">↑</button>
+        <button class="action-btn" onclick="moveRow(this, 1)" title="Move Down">↓</button>
+        <button class="action-btn del" onclick="deleteRow(${rowCount})" title="Remove">✕</button>
+      </td>
     `;
     tbody.appendChild(tr);
     const ta = tr.querySelector('textarea');
     if (ta) setTimeout(() => window.autoResize(ta), 0);
+  }
+
+  window.moveRow = function(btn, direction) {
+    const row = btn.closest('tr');
+    const tbody = row.parentNode;
+    if (direction === -1 && row.previousElementSibling) {
+      tbody.insertBefore(row, row.previousElementSibling);
+      renumberRows();
+    } else if (direction === 1 && row.nextElementSibling) {
+      tbody.insertBefore(row.nextElementSibling, row);
+      renumberRows();
+    }
   }
 
   window.calcRow = function(id) {
