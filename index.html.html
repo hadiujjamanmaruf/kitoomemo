@@ -3,238 +3,139 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kitoo Footwear — Purchase Memo</title>
+<title>Kitoo Footwear — Pro Memo System</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 
+<!-- Modern Icons -->
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
 <!-- PDF Generator Library -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<!-- Chart.js for Analytics -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<!-- Vercel Web Analytics -->
-<script>
-  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-</script>
-<script defer src="/_vercel/insights/script.js"></script>
-<!-- Vercel Speed Insights -->
-<script>
-  window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
-</script>
-<script defer src="/_vercel/speed-insights/script.js"></script>
 <style>
 :root {
-  --bg: #faf7f2;
-  --paper: #ffffff;
-  --ink: #1a1612;
-  --accent: #b5451b;
-  --gold: #c9922a;
-  --muted: #7a6f64;
-  --line: #e2d9cc;
-  --soft: #f2ece3;
-  --green: #2a6b45;
-  --red: #c0392b;
-  --shadow: 0 2px 20px rgba(0,0,0,0.08);
+  --bg: #faf7f2; --paper: #ffffff; --ink: #1a1612; --accent: #b5451b;
+  --gold: #c9922a; --muted: #7a6f64; --line: #e2d9cc; --soft: #f2ece3;
+  --green: #2a6b45; --red: #c0392b; --blue: #295a9c; --shadow: 0 4px 24px rgba(0,0,0,0.06);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--ink); min-height: 100vh; }
+.screen { display: none; } .screen.active { display: block; }
 
-body {
-  background: var(--bg);
-  font-family: 'DM Sans', sans-serif;
-  color: var(--ink);
-  min-height: 100vh;
-}
+/* ── LOGOS ── */
+.login-logo { height: 70px; object-fit: contain; margin: 0 auto 15px; display: block; }
+.dash-logo { height: 32px; object-fit: contain; display: block; }
+.brand-logo { height: 80px; object-fit: contain; display: block; }
 
-/* ── SCREENS ── */
-.screen { display: none; }
-.screen.active { display: block; }
-
-/* ════════════════════════════════
-   LOGIN SCREEN
-═══════════════════════════════ */
-.login-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  padding: 20px;
-}
-.login-box {
-  background: var(--paper);
-  padding: 40px;
-  border-radius: 12px;
-  box-shadow: var(--shadow);
-  width: 100%;
-  max-width: 400px;
-  text-align: center;
-  border: 1px solid var(--line);
-}
-.login-brand {
-  font-family: 'Playfair Display', serif;
-  font-size: 28px;
-  font-weight: 700;
-  color: var(--ink);
-  margin-bottom: 5px;
-}
-.login-brand span { color: var(--accent); }
-.login-sub {
-  font-family: 'Space Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 30px;
-}
-.login-input {
-  width: 100%;
-  padding: 14px;
-  margin-bottom: 15px;
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 14px;
-  background: var(--soft);
-  outline: none;
-  transition: border-color 0.2s;
-}
+/* ── LOGIN ── */
+.login-wrapper { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
+.login-box { background: var(--paper); padding: 40px; border-radius: 12px; box-shadow: var(--shadow); width: 100%; max-width: 400px; text-align: center; border: 1px solid var(--line); }
+.login-sub { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 30px; }
+.login-input { width: 100%; padding: 14px; margin-bottom: 15px; border: 1px solid var(--line); border-radius: 6px; font-family: 'DM Sans', sans-serif; font-size: 14px; background: var(--soft); outline: none; transition: 0.2s; }
 .login-input:focus { border-color: var(--gold); }
-.login-btn-submit {
-  width: 100%;
-  background: var(--ink);
-  color: #fff;
-  border: none;
-  padding: 14px;
-  border-radius: 6px;
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 600;
-  font-size: 15px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
+.login-btn-submit { width: 100%; background: var(--ink); color: #fff; border: none; padding: 14px; border-radius: 6px; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 15px; cursor: pointer; transition: 0.2s; display:flex; align-items:center; justify-content:center; gap:8px; }
 .login-btn-submit:hover { background: var(--accent); }
 
-/* ════════════════════════════════
-   DASHBOARD SCREEN
-═══════════════════════════════ */
-.dash-header {
-  background: var(--ink);
-  padding: 0 32px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 64px;
-  position: sticky;
-  top: 0;
-  z-index: 50;
-}
-
-.dash-brand { display: flex; align-items: baseline; gap: 10px; }
-.dash-brand-name { font-family: 'Playfair Display', serif; font-size: 22px; color: #fff; font-weight: 700; }
-.dash-brand-name span { color: var(--gold); }
-.dash-brand-tag { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
-
+/* ── DASHBOARD HEADER ── */
+.dash-header { background: var(--ink); padding: 0 32px; display: flex; align-items: center; justify-content: space-between; height: 64px; position: sticky; top: 0; z-index: 50; }
+.dash-brand-tag { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-left: 10px; }
 .dash-actions { display:flex; gap:8px; align-items:center; }
-
-.dash-new-btn {
-  background: var(--accent); color: #fff; border: none; font-family: 'DM Sans', sans-serif;
-  font-size: 13px; font-weight: 600; padding: 9px 20px; border-radius: 40px;
-  cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s;
-}
+.dash-btn { background: rgba(255,255,255,0.08); color: #fff; border: 1px solid rgba(255,255,255,0.15); font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; padding: 7px 14px; border-radius: 40px; cursor: pointer; transition: 0.2s; display:flex; align-items:center; gap:6px; }
+.dash-btn:hover { background: rgba(255,255,255,0.18); }
+.dash-new-btn { background: var(--accent); color: #fff; border: none; font-weight: 600; padding: 8px 18px; }
 .dash-new-btn:hover { background: #8e2e0f; transform: translateY(-1px); }
-
-.backup-btn {
-  background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.15);
-  font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; padding: 7px 14px;
-  border-radius: 40px; cursor: pointer; transition: all 0.2s;
-}
-.backup-btn:hover { background: rgba(255,255,255,0.18); color: #fff; }
 .logout-btn { background: rgba(255,0,0,0.15); border-color: rgba(255,0,0,0.3); color: #ffcccc; }
-.logout-btn:hover { background: rgba(255,0,0,0.3); color: #fff; }
+.logout-btn:hover { background: rgba(255,0,0,0.4); color:#fff; }
 
+/* ── DASHBOARD BODY & STATS ── */
 .dash-body { padding: 32px; max-width: 1000px; margin: 0 auto; }
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
+.stat-card { background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 20px; box-shadow: var(--shadow); }
+.stat-icon { font-size: 24px; color: var(--gold); margin-bottom: 8px; }
+.stat-val { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--ink); line-height: 1; }
+.stat-label { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-top: 6px; font-weight: 600; }
 
-.dash-stats { display: flex; gap: 16px; margin-bottom: 28px; flex-wrap: wrap; }
-.stat-card {
-  background: var(--paper); border: 1px solid var(--line); border-radius: 8px;
-  padding: 16px 22px; flex: 1; min-width: 130px; box-shadow: var(--shadow);
-}
-.stat-val { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--accent); line-height: 1; }
-.stat-label { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
+/* ── CHART SECTION ── */
+.chart-container { background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 20px; box-shadow: var(--shadow); margin-bottom: 32px; height: 280px; }
 
-.section-heading { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); font-weight: 700; margin-bottom: 14px; }
+/* ── SEARCH & FILTER ── */
+.toolbar { display: flex; gap: 12px; margin-bottom: 16px; }
+.search-box { flex: 1; position: relative; }
+.search-box i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 18px; }
+.search-input { width: 100%; padding: 12px 16px 12px 40px; border: 1px solid var(--line); border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 14px; background: var(--paper); outline: none; transition: 0.2s; }
+.search-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(181,69,27,0.1); }
+.filter-select { padding: 12px 16px; border: 1px solid var(--line); border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 14px; background: var(--paper); outline: none; cursor: pointer; color: var(--ink); }
 
-.memo-list { display: flex; flex-direction: column; gap: 10px; }
-
-/* Desktop version of memo card */
-.memo-card {
-  background: var(--paper); border: 1px solid var(--line); border-radius: 8px;
-  padding: 16px 20px; display: flex; align-items: center; gap: 16px; box-shadow: var(--shadow);
-  transition: all 0.2s; cursor: default;
-}
-.memo-card:hover { border-color: var(--gold); transform: translateY(-1px); box-shadow: 0 4px 24px rgba(0,0,0,0.1); }
-.memo-card-num {
-  font-family: 'Space Mono', monospace; font-size: 11px; color: var(--accent);
-  background: var(--soft); padding: 4px 8px; border-radius: 4px; flex-shrink: 0; font-weight: 700;
-}
+/* ── MEMO LIST ── */
+.memo-list { display: flex; flex-direction: column; gap: 12px; }
+.memo-card { background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 16px 20px; display: flex; align-items: center; gap: 16px; box-shadow: var(--shadow); transition: 0.2s; }
+.memo-card:hover { border-color: var(--gold); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.08); }
+.memo-card-num { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--accent); background: var(--soft); padding: 6px 10px; border-radius: 6px; flex-shrink: 0; font-weight: 700; }
 .memo-card-info { flex: 1; min-width: 0; }
-.memo-card-date { font-size: 12px; color: var(--muted); margin-bottom: 2px; }
-.memo-card-items { font-size: 13px; font-weight: 500; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.memo-card-total { font-family: 'Space Mono', monospace; font-size: 14px; font-weight: 700; color: var(--green); flex-shrink: 0; }
-.memo-card-actions { display: flex; gap: 8px; flex-shrink: 0; }
-
-.icon-btn {
-  border: 1px solid var(--line); background: var(--soft); border-radius: 6px;
-  width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
-  cursor: pointer; font-size: 14px; transition: all 0.15s; color: var(--muted);
-}
-.icon-btn:hover { border-color: var(--accent); color: var(--accent); background: #fff; }
-.icon-btn.del:hover { border-color: var(--red); color: var(--red); }
+.memo-meta-line { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+.memo-card-date { font-size: 12px; color: var(--muted); display:flex; align-items:center; gap:4px; }
+.badge { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; text-transform: uppercase; letter-spacing: 1px; }
+.badge.paid { background: #e6f4ea; color: var(--green); border: 1px solid #cce8d6; }
+.badge.due { background: #fce8e6; color: var(--red); border: 1px solid #fad1ce; }
+.badge.draft { background: var(--soft); color: var(--muted); border: 1px solid var(--line); }
+.memo-card-items { font-size: 13px; font-weight: 500; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display:flex; align-items:center; gap:6px;}
+.memo-card-total { font-family: 'Space Mono', monospace; font-size: 16px; font-weight: 700; color: var(--ink); flex-shrink: 0; text-align:right;}
+.memo-card-actions { display: flex; gap: 6px; flex-shrink: 0; }
+.action-icon-btn { width: 36px; height: 36px; border-radius: 8px; border: 1px solid var(--line); background: var(--paper); color: var(--muted); font-size: 18px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; }
+.action-icon-btn:hover { background: var(--soft); color: var(--accent); border-color: var(--accent); }
+.action-icon-btn.del:hover { color: var(--red); border-color: var(--red); background: #fce8e6;}
 
 .empty-state { text-align: center; padding: 64px 32px; color: var(--muted); }
-.empty-icon { font-size: 48px; margin-bottom: 12px; }
+.empty-icon { font-size: 48px; margin-bottom: 12px; color: var(--gold); }
 .empty-title { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--ink); margin-bottom: 6px; }
-.empty-sub { font-size: 13px; }
 
-/* ════════════════════════════════
-   MEMO EDITOR SCREEN
-═══════════════════════════════ */
-.editor-header {
-  background: var(--ink); padding: 0 32px; display: flex; align-items: center;
-  justify-content: space-between; height: 60px; position: sticky; top: 0; z-index: 50; gap: 12px;
-}
-
-.back-btn {
-  background: none; border: 1px solid rgba(255,255,255,0.2); color: #fff;
-  font-family: 'DM Sans', sans-serif; font-size: 12px; padding: 6px 14px;
-  border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s; flex-shrink: 0;
-}
-.back-btn:hover { background: rgba(255,255,255,0.1); }
-.editor-title { font-family: 'Playfair Display', serif; font-size: 16px; color: #fff; flex: 1; text-align: center; }
+/* ── EDITOR HEADER ── */
+.editor-header { background: var(--ink); padding: 0 32px; display: flex; align-items: center; justify-content: space-between; height: 64px; position: sticky; top: 0; z-index: 50; gap: 12px; }
+.editor-title { font-family: 'Playfair Display', serif; font-size: 16px; color: #fff; flex: 1; text-align: center; display:flex; align-items:center; justify-content:center; gap:8px;}
+.editor-title i { color: var(--gold); }
 .editor-actions { display: flex; gap: 8px; flex-shrink: 0; }
-.save-btn { background: var(--green); color: #fff; border: none; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; padding: 7px 16px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s; }
-.save-btn:hover { background: #1e5233; }
+.btn-save { background: var(--green); color: #fff; border: none; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; padding: 8px 16px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: 0.2s; }
+.btn-save:hover { background: #1e5233; }
+.btn-print { background: var(--soft); color: var(--ink); border: none; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; padding: 8px 16px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: 0.2s; }
+.btn-print:hover { background: #e2d9cc; }
+.btn-pdf { background: var(--gold); color: #fff; border: none; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; padding: 8px 16px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: 0.2s; }
+.btn-pdf:hover { background: #a87520; }
 
-.download-btn { background: var(--gold); color: #fff; border: none; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; padding: 7px 16px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s; }
-.download-btn:hover { background: #a87520; }
-
+/* ── EDITOR PAPER ── */
 .editor-body { padding: 24px 16px 120px; }
-.page { max-width: 860px; margin: 0 auto; background: var(--paper); border-radius: 4px; box-shadow: 0 2px 40px rgba(0,0,0,0.10), 0 0 0 1px var(--line); overflow: hidden; }
+.page { max-width: 860px; margin: 0 auto; background: var(--paper); border-radius: 4px; box-shadow: 0 2px 40px rgba(0,0,0,0.10), 0 0 0 1px var(--line); overflow: hidden; position:relative;}
 .top-bar { height: 6px; background: linear-gradient(90deg, var(--accent) 0%, var(--gold) 50%, var(--accent) 100%); }
 
-.header { padding: 28px 40px 22px; display: flex; align-items: flex-start; justify-content: space-between; border-bottom: 1px solid var(--line); gap: 20px; flex-wrap: wrap; }
-.brand-name { font-family: 'Playfair Display', serif; font-size: 34px; font-weight: 700; color: var(--ink); line-height: 1; }
-.brand-name span { color: var(--accent); }
-.tagline { font-family: 'Space Mono', monospace; font-size: 9.5px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-top: 5px; }
+.header { padding: 28px 40px 22px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); gap: 20px; flex-wrap: wrap; }
+.brand-block { display:flex; align-items:center; }
 .address-block { text-align: right; font-size: 12px; color: var(--muted); line-height: 1.8; }
 .address-block strong { color: var(--ink); font-weight: 600; font-size: 12.5px; }
 
-.memo-title-band { background: var(--soft); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); gap: 12px; flex-wrap: wrap; }
-.memo-label { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 600; color: var(--accent); }
-.memo-meta { display: flex; gap: 20px; align-items: center; }
+/* Dynamic Status Watermark */
+.status-watermark { position: absolute; top: 180px; left: 50%; transform: translateX(-50%) rotate(-15deg); font-family: 'Playfair Display', serif; font-size: 80px; font-weight: 700; opacity: 0; pointer-events: none; z-index: 1; letter-spacing: 10px; text-transform: uppercase; }
+.status-watermark.show-paid { opacity: 0.04; color: var(--green); }
+.status-watermark.show-due { opacity: 0.04; color: var(--red); }
+
+.memo-title-band { background: var(--soft); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); gap: 12px; flex-wrap: wrap; z-index:2; position:relative;}
+.memo-label { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 600; color: var(--accent); display:flex; align-items:center; gap:8px;}
+.memo-meta { display: flex; gap: 20px; align-items: center; flex-wrap:wrap; }
 .meta-field { display: flex; flex-direction: column; align-items: flex-end; }
 .meta-label { font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 2px; }
 .meta-input { border: none; border-bottom: 1.5px solid var(--gold); background: transparent; font-family: 'Space Mono', monospace; font-size: 11px; color: var(--ink); width: 120px; padding: 2px 4px; text-align: right; outline: none; }
 .meta-input:focus { border-bottom-color: var(--accent); }
+.meta-select { border: none; border-bottom: 1.5px solid var(--gold); background: transparent; font-family: 'Space Mono', monospace; font-size: 11px; color: var(--ink); padding: 2px 4px; outline: none; font-weight: 700; cursor:pointer;}
 
-.owners-section { padding: 14px 40px; display: flex; gap: 28px; border-bottom: 1px solid var(--line); flex-wrap: wrap; align-items: center; }
+.supplier-section { padding: 16px 40px; display: flex; gap: 20px; border-bottom: 1px solid var(--line); background: #fcfbfa; align-items:center; z-index:2; position:relative;}
+.supplier-icon { font-size: 24px; color: var(--muted); }
+.supplier-inputs { display:flex; gap:16px; flex:1; flex-wrap:wrap;}
+.sup-field { flex:1; min-width: 200px; display:flex; flex-direction:column; }
+.sup-field label { font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 4px; }
+.sup-field input { border: 1px solid var(--line); background: #fff; padding: 8px 12px; border-radius: 6px; font-family: 'DM Sans', sans-serif; font-size: 13px; outline: none; transition: 0.2s;}
+.sup-field input:focus { border-color: var(--accent); }
+
+.owners-section { padding: 14px 40px; display: flex; gap: 28px; border-bottom: 1px solid var(--line); flex-wrap: wrap; align-items: center; z-index:2; position:relative;}
 .owner-card { display: flex; align-items: center; gap: 10px; }
 .owner-avatar { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--gold)); display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 13px; color: #fff; font-weight: 700; flex-shrink: 0; }
 .owner-role { font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); font-weight: 600; }
@@ -242,15 +143,15 @@ body {
 .owner-phone { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--accent); }
 .owners-divider { width: 1px; height: 44px; background: var(--line); flex-shrink: 0; }
 
-.table-section { padding: 22px 40px 16px; overflow-x: auto;}
+.table-section { padding: 22px 40px 16px; overflow-x: auto; z-index:2; position:relative;}
 .table-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-.section-label { font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); font-weight: 700; }
-.add-row-btn { background: var(--soft); border: 1px solid var(--line); color: var(--accent); font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 600; padding: 5px 12px; border-radius: 20px; cursor: pointer; transition: all 0.2s; }
+.section-label { font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); font-weight: 700; display:flex; align-items:center; gap:6px;}
+.add-row-btn { background: var(--soft); border: 1px solid var(--line); color: var(--accent); font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 600; padding: 6px 14px; border-radius: 20px; cursor: pointer; transition: 0.2s; display:flex; align-items:center; gap:4px;}
 .add-row-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
 
 table { width: 100%; border-collapse: collapse; min-width: 600px; }
 thead tr { background: var(--ink); }
-thead th { font-family: 'Space Mono', monospace; font-size: 8.5px; letter-spacing: 1.5px; text-transform: uppercase; color: #fff; padding: 10px 8px; text-align: left; font-weight: 400; }
+thead th { font-family: 'Space Mono', monospace; font-size: 8.5px; letter-spacing: 1.5px; text-transform: uppercase; color: #fff; padding: 12px 8px; text-align: left; font-weight: 400; }
 thead th:last-child { text-align: center; }
 thead th.num { text-align: center; width: 36px; }
 thead th.qty, thead th.rate, thead th.total { text-align: right; }
@@ -263,139 +164,134 @@ tbody td { padding: 3px 5px; vertical-align: middle; }
 
 td.sl-num { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--muted); text-align: center; width: 36px; padding-left: 8px; }
 td.spec-cell { min-width: 120px; }
-td.spec-cell textarea { border: none; background: transparent; font-family: 'DM Sans', sans-serif; font-size: 12px; color: var(--ink); width: 100%; padding: 5px 5px; outline: none; resize: none; overflow: hidden; border-radius: 3px; transition: background 0.15s; white-space: pre-wrap; word-break: break-word; line-height: 1.4; display: block; }
+td.spec-cell textarea { border: none; background: transparent; font-family: 'DM Sans', sans-serif; font-size: 12px; color: var(--ink); width: 100%; padding: 6px 6px; outline: none; resize: none; overflow: hidden; border-radius: 4px; transition: background 0.15s; white-space: pre-wrap; word-break: break-word; line-height: 1.4; display: block; }
 td.spec-cell textarea:focus { background: rgba(181,69,27,0.06); }
-td input, td textarea { border: none; background: transparent; font-family: 'DM Sans', sans-serif; font-size: 12px; color: var(--ink); width: 100%; padding: 5px 5px; outline: none; transition: background 0.15s; border-radius: 3px; }
+td input, td textarea { border: none; background: transparent; font-family: 'DM Sans', sans-serif; font-size: 12px; color: var(--ink); width: 100%; padding: 6px 6px; outline: none; transition: 0.15s; border-radius: 4px; }
 td input:focus, td textarea:focus { background: rgba(181,69,27,0.06); }
 td.qty-cell input, td.rate-cell input, td.total-cell input { text-align: right; font-family: 'Space Mono', monospace; font-size: 11px; }
 td.unit-cell input { text-align: center; font-size: 11px; }
 td.total-cell input { color: var(--green); font-weight: 700; }
 
-/* ── ACTION BUTTONS & DRAG HANDLE ── */
-.drag-handle { cursor: grab; color: #b3a89e; font-size: 18px; line-height: 1; text-align: center; user-select: none; transition: color 0.2s; padding: 4px; }
+td input::-webkit-calendar-picker-indicator { opacity: 0.5; cursor: pointer; }
+
+/* Drag & Drop */
+.drag-handle { cursor: grab; color: #b3a89e; font-size: 20px; line-height: 1; text-align: center; user-select: none; transition: color 0.2s; padding: 4px; }
 .drag-handle:hover { color: var(--accent); }
 .drag-handle:active { cursor: grabbing; }
-
-/* ✅ FIX GHOST HIGHLIGHT AND DRAG BUG */
-body.table-dragging {
-  user-select: none;
-  -webkit-user-select: none;
-}
-body.table-dragging input, 
-body.table-dragging textarea {
-  pointer-events: none !important; /* Prevents input fields from intercepting the drag events */
-}
+body.table-dragging { user-select: none; -webkit-user-select: none; }
+body.table-dragging input, body.table-dragging textarea { pointer-events: none !important; }
 tr.dragging { opacity: 0.6; background: #f2ece3 !important; }
-
 td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-right: 8px; }
-.action-btn { background: none; border: none; cursor: pointer; color: #ccc; font-size: 14px; font-weight: 600; line-height: 1; padding: 3px 4px; border-radius: 3px; transition: color 0.2s; }
-.action-btn:hover { color: var(--accent); }
-.action-btn.del:hover { color: var(--red); }
+.action-btn { background: none; border: none; cursor: pointer; color: #ccc; font-size: 16px; font-weight: 600; line-height: 1; padding: 4px; border-radius: 4px; transition: 0.2s; display:flex; align-items:center; justify-content:center;}
+.action-btn:hover { color: var(--accent); background: var(--soft);}
+.action-btn.del:hover { color: var(--red); background: #fce8e6;}
 
-.totals-section { padding: 0 40px 22px; display: flex; justify-content: flex-end; }
-.totals-box { min-width: 260px; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
-.totals-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 14px; border-bottom: 1px solid var(--line); font-size: 12px; }
+.totals-section { padding: 0 40px 22px; display: flex; justify-content: flex-end; z-index:2; position:relative;}
+.totals-box { min-width: 260px; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; background:#fff;}
+.totals-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--line); font-size: 12px; }
 .totals-row:last-child { border-bottom: none; }
-.totals-row label { color: var(--muted); font-size: 11px; }
-.totals-row .val { font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700; color: var(--ink); }
-.totals-row.grand { background: var(--ink); padding: 11px 14px; }
+.totals-row label { color: var(--muted); font-size: 11px; display:flex; align-items:center; gap:6px;}
+.totals-row .val { font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700; color: var(--ink); }
+.totals-row.grand { background: var(--ink); padding: 12px 14px; }
 .totals-row.grand label { color: #e2d9cc; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; }
-.totals-row.grand .val { color: var(--gold); font-size: 15px; }
-.extra-input { border: none; border-bottom: 1px dashed var(--line); background: transparent; font-family: 'Space Mono', monospace; font-size: 12px; color: var(--ink); width: 80px; text-align: right; outline: none; padding: 1px 3px; }
+.totals-row.grand .val { color: var(--gold); font-size: 16px; }
+.extra-input { border: none; border-bottom: 1px dashed var(--line); background: transparent; font-family: 'Space Mono', monospace; font-size: 12px; color: var(--ink); width: 80px; text-align: right; outline: none; padding: 2px 4px; transition:0.2s; border-radius:3px;}
+.extra-input:focus { background:rgba(181,69,27,0.06); border-bottom-style:solid; border-color:var(--accent);}
 
-.notes-section { padding: 0 40px 22px; }
-.notes-label { font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); font-weight: 700; margin-bottom: 6px; }
-.notes-area { width: 100%; min-height: 50px; border: 1px solid var(--line); border-radius: 4px; font-family: 'DM Sans', sans-serif; font-size: 12px; color: var(--ink); padding: 9px 12px; outline: none; resize: vertical; background: var(--soft); transition: border-color 0.2s; }
-.notes-area:focus { border-color: var(--gold); }
+.notes-section { padding: 0 40px 22px; z-index:2; position:relative;}
+.notes-label { font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); font-weight: 700; margin-bottom: 6px; display:flex; align-items:center; gap:6px;}
+.notes-area { width: 100%; min-height: 50px; border: 1px solid var(--line); border-radius: 6px; font-family: 'DM Sans', sans-serif; font-size: 12px; color: var(--ink); padding: 10px 14px; outline: none; resize: vertical; background: var(--soft); transition: 0.2s; }
+.notes-area:focus { border-color: var(--gold); background:#fff;}
 
-.sig-section { padding: 16px 40px 26px; display: flex; gap: 30px; flex-wrap: wrap; }
-.sig-block { flex: 1; min-width: 130px; }
-.sig-line { border-top: 1.5px solid var(--ink); margin-bottom: 5px; margin-top: 28px; }
-.sig-name { font-size: 11px; font-weight: 600; color: var(--ink); }
+.sig-section { padding: 16px 40px 26px; display: flex; gap: 30px; flex-wrap: wrap; z-index:2; position:relative;}
+.sig-block { flex: 1; min-width: 130px; text-align:center;}
+.sig-line { border-top: 1.5px solid var(--ink); margin-bottom: 6px; margin-top: 36px; }
+.sig-name { font-size: 12px; font-weight: 600; color: var(--ink); }
 .sig-role { font-size: 10px; color: var(--muted); }
 
-.bottom-bar { background: var(--ink); padding: 10px 40px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px; }
-.bottom-bar .brand-small { font-family: 'Playfair Display', serif; font-size: 13px; color: var(--gold); font-weight: 600; }
+.bottom-bar { background: var(--ink); padding: 12px 40px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; z-index:2; position:relative;}
+.bottom-bar .brand-small { font-family: 'Playfair Display', serif; font-size: 14px; color: var(--gold); font-weight: 600; display:flex; align-items:center; gap:6px;}
 .bottom-bar .tagline-small { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: #7a6f64; }
 
 /* ── STICKY FOOTER ── */
-.editor-sticky-footer {
-  position: fixed;
-  bottom: 0; left: 0; right: 0;
-  background: var(--ink);
-  padding: 12px 24px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  z-index: 100;
-  box-shadow: 0 -10px 30px rgba(0,0,0,0.2);
-  transform: translateY(100%);
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
+.editor-sticky-footer { position: fixed; bottom: 0; left: 0; right: 0; background: var(--ink); padding: 14px 32px; display: flex; justify-content: space-between; align-items: center; z-index: 100; box-shadow: 0 -10px 30px rgba(0,0,0,0.2); transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
 .editor-sticky-footer.visible { transform: translateY(0); }
-.sticky-total-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 2px; font-weight: 600;}
-.sticky-total-val { font-family: 'Space Mono', monospace; font-size: 22px; font-weight: 700; color: var(--gold); line-height: 1; }
-.sticky-add-btn { background: var(--accent); color: #fff; border: none; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; padding: 12px 24px; border-radius: 40px; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(181,69,27,0.3); transition: all 0.2s;}
-.sticky-add-btn:hover { background: #8e2e0f; transform: translateY(-1px); }
+.sticky-total-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 2px; font-weight: 600; display:flex; align-items:center; gap:6px;}
+.sticky-total-val { font-family: 'Space Mono', monospace; font-size: 24px; font-weight: 700; color: var(--gold); line-height: 1; }
+.sticky-add-btn { background: var(--accent); color: #fff; border: none; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; padding: 12px 24px; border-radius: 40px; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(181,69,27,0.3); transition: 0.2s;}
+.sticky-add-btn:hover { background: #8e2e0f; transform: translateY(-2px); box-shadow: 0 6px 16px rgba(181,69,27,0.4);}
 
-/* Toast */
-.toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--ink); color: #fff; padding: 10px 20px; border-radius: 40px; font-size: 13px; font-weight: 500; z-index: 999; transition: transform 0.3s; pointer-events: none; white-space: nowrap; }
+/* Toast & Modals */
+.toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--ink); color: #fff; padding: 12px 24px; border-radius: 40px; font-size: 13px; font-weight: 500; z-index: 999; transition: transform 0.3s; pointer-events: none; white-space: nowrap; display:flex; align-items:center; gap:8px;}
 .toast.show { transform: translateX(-50%) translateY(0); }
-
-/* Confirm modal */
-.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 900; display: none; }
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 900; display: none; backdrop-filter: blur(2px);}
 .modal-overlay.show { display: flex; }
-.modal-box { background: var(--paper); border-radius: 12px; padding: 28px 32px; max-width: 360px; width: 90%; box-shadow: 0 8px 40px rgba(0,0,0,0.2); }
-.modal-title { font-family: 'Playfair Display', serif; font-size: 18px; margin-bottom: 8px; }
-.modal-sub { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
-.modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
-.modal-cancel { border: 1px solid var(--line); background: var(--soft); color: var(--ink); font-family: 'DM Sans', sans-serif; font-size: 13px; padding: 8px 18px; border-radius: 20px; cursor: pointer; }
-.modal-confirm { border: none; background: var(--red); color: #fff; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; padding: 8px 18px; border-radius: 20px; cursor: pointer; }
+.modal-box { background: var(--paper); border-radius: 16px; padding: 32px; max-width: 360px; width: 90%; box-shadow: 0 12px 48px rgba(0,0,0,0.2); }
+.modal-title { font-family: 'Playfair Display', serif; font-size: 20px; margin-bottom: 8px; display:flex; align-items:center; gap:8px;}
+.modal-sub { font-size: 13px; color: var(--muted); margin-bottom: 24px; line-height:1.5;}
+.modal-actions { display: flex; gap: 12px; justify-content: flex-end; }
+.modal-cancel { border: 1px solid var(--line); background: var(--soft); color: var(--ink); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight:500; padding: 10px 20px; border-radius: 8px; cursor: pointer; transition:0.2s;}
+.modal-cancel:hover { background: #e2d9cc; }
+.modal-confirm { border: none; background: var(--red); color: #fff; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; padding: 10px 20px; border-radius: 8px; cursor: pointer; display:flex; align-items:center; gap:6px; transition:0.2s;}
+.modal-confirm:hover { background: #a52a1d; }
 
-/* ════════════════════════════════
-   100% RESPONSIVE MOBILE CSS FIX
-═══════════════════════════════ */
+/* ── RESPONSIVE ── */
 @media (max-width: 768px) {
-  .dash-header { padding: 0 16px; flex-direction: column; height: auto; padding-bottom: 12px; padding-top: 12px;}
+  .dash-header { padding: 12px 16px; flex-direction: column; height: auto;}
   .dash-brand { margin-bottom: 12px; }
   .dash-actions { width: 100%; justify-content: space-between; overflow-x: auto; padding-bottom: 4px; }
-  
   .dash-body { padding: 16px; }
-  .dash-stats { gap: 10px; }
-  .stat-card { min-width: 45%; padding: 12px 16px;}
-  
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .toolbar { flex-direction: column; }
   .memo-card { flex-direction: column; align-items: flex-start; padding: 16px; gap: 12px; }
   .memo-card-info { width: 100%; }
   .memo-card-items { white-space: normal; line-height: 1.4; color: var(--muted); }
-  .memo-card-total { width: 100%; font-size: 18px; }
+  .memo-card-total { width: 100%; font-size: 18px; text-align:left;}
   .memo-card-actions { width: 100%; justify-content: flex-end; border-top: 1px solid var(--soft); padding-top: 12px; }
-  
-  .editor-header { padding: 0 12px; }
-  .editor-actions .download-btn span, .save-btn span { display: none; }
-  .header { padding: 20px; flex-direction: column; text-align: center; gap: 15px;}
+  .editor-header { padding: 12px; flex-wrap:wrap; height:auto; justify-content:center;}
+  .editor-title { width:100%; margin-bottom:12px; }
+  .editor-actions .btn-pdf span, .btn-save span, .btn-print span { display: none; } 
+  .header { padding: 20px; flex-direction: column; text-align: center; align-items:center; gap: 15px;}
   .address-block { text-align: center; }
   .memo-title-band { flex-direction: column; align-items: flex-start; }
   .memo-meta { width: 100%; justify-content: space-between; margin-top: 10px;}
+  .supplier-section { flex-direction: column; align-items:flex-start; }
+  .supplier-inputs { width: 100%; flex-direction: column; }
   .owners-section { flex-direction: column; align-items: flex-start; gap: 15px;}
   .owners-divider { display: none; }
-  .table-section { padding: 16px; }
-  .totals-section { padding: 16px; }
+  .table-section, .totals-section, .notes-section, .sig-section, .bottom-bar { padding-left: 16px; padding-right: 16px; }
   .totals-box { min-width: 100%; }
-  .notes-section, .sig-section, .bottom-bar { padding-left: 16px; padding-right: 16px; }
+  .editor-sticky-footer { padding: 12px 16px; }
+  .status-watermark { font-size: 50px; top: 250px; }
+}
+@media print {
+  body { background: #fff; }
+  #screen-dash, .editor-header, .editor-sticky-footer, .toast, .modal-overlay { display: none !important; }
+  #screen-editor { display: block !important; padding: 0 !important; margin: 0 !important;}
+  .editor-body { padding: 0 !important; }
+  .page { box-shadow: none !important; border: none !important; max-width: 100% !important; }
+  .action-cell, .drag-handle, .add-row-btn { display: none !important; }
+  th:first-child, td:first-child, th:last-child, td:last-child { display: none !important; }
+  input, textarea, select { border: none !important; background: transparent !important; appearance: none; -moz-appearance: none; -webkit-appearance: none; }
+  .extra-input { border-bottom: 1px solid #e2d9cc !important; }
 }
 </style>
 </head>
 <body>
 
+<datalist id="supplier-name-suggestions"></datalist>
+<datalist id="supplier-contact-suggestions"></datalist>
+<datalist id="item-suggestions"></datalist>
+
 <!-- ═══════════════════════════════════ LOGIN SCREEN ═══════════════════════════════════ -->
 <div id="screen-login" class="screen active">
   <div class="login-wrapper">
     <div class="login-box">
-      <div class="login-brand">Kitoo <span>Footwear</span></div>
-      <div class="login-sub">Secure Memo System</div>
+      <div class="login-brand"><img src="logo.png" class="login-logo" alt="Kitoo Logo"></div>
+      <div class="login-sub">Pro Memo System</div>
       <input type="email" id="login-email" class="login-input" placeholder="Email Address">
       <input type="password" id="login-password" class="login-input" placeholder="Password">
-      <button class="login-btn-submit" onclick="handleLogin()">Login to Dashboard</button>
+      <button class="login-btn-submit" onclick="handleLogin()"><i class="ph-bold ph-sign-in"></i> Secure Login</button>
     </div>
   </div>
 </div>
@@ -404,40 +300,62 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
 <div id="screen-dash" class="screen">
   <div class="dash-header">
     <div class="dash-brand">
-      <div class="dash-brand-name">Kitoo <span>Footwear</span></div>
-      <div class="dash-brand-tag">Memo System</div>
+      <img src="logo.png" class="dash-logo" alt="Kitoo Logo">
+      <div class="dash-brand-tag">Dashboard</div>
     </div>
     <div class="dash-actions">
-      <button class="backup-btn" onclick="importBackup()" title="Import Local Backup">⬆ Import</button>
-      <button class="backup-btn" onclick="exportBackup()" title="Export Backup">⬇ Export</button>
-      <button class="dash-new-btn" onclick="newMemo()">＋ <span>New Memo</span></button>
-      <button class="backup-btn logout-btn" onclick="handleLogout()" title="Logout">🚪 Logout</button>
+      <button class="dash-btn" onclick="importBackup()" title="Import Data"><i class="ph-bold ph-upload-simple"></i></button>
+      <button class="dash-btn" onclick="exportBackup()" title="Backup Data"><i class="ph-bold ph-download-simple"></i></button>
+      <button class="dash-btn dash-new-btn" onclick="newMemo()"><i class="ph-bold ph-plus"></i> New Memo</button>
+      <button class="dash-btn logout-btn" onclick="handleLogout()" title="Logout"><i class="ph-bold ph-power"></i></button>
     </div>
   </div>
 
   <div class="dash-body">
-    <div class="dash-stats">
+    <div class="stats-grid">
       <div class="stat-card">
+        <div class="stat-icon"><i class="ph-fill ph-files"></i></div>
         <div class="stat-val" id="stat-total">0</div>
         <div class="stat-label">Total Memos</div>
       </div>
       <div class="stat-card">
+        <div class="stat-icon"><i class="ph-fill ph-calendar-check"></i></div>
         <div class="stat-val" id="stat-month">0</div>
-        <div class="stat-label">This Month</div>
+        <div class="stat-label">Memos This Month</div>
       </div>
-      <div class="stat-card" style="width: 100%;">
+      <div class="stat-card">
+        <div class="stat-icon"><i class="ph-fill ph-coins"></i></div>
         <div class="stat-val" id="stat-amount">৳0</div>
-        <div class="stat-label">Total Estimated</div>
+        <div class="stat-label">Total Amount</div>
       </div>
     </div>
 
-    <div class="section-label" style="margin-bottom:14px">Memo History (Cloud Synced)</div>
+    <!-- Analytics Chart -->
+    <div class="chart-container">
+      <canvas id="expenseChart"></canvas>
+    </div>
+
+    <div class="section-heading"><i class="ph-bold ph-clock-counter-clockwise"></i> Memo History</div>
+    
+    <!-- Search & Filter -->
+    <div class="toolbar">
+      <div class="search-box">
+        <i class="ph-bold ph-magnifying-glass"></i>
+        <input type="text" id="search-input" class="search-input" placeholder="Search by Memo No or Supplier..." onkeyup="filterMemos()">
+      </div>
+      <select id="filter-status" class="filter-select" onchange="filterMemos()">
+        <option value="All">All Status</option>
+        <option value="Paid">Paid</option>
+        <option value="Due">Due</option>
+        <option value="Draft">Draft</option>
+      </select>
+    </div>
 
     <div class="memo-list" id="memo-list">
       <div class="empty-state" id="empty-state">
-        <div class="empty-icon">📋</div>
-        <div class="empty-title">Loading memos...</div>
-        <div class="empty-sub">Please wait</div>
+        <div class="empty-icon"><i class="ph-duotone ph-folder-dashed"></i></div>
+        <div class="empty-title">No memos found</div>
+        <div class="empty-sub">Create a new purchase memo to get started</div>
       </div>
     </div>
   </div>
@@ -446,22 +364,25 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
 <!-- ═══════════════════════════════════ EDITOR ═══════════════════════════════════ -->
 <div id="screen-editor" class="screen">
   <div class="editor-header">
-    <button class="back-btn" onclick="goBack()">← Back</button>
-    <div class="editor-title" id="editor-title">New Memo</div>
+    <button class="dash-btn" onclick="goBack()"><i class="ph-bold ph-arrow-left"></i> Back</button>
+    <div class="editor-title" id="editor-title"><i class="ph-fill ph-file-text"></i> New Memo</div>
     <div class="editor-actions">
-      <button class="save-btn" onclick="saveMemo()">💾 <span>Save</span></button>
-      <button class="download-btn" id="editor-download-btn" onclick="downloadMemo()">⬇ <span>Download PDF</span></button>
+      <button class="btn-save" onclick="saveMemo()"><i class="ph-bold ph-floppy-disk"></i> <span>Save</span></button>
+      <button class="btn-print" id="editor-print-btn" onclick="window.print()" style="display:none;"><i class="ph-bold ph-printer"></i> <span>Print</span></button>
+      <button class="btn-pdf" id="editor-download-btn" onclick="downloadMemo()" style="display:none;"><i class="ph-bold ph-download-simple"></i> <span>PDF</span></button>
     </div>
   </div>
 
   <div class="editor-body">
     <div class="page" id="memo-page">
       <div class="top-bar"></div>
+      
+      <!-- Watermark for status -->
+      <div id="status-watermark" class="status-watermark"></div>
 
       <div class="header">
         <div class="brand-block">
-          <div class="brand-name">Kitoo <span>Footwear</span></div>
-          <div class="tagline">Comfort in every step</div>
+          <img src="logo.png" class="brand-logo" alt="Kitoo Logo">
         </div>
         <div class="address-block">
           <strong>Sandal Manufacturing Unit</strong><br>
@@ -472,8 +393,16 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
       </div>
 
       <div class="memo-title-band">
-        <div class="memo-label">Estimated Purchase Memo</div>
+        <div class="memo-label"><i class="ph-fill ph-receipt"></i> Purchase Memo</div>
         <div class="memo-meta">
+          <div class="meta-field">
+            <span class="meta-label">Status</span>
+            <select id="memo-status" class="meta-select" onchange="updateWatermark()">
+              <option value="Draft">Draft</option>
+              <option value="Paid">Paid</option>
+              <option value="Due">Due</option>
+            </select>
+          </div>
           <div class="meta-field">
             <span class="meta-label">Memo No.</span>
             <input class="meta-input" type="text" id="memo-num" placeholder="KF-0001">
@@ -481,6 +410,20 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
           <div class="meta-field">
             <span class="meta-label">Date</span>
             <input class="meta-input" type="date" id="memo-date">
+          </div>
+        </div>
+      </div>
+
+      <div class="supplier-section">
+        <div class="supplier-icon"><i class="ph-fill ph-buildings"></i></div>
+        <div class="supplier-inputs">
+          <div class="sup-field">
+            <label>Supplier / Vendor Name</label>
+            <input type="text" id="supplier-name" list="supplier-name-suggestions" placeholder="e.g. Rahim Leathers">
+          </div>
+          <div class="sup-field">
+            <label>Contact Info</label>
+            <input type="text" id="supplier-contact" list="supplier-contact-suggestions" placeholder="Phone or Address">
           </div>
         </div>
       </div>
@@ -516,8 +459,8 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
 
       <div class="table-section">
         <div class="table-header-row">
-          <div class="section-label">Item Details</div>
-          <button class="add-row-btn" onclick="addAndScroll()">＋ Add Item</button>
+          <div class="section-label"><i class="ph-bold ph-list-numbers"></i> Item Details</div>
+          <button class="add-row-btn" onclick="addAndScroll()"><i class="ph-bold ph-plus"></i> Add Item</button>
         </div>
         <table id="memo-table">
           <thead>
@@ -540,19 +483,19 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
       <div class="totals-section">
         <div class="totals-box">
           <div class="totals-row">
-            <label>Sub Total</label>
+            <label><i class="ph-bold ph-calculator"></i> Sub Total</label>
             <span class="val" id="subtotal">৳ 0.00</span>
           </div>
           <div class="totals-row">
-            <label>Transport / Carrying</label>
+            <label><i class="ph-bold ph-truck"></i> Transport / Carrying</label>
             <input class="extra-input" type="number" id="transport" placeholder="0" oninput="updateTotals()">
           </div>
           <div class="totals-row">
-            <label>Other Charges</label>
+            <label><i class="ph-bold ph-plus-circle"></i> Other Charges</label>
             <input class="extra-input" type="number" id="other" placeholder="0" oninput="updateTotals()">
           </div>
           <div class="totals-row">
-            <label>Discount</label>
+            <label><i class="ph-bold ph-minus-circle"></i> Discount</label>
             <input class="extra-input" type="number" id="discount" placeholder="0" oninput="updateTotals()">
           </div>
           <div class="totals-row grand">
@@ -563,8 +506,8 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
       </div>
 
       <div class="notes-section">
-        <div class="notes-label">Remarks / Notes</div>
-        <textarea class="notes-area" id="notes" placeholder="Add any special notes, supplier details, or conditions here..."></textarea>
+        <div class="notes-label"><i class="ph-bold ph-notepad"></i> Remarks / Notes</div>
+        <textarea class="notes-area" id="notes" placeholder="Add any special notes or conditions here..."></textarea>
       </div>
 
       <div class="sig-section">
@@ -585,7 +528,7 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
         </div>
         <div class="sig-block">
           <div class="sig-line"></div>
-          <div class="sig-name">Supplier / Vendor</div>
+          <div class="sig-name" id="sig-supplier-name">Supplier / Vendor</div>
           <div class="sig-role">Authorized Signature</div>
         </div>
       </div>
@@ -595,32 +538,32 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
           <div class="brand-small">Kitoo Footwear</div>
           <div class="tagline-small">Comfort in every step</div>
         </div>
-        <div class="tagline-small">This is an estimated purchase memo — not a final invoice</div>
+        <div class="tagline-small">Generated by Kitoo Memo System</div>
       </div>
     </div>
   </div>
 
-  <!-- ✅ STICKY FOOTER -->
+  <!-- STICKY FOOTER -->
   <div class="editor-sticky-footer" id="sticky-footer">
     <div>
-      <div class="sticky-total-label">Grand Total</div>
+      <div class="sticky-total-label"><i class="ph-bold ph-money"></i> Grand Total</div>
       <div class="sticky-total-val" id="sticky-total-display">৳ 0.00</div>
     </div>
-    <button class="sticky-add-btn" onclick="addAndScroll()">＋ Add Item</button>
+    <button class="sticky-add-btn" onclick="addAndScroll()"><i class="ph-bold ph-plus"></i> Add Item</button>
   </div>
 </div>
 
 <!-- TOAST -->
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast"><i class="ph-fill ph-info"></i> <span id="toast-msg"></span></div>
 
 <!-- CONFIRM MODAL -->
 <div class="modal-overlay" id="modal">
   <div class="modal-box">
-    <div class="modal-title">Delete Memo?</div>
+    <div class="modal-title"><i class="ph-fill ph-warning-circle" style="color:var(--red)"></i> Delete Memo?</div>
     <div class="modal-sub">এই মেমোটি স্থায়ীভাবে মুছে যাবে। এটি পূর্বাবস্থায় ফেরানো যাবে না।</div>
     <div class="modal-actions">
       <button class="modal-cancel" onclick="closeModal()">Cancel</button>
-      <button class="modal-confirm" id="modal-confirm-btn">Delete</button>
+      <button class="modal-confirm" id="modal-confirm-btn"><i class="ph-bold ph-trash"></i> Delete</button>
     </div>
   </div>
 </div>
@@ -628,9 +571,8 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
 <!-- ═══════════════════════════════════ FIREBASE & LOGIC ═══════════════════════════════════ -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-analytics.js";
   import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
-  import { getFirestore, collection, doc, setDoc, getDocs, deleteDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+  import { getFirestore, collection, doc, setDoc, getDocs, deleteDoc, query } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyDqrZ85kxTp9ByuHdTy9R5WCZk44ItOO20",
@@ -638,12 +580,10 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
     projectId: "kitoomemo-a767f",
     storageBucket: "kitoomemo-a767f.firebasestorage.app",
     messagingSenderId: "790537793318",
-    appId: "1:790537793318:web:dadc6dce25de68c5dbdbe7",
-    measurementId: "G-Z3BFPZ7020"
+    appId: "1:790537793318:web:dadc6dce25de68c5dbdbe7"
   };
 
   const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
   const auth = getAuth(app);
   const db = getFirestore(app);
 
@@ -653,10 +593,10 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
   let deleteTargetId = null;
   window.dragSrcEl = null;
   
-  // Drag Scroll Variables
   let scrollInterval = null;
   let lastClientY = 0;
   let dragOverRow = null;
+  let expenseChartInst = null;
 
   /* --- AUTH --- */
   onAuthStateChanged(auth, async (user) => {
@@ -674,19 +614,16 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
   window.handleLogin = async () => {
     const email = document.getElementById('login-email').value;
     const pass = document.getElementById('login-password').value;
-    if(!email || !pass) { showToast('⚠ Email & Password required'); return; }
+    if(!email || !pass) { showToast('Email & Password required'); return; }
     try {
       showToast('Logging in...');
       await signInWithEmailAndPassword(auth, email, pass);
     } catch (e) {
-      showToast('⚠ Login Failed! Check credentials.');
-      console.error(e);
+      showToast('Login Failed! Check credentials.');
     }
   };
 
-  window.handleLogout = async () => {
-    try { await signOut(auth); } catch (e) { console.error(e); }
-  };
+  window.handleLogout = async () => { try { await signOut(auth); } catch (e) {} };
 
   /* --- DATA FETCHING --- */
   async function fetchMemosFromCloud() {
@@ -696,14 +633,14 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
       memos = [];
       querySnapshot.forEach((doc) => { memos.push(doc.data()); });
       renderDash();
-    } catch(e) { console.error(e); showToast('⚠ Error fetching memos from Cloud'); }
+    } catch(e) { showToast('Error fetching memos from Cloud'); }
   }
 
   async function saveMemoToCloud(memoData) {
     try {
       await setDoc(doc(db, "memos", memoData.id), memoData);
-      showToast('✅ Saved to Cloud!');
-    } catch(e) { console.error(e); showToast('⚠ Error saving to Cloud'); }
+      showToast('Saved successfully!');
+    } catch(e) { showToast('Error saving to Cloud'); }
   }
 
   async function deleteMemoFromCloud(id) {
@@ -711,18 +648,18 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
       await deleteDoc(doc(db, "memos", id));
       memos = memos.filter(m => m.id !== id);
       renderDash();
-      showToast('🗑 Memo deleted from Cloud');
-    } catch(e) { console.error(e); showToast('⚠ Error deleting from Cloud'); }
+      showToast('Memo deleted');
+    } catch(e) { showToast('Error deleting from Cloud'); }
   }
 
   /* --- LOCAL BACKUP --- */
   window.exportBackup = function() {
-    if (!memos.length) { showToast('⚠ কোনো মেমো নেই'); return; }
+    if (!memos.length) { showToast('No data to backup'); return; }
     const a = document.createElement('a');
     a.href = URL.createObjectURL(new Blob([JSON.stringify(memos,null,2)],{type:'application/json'}));
     a.download = 'kitoo-backup-' + new Date().toISOString().slice(0,10) + '.json';
     a.click();
-    showToast('✅ Backup exported!');
+    showToast('Backup exported!');
   };
 
   window.importBackup = function() {
@@ -735,25 +672,24 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
         try {
           const data = JSON.parse(ev.target.result);
           if (!Array.isArray(data)) throw 0;
-          showToast('Syncing to cloud, please wait...');
+          showToast('Syncing to cloud...');
           let count = 0;
           for (let m of data) {
-            const exists = memos.find(x => x.id === m.id);
-            if(!exists) {
+            if(!memos.find(x => x.id === m.id)) {
               await setDoc(doc(db, "memos", m.id), m);
               memos.push(m); count++;
             }
           }
           renderDash();
-          showToast(`✅ ${count} new memos imported!`);
-        } catch { showToast('⚠ Invalid file'); }
+          showToast(`${count} new memos imported!`);
+        } catch { showToast('Invalid file'); }
       };
       r.readAsText(f);
     };
     inp.click();
   };
 
-  /* --- DATE FORMATTER --- */
+  /* --- FORMATTERS --- */
   function formatDate(d) {
     if (!d) return '—';
     const date = new Date(d);
@@ -774,9 +710,33 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
     document.getElementById('sticky-footer').classList.add('visible');
   }
 
+  /* --- SEARCH & FILTER --- */
+  window.filterMemos = function() { renderDash(); }
+
+  /* ✅ DYNAMIC AUTO-SUGGEST ENGINE (EMPTY BY DEFAULT) */
+  function updateSuggestions() {
+    const supNames = new Set();
+    const supContacts = new Set();
+    const itemNames = new Set(); 
+
+    memos.forEach(m => {
+      if(m.supplierName) supNames.add(m.supplierName);
+      if(m.supplierPhone) supContacts.add(m.supplierPhone);
+      (m.rows || []).forEach(r => {
+        if(r.desc) itemNames.add(r.desc);
+      });
+    });
+
+    document.getElementById('supplier-name-suggestions').innerHTML = Array.from(supNames).map(v => `<option value="${escHtml(v)}">`).join('');
+    document.getElementById('supplier-contact-suggestions').innerHTML = Array.from(supContacts).map(v => `<option value="${escHtml(v)}">`).join('');
+    document.getElementById('item-suggestions').innerHTML = Array.from(itemNames).map(v => `<option value="${escHtml(v)}">`).join('');
+  }
+
   window.renderDash = function() {
     const list = document.getElementById('memo-list');
     const empty = document.getElementById('empty-state');
+    const searchTerm = document.getElementById('search-input').value.toLowerCase();
+    const statusFilter = document.getElementById('filter-status').value;
 
     document.getElementById('stat-total').textContent = memos.length;
     const now = new Date();
@@ -788,44 +748,134 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
     const totalAmt = memos.reduce((s, m) => s + (parseFloat(m.grandTotal) || 0), 0);
     document.getElementById('stat-amount').textContent = '৳' + Math.round(totalAmt).toLocaleString('en-IN');
 
+    updateSuggestions();
+    updateChart();
+
     Array.from(list.children).forEach(c => { if(c.id !== 'empty-state') c.remove(); });
 
-    if (memos.length === 0) { empty.style.display = 'block'; return; }
+    let filteredMemos = [...memos].sort((a, b) => new Date(b.savedAt) - new Date(a.savedAt));
+    filteredMemos = filteredMemos.filter(m => {
+      const matchSearch = (m.memoNum && m.memoNum.toLowerCase().includes(searchTerm)) || 
+                          (m.supplierName && m.supplierName.toLowerCase().includes(searchTerm));
+      const matchStatus = statusFilter === 'All' || (m.status || 'Draft') === statusFilter;
+      return matchSearch && matchStatus;
+    });
+
+    if (filteredMemos.length === 0) { empty.style.display = 'block'; return; }
     empty.style.display = 'none';
 
-    const sorted = [...memos].sort((a, b) => new Date(b.savedAt) - new Date(a.savedAt));
-
-    sorted.forEach(m => {
+    filteredMemos.forEach(m => {
       const card = document.createElement('div');
       card.className = 'memo-card';
+      const status = m.status || 'Draft';
+      const badgeClass = status.toLowerCase();
+      const supName = m.supplierName ? `<br><i class="ph-fill ph-buildings" style="color:var(--muted)"></i> ${escHtml(m.supplierName)}` : '';
+      
       card.innerHTML = `
         <div class="memo-card-num">${m.memoNum || 'N/A'}</div>
         <div class="memo-card-info">
-          <div class="memo-card-date">${formatDate(m.date)} &nbsp;·&nbsp; ${m.itemCount} item${m.itemCount !== 1 ? 's' : ''}</div>
-          <div class="memo-card-items">${m.preview || 'No items'}</div>
+          <div class="memo-meta-line">
+             <span class="badge ${badgeClass}">${status}</span>
+             <div class="memo-card-date"><i class="ph-bold ph-calendar-blank"></i> ${formatDate(m.date)}</div>
+          </div>
+          <div class="memo-card-items"><i class="ph-bold ph-package"></i> ${m.itemCount} items: ${m.preview || 'No items'}</div>
+          ${supName}
         </div>
         <div class="memo-card-total">৳ ${parseFloat(m.grandTotal || 0).toLocaleString('en-IN', {minimumFractionDigits:2})}</div>
         <div class="memo-card-actions">
-          <button class="icon-btn" title="View" onclick="viewMemo('${m.id}')">👁️</button>
-          <button class="icon-btn" title="Edit" onclick="editMemo('${m.id}')">✏️</button>
-          <button class="icon-btn" title="Download" onclick="downloadMemoById('${m.id}')">⬇️</button>
-          <button class="icon-btn del" title="Delete" onclick="confirmDelete('${m.id}')">🗑</button>
+          <button class="action-icon-btn" title="View" onclick="viewMemo('${m.id}')"><i class="ph-bold ph-eye"></i></button>
+          <button class="action-icon-btn" title="Edit" onclick="editMemo('${m.id}')"><i class="ph-bold ph-pencil-simple"></i></button>
+          <button class="action-icon-btn" title="Download PDF" onclick="downloadMemoById('${m.id}')"><i class="ph-bold ph-download-simple"></i></button>
+          <button class="action-icon-btn del" title="Delete" onclick="confirmDelete('${m.id}')"><i class="ph-bold ph-trash"></i></button>
         </div>
       `;
       list.appendChild(card);
     });
   }
 
+  /* ✅ UNIQUE CURVED AREA CHART */
+  function updateChart() {
+    const ctx = document.getElementById('expenseChart').getContext('2d');
+    const monthlyData = {};
+    memos.forEach(m => {
+      if(!m.date) return;
+      const d = new Date(m.date);
+      const monthYear = d.toLocaleString('en-GB', { month: 'short', year: 'numeric' });
+      if(!monthlyData[monthYear]) monthlyData[monthYear] = 0;
+      monthlyData[monthYear] += parseFloat(m.grandTotal || 0);
+    });
+
+    const labels = Object.keys(monthlyData).sort((a,b) => new Date('01 ' + a) - new Date('01 ' + b)).slice(-6);
+    const data = labels.map(l => monthlyData[l]);
+
+    if (expenseChartInst) { expenseChartInst.destroy(); }
+
+    let gradient = ctx.createLinearGradient(0, 0, 0, 300);
+    gradient.addColorStop(0, 'rgba(181, 69, 27, 0.5)'); 
+    gradient.addColorStop(1, 'rgba(181, 69, 27, 0.0)'); 
+
+    expenseChartInst = new Chart(ctx, {
+      type: 'line', 
+      data: {
+        labels: labels.length ? labels : ['No Data'],
+        datasets: [{
+          label: 'Total Expenses (৳)',
+          data: data.length ? data : [0],
+          borderColor: '#b5451b', 
+          backgroundColor: gradient, 
+          borderWidth: 3,
+          pointBackgroundColor: '#c9922a', 
+          pointBorderColor: '#fff',
+          pointBorderWidth: 2,
+          pointRadius: 5,
+          pointHoverRadius: 7,
+          fill: true, 
+          tension: 0.4 
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: { 
+          y: { 
+              beginAtZero: true, 
+              grid: { borderDash: [5, 5], color: '#e2d9cc' }, 
+              ticks: { callback: function(value) { return '৳' + value.toLocaleString(); } } 
+          },
+          x: { grid: { display: false } }
+        },
+        interaction: { intersect: false, mode: 'index' }
+      }
+    });
+  }
+
   /* --- EDITOR LOGIC --- */
+  window.updateWatermark = function() {
+    const s = document.getElementById('memo-status').value;
+    const wm = document.getElementById('status-watermark');
+    wm.className = 'status-watermark'; 
+    if(s === 'Paid') { wm.textContent = 'PAID'; wm.classList.add('show-paid'); }
+    else if(s === 'Due') { wm.textContent = 'DUE'; wm.classList.add('show-due'); }
+    else { wm.textContent = ''; }
+  }
+
+  document.getElementById('supplier-name').addEventListener('input', function(e) {
+     document.getElementById('sig-supplier-name').textContent = e.target.value || 'Supplier / Vendor';
+  });
+
   window.newMemo = function() {
     currentId = 'memo-' + Date.now();
-    document.getElementById('editor-title').textContent = 'New Memo';
+    document.getElementById('editor-title').innerHTML = '<i class="ph-fill ph-file-plus"></i> New Memo';
     document.getElementById('editor-download-btn').style.display = 'none';
+    document.getElementById('editor-print-btn').style.display = 'none';
 
     clearEditor();
     const nextNum = memos.length + 1;
     document.getElementById('memo-num').value = 'KF-' + String(nextNum).padStart(4, '0');
     document.getElementById('memo-date').valueAsDate = new Date();
+    document.getElementById('memo-status').value = 'Draft';
+    window.updateWatermark();
+    
     rowCount = 0;
     document.getElementById('table-body').innerHTML = '';
     for (let i = 0; i < 5; i++) window.addRow();
@@ -836,17 +886,25 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
     const m = memos.find(x => x.id === id);
     if (!m) return;
     currentId = id;
-    document.getElementById('editor-title').textContent = 'Edit Memo — ' + (m.memoNum || id);
+    document.getElementById('editor-title').innerHTML = `<i class="ph-fill ph-file-text"></i> Edit: ${m.memoNum || id}`;
     document.getElementById('editor-download-btn').style.display = '';
+    document.getElementById('editor-print-btn').style.display = '';
 
     clearEditor();
 
     document.getElementById('memo-num').value = m.memoNum || '';
     document.getElementById('memo-date').value = m.date || '';
+    document.getElementById('memo-status').value = m.status || 'Draft';
+    document.getElementById('supplier-name').value = m.supplierName || '';
+    document.getElementById('supplier-contact').value = m.supplierPhone || '';
+    document.getElementById('sig-supplier-name').textContent = m.supplierName || 'Supplier / Vendor';
+    
     document.getElementById('transport').value = m.transport || '';
     document.getElementById('other').value = m.other || '';
     document.getElementById('discount').value = m.discount || '';
     document.getElementById('notes').value = m.notes || '';
+
+    window.updateWatermark();
 
     rowCount = 0;
     document.getElementById('table-body').innerHTML = '';
@@ -859,6 +917,9 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
   function clearEditor() {
     document.getElementById('memo-num').value = '';
     document.getElementById('memo-date').value = '';
+    document.getElementById('supplier-name').value = '';
+    document.getElementById('supplier-contact').value = '';
+    document.getElementById('sig-supplier-name').textContent = 'Supplier / Vendor';
     document.getElementById('transport').value = '';
     document.getElementById('other').value = '';
     document.getElementById('discount').value = '';
@@ -870,9 +931,7 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
 
   window.goBack = function() { window.showDash(); }
 
-  /* ═══════════════════════ TABLE ROWS & PERFECT DRAG DROP ═══════════════════════ */
-  
-  // Track mouse position globally for smooth scroll
+  /* --- TABLE ROWS & PERFECT DRAG DROP --- */
   document.addEventListener('dragover', (e) => { lastClientY = e.clientY; }, false);
 
   window.handleDragStart = function(e) { 
@@ -881,9 +940,8 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
       e.dataTransfer.setData('text/plain', this.id); 
       
       this.classList.add('dragging'); 
-      document.body.classList.add('table-dragging'); // Disable child pointer events
+      document.body.classList.add('table-dragging');
       
-      // ✅ Smooth Auto Scroll Logic (60 FPS)
       if (!scrollInterval) {
           scrollInterval = setInterval(() => {
               const buffer = 150; 
@@ -903,7 +961,6 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
       if (e.preventDefault) e.preventDefault(); 
       e.dataTransfer.dropEffect = 'move'; 
       
-      // ✅ Fix Ghost borders perfectly
       if (dragOverRow && dragOverRow !== this) {
           dragOverRow.style['border-top'] = '';
           dragOverRow.style['border-bottom'] = '';
@@ -922,16 +979,13 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
       return false; 
   };
   
-  window.handleDragLeave = function(e) { 
-      // Do nothing here, it's handled in handleDragOver to avoid flickering
-  };
+  window.handleDragLeave = function(e) {};
   
   window.handleDrop = function(e) { 
       e.stopPropagation(); 
       if (window.dragSrcEl !== this) { 
           const tbody = this.parentNode; 
           const allRows = Array.from(tbody.children);
-          
           if (allRows.indexOf(window.dragSrcEl) < allRows.indexOf(this)) {
               tbody.insertBefore(window.dragSrcEl, this.nextSibling);
           } else {
@@ -939,7 +993,6 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
           }
           window.renumberRows(); 
       } 
-      
       if (dragOverRow) {
           dragOverRow.style['border-top'] = '';
           dragOverRow.style['border-bottom'] = '';
@@ -951,17 +1004,10 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
   window.handleDragEnd = function(e) { 
       this.classList.remove('dragging'); 
       document.body.classList.remove('table-dragging'); 
-      
-      if (scrollInterval) {
-          clearInterval(scrollInterval);
-          scrollInterval = null;
-      }
-      
+      if (scrollInterval) { clearInterval(scrollInterval); scrollInterval = null; }
       document.querySelectorAll('#table-body tr').forEach(row => { 
-          row.style['border-top'] = ''; 
-          row.style['border-bottom'] = ''; 
+          row.style['border-top'] = ''; row.style['border-bottom'] = ''; 
       }); 
-      
       if (dragOverRow) dragOverRow = null;
   };
 
@@ -987,14 +1033,14 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
         </div>
       </td>
       <td class="sl-num">${String(rowCount).padStart(2,'0')}</td>
-      <td><input type="text" placeholder="e.g. PVC Sole Sheet" value="${data ? escHtml(data.desc) : ''}"></td>
-      <td class="spec-cell"><textarea rows="1" placeholder="e.g. Size 7-10, Black" oninput="autoResize(this)">${data ? escHtml(data.spec) : ''}</textarea></td>
+      <td><input type="text" list="item-suggestions" placeholder="" value="${data ? escHtml(data.desc) : ''}"></td>
+      <td class="spec-cell"><textarea rows="1" placeholder="" oninput="autoResize(this)">${data ? escHtml(data.spec) : ''}</textarea></td>
       <td class="qty-cell"><input type="number" placeholder="0" min="0" value="${data ? data.qty : ''}" oninput="calcRow(${rowCount})" data-qty></td>
       <td class="unit-cell"><input type="text" placeholder="Pcs" value="${data ? escHtml(data.unit) : ''}"></td>
       <td class="rate-cell"><input type="number" placeholder="0.00" min="0" step="0.01" value="${data ? data.rate : ''}" oninput="calcRow(${rowCount})" data-rate></td>
       <td class="total-cell"><input type="number" placeholder="0.00" readonly value="${data ? data.total : ''}" data-total></td>
       <td class="action-cell">
-        <button class="action-btn del" onclick="deleteRow(${rowCount})" title="Remove">✕</button>
+        <button class="action-btn del" onclick="deleteRow(${rowCount})" title="Remove"><i class="ph-bold ph-x"></i></button>
       </td>
     `;
     tbody.appendChild(tr);
@@ -1002,7 +1048,6 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
     if (ta) setTimeout(() => window.autoResize(ta), 0);
   }
 
-  // Helper to add row and scroll slightly down so user sees it
   window.addAndScroll = function() {
       window.addRow();
       window.scrollBy({ top: 80, behavior: 'smooth' });
@@ -1044,7 +1089,7 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
     
     document.getElementById('subtotal').textContent = `৳ ${sub.toLocaleString('en-IN', {minimumFractionDigits:2})}`;
     document.getElementById('grand-total').textContent = formattedGrand;
-    document.getElementById('sticky-total-display').textContent = formattedGrand; // Update sticky footer
+    document.getElementById('sticky-total-display').textContent = formattedGrand;
   }
 
   window.autoResize = function(el) { el.style.height = 'auto'; el.style.height = el.scrollHeight + 'px'; }
@@ -1062,6 +1107,9 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
       id: currentId,
       memoNum,
       date,
+      status: document.getElementById('memo-status').value,
+      supplierName: document.getElementById('supplier-name').value,
+      supplierPhone: document.getElementById('supplier-contact').value,
       savedAt: new Date().toISOString(),
       transport: document.getElementById('transport').value,
       other: document.getElementById('other').value,
@@ -1080,8 +1128,10 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
     showToast('Saving to cloud...');
     await saveMemoToCloud(memoData);
 
-    // ✅ Make download button visible after a successful save
+    updateSuggestions();
+
     document.getElementById('editor-download-btn').style.display = '';
+    document.getElementById('editor-print-btn').style.display = '';
   }
 
   function collectRows() {
@@ -1103,59 +1153,24 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
   window.viewMemo = function(id) {
     const m = memos.find(x => x.id === id);
     if (!m) return;
-
-    let sub = 0;
-    (m.rows || []).forEach(r => { sub += parseFloat(r.total) || 0; });
-    const grand = sub + (parseFloat(m.transport)||0) + (parseFloat(m.other)||0) - (parseFloat(m.discount)||0);
-
-    const html = buildPrintHTML(
-      m.memoNum, m.date, m.rows || [],
-      m.transport, m.other, m.discount, m.notes,
-      `৳ ${sub.toLocaleString('en-IN', {minimumFractionDigits:2})}`,
-      `৳ ${grand.toLocaleString('en-IN', {minimumFractionDigits:2})}`
-    );
-    
+    const html = generateHTML(m);
     const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     window.open(url, '_self');
   }
 
   window.downloadMemo = function() {
-    const memoNum = document.getElementById('memo-num').value || 'draft';
-    const html = buildPrintHTML(
-      memoNum,
-      document.getElementById('memo-date').value,
-      collectRows(),
-      document.getElementById('transport').value,
-      document.getElementById('other').value,
-      document.getElementById('discount').value,
-      document.getElementById('notes').value,
-      document.getElementById('subtotal').textContent,
-      document.getElementById('grand-total').textContent
-    );
-    generateDirectPDF(html, memoNum);
+    generateDirectPDF(generateHTMLFromEditor(), document.getElementById('memo-num').value || 'draft');
   }
 
   window.downloadMemoById = function(id) {
     const m = memos.find(x => x.id === id);
     if (!m) return;
-
-    let sub = 0;
-    (m.rows || []).forEach(r => { sub += parseFloat(r.total) || 0; });
-    const grand = sub + (parseFloat(m.transport)||0) + (parseFloat(m.other)||0) - (parseFloat(m.discount)||0);
-
-    const html = buildPrintHTML(
-      m.memoNum, m.date, m.rows || [],
-      m.transport, m.other, m.discount, m.notes,
-      `৳ ${sub.toLocaleString('en-IN', {minimumFractionDigits:2})}`,
-      `৳ ${grand.toLocaleString('en-IN', {minimumFractionDigits:2})}`
-    );
-    generateDirectPDF(html, m.memoNum || 'draft');
+    generateDirectPDF(generateHTML(m), m.memoNum || 'draft');
   }
 
   function generateDirectPDF(htmlContent, memoNum) {
     showToast('Generating PDF... Please wait');
-    
     const wrapper = document.createElement('div');
     wrapper.style.position = 'absolute';
     wrapper.style.left = '-9999px';
@@ -1163,7 +1178,6 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
     wrapper.style.width = '800px'; 
     wrapper.style.background = '#fff';
     wrapper.innerHTML = htmlContent;
-    
     document.body.appendChild(wrapper);
     const paper = wrapper.querySelector('.paper-container');
 
@@ -1177,15 +1191,48 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
 
     html2pdf().set(opt).from(paper).save().then(() => {
       document.body.removeChild(wrapper);
-      showToast('✅ Downloaded as PDF!');
+      showToast('Downloaded as PDF!');
     }).catch(err => {
-      console.error("PDF Error: ", err);
       document.body.removeChild(wrapper);
-      showToast('⚠ Error generating PDF');
+      showToast('Error generating PDF');
     });
   }
 
-  function buildPrintHTML(memoNum, date, rows, transport, other, discount, notes, subtotalText, grandText) {
+  function generateHTMLFromEditor() {
+    const rows = collectRows();
+    let sub = 0;
+    rows.forEach(r => { sub += parseFloat(r.total) || 0; });
+    const grand = sub + (parseFloat(document.getElementById('transport').value)||0) + (parseFloat(document.getElementById('other').value)||0) - (parseFloat(document.getElementById('discount').value)||0);
+    
+    return buildPrintHTML(
+      document.getElementById('memo-num').value,
+      document.getElementById('memo-date').value,
+      document.getElementById('memo-status').value,
+      document.getElementById('supplier-name').value,
+      document.getElementById('supplier-contact').value,
+      rows,
+      document.getElementById('transport').value,
+      document.getElementById('other').value,
+      document.getElementById('discount').value,
+      document.getElementById('notes').value,
+      `৳ ${sub.toLocaleString('en-IN', {minimumFractionDigits:2})}`,
+      `৳ ${grand.toLocaleString('en-IN', {minimumFractionDigits:2})}`
+    );
+  }
+
+  function generateHTML(m) {
+    let sub = 0;
+    (m.rows || []).forEach(r => { sub += parseFloat(r.total) || 0; });
+    const grand = sub + (parseFloat(m.transport)||0) + (parseFloat(m.other)||0) - (parseFloat(m.discount)||0);
+    return buildPrintHTML(
+      m.memoNum, m.date, m.status, m.supplierName, m.supplierPhone, m.rows || [],
+      m.transport, m.other, m.discount, m.notes,
+      `৳ ${sub.toLocaleString('en-IN', {minimumFractionDigits:2})}`,
+      `৳ ${grand.toLocaleString('en-IN', {minimumFractionDigits:2})}`
+    );
+  }
+
+  function buildPrintHTML(memoNum, date, status, supName, supPhone, rows, transport, other, discount, notes, subtotalText, grandText) {
     const rowsHtml = rows.map((r, i) => `
       <tr>
         <td style="text-align:center;font-family:'Space Mono',monospace;font-size:10px;color:#7a6f64;padding:6px 8px;border-bottom:1px solid #e2d9cc;">${String(i+1).padStart(2,'0')}</td>
@@ -1197,6 +1244,10 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
         <td style="padding:6px 8px;font-size:11px;text-align:right;font-family:'Space Mono',monospace;color:#2a6b45;font-weight:700;border-bottom:1px solid #e2d9cc;">${parseFloat(r.total || 0).toLocaleString('en-IN', {minimumFractionDigits:2})}</td>
       </tr>`).join('');
 
+    let watermarkHtml = '';
+    if(status === 'Paid') watermarkHtml = '<div style="position:absolute;top:200px;left:50%;transform:translateX(-50%) rotate(-15deg);font-family:\'Playfair Display\',serif;font-size:80px;font-weight:700;opacity:0.04;color:#2a6b45;letter-spacing:10px;z-index:1;">PAID</div>';
+    if(status === 'Due') watermarkHtml = '<div style="position:absolute;top:200px;left:50%;transform:translateX(-50%) rotate(-15deg);font-family:\'Playfair Display\',serif;font-size:80px;font-weight:700;opacity:0.04;color:#c0392b;letter-spacing:10px;z-index:1;">DUE</div>';
+
     return `<!DOCTYPE html>
   <html><head><meta charset="UTF-8">
   <title>Kitoo Footwear Memo ${memoNum}</title>
@@ -1205,17 +1256,18 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
   @page { size: A4 portrait; margin: 6mm 8mm; }
   *{box-sizing:border-box;margin:0;padding:0;}
   body{font-family:'DM Sans',sans-serif;background:#e5e5e5;padding:20px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  .paper-container {background:#fff;max-width:800px;margin:0 auto;border:1px solid #e2d9cc;box-shadow:0 10px 30px rgba(0,0,0,0.1);}
+  .paper-container {background:#fff;max-width:800px;margin:0 auto;border:1px solid #e2d9cc;box-shadow:0 10px 30px rgba(0,0,0,0.1); position:relative; overflow:hidden;}
   @media print { body{padding:0;background:#fff;} .paper-container {border:none;box-shadow:none;} }
+  .brand-logo { height: 80px; object-fit: contain; display: block; }
   </style>
   </head><body>
   <div class="paper-container">
     <div style="height:5px;background:linear-gradient(90deg,#b5451b,#c9922a,#b5451b);"></div>
-
-    <div style="padding:18px 28px 14px;display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid #e2d9cc;flex-wrap:wrap;gap:12px;">
-      <div>
-        <div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:#1a1612;line-height:1;">Kitoo <span style="color:#b5451b;">Footwear</span></div>
-        <div style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:#c9922a;margin-top:4px;">Comfort in every step</div>
+    ${watermarkHtml}
+    
+    <div style="padding:18px 28px 14px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #e2d9cc;flex-wrap:wrap;gap:12px; position:relative; z-index:2;">
+      <div style="display:flex; align-items:center;">
+        <img src="logo.png" class="brand-logo" alt="Kitoo Logo">
       </div>
       <div style="text-align:right;font-size:11px;color:#7a6f64;line-height:1.8;">
         <strong style="color:#1a1612;">Sandal Manufacturing Unit</strong><br>
@@ -1224,8 +1276,8 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
       </div>
     </div>
 
-    <div style="background:#f2ece3;padding:10px 28px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #e2d9cc;flex-wrap:wrap;gap:8px;">
-      <div style="font-family:'Playfair Display',serif;font-size:14px;font-weight:600;color:#b5451b;">Estimated Purchase Memo</div>
+    <div style="background:#f2ece3;padding:10px 28px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #e2d9cc;flex-wrap:wrap;gap:8px; position:relative; z-index:2;">
+      <div style="font-family:'Playfair Display',serif;font-size:14px;font-weight:600;color:#b5451b;">Purchase Memo</div>
       <div style="display:flex;gap:20px;">
         <div style="text-align:right;">
           <div style="font-size:7px;letter-spacing:2px;text-transform:uppercase;color:#7a6f64;">Memo No.</div>
@@ -1238,7 +1290,14 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
       </div>
     </div>
 
-    <div style="padding:10px 28px;display:flex;gap:20px;border-bottom:1px solid #e2d9cc;flex-wrap:wrap;align-items:center;">
+    ${(supName || supPhone) ? `
+    <div style="padding:12px 28px; border-bottom:1px solid #e2d9cc; background:#fcfbfa; position:relative; z-index:2;">
+      <div style="font-size:8px; letter-spacing:1px; text-transform:uppercase; color:#7a6f64; font-weight:600; margin-bottom:4px;">Supplier / Vendor</div>
+      <div style="font-size:13px; font-weight:600; color:#1a1612;">${escHtml(supName)}</div>
+      <div style="font-family:'Space Mono',monospace; font-size:10px; color:#b5451b;">${escHtml(supPhone)}</div>
+    </div>` : ''}
+
+    <div style="padding:10px 28px;display:flex;gap:20px;border-bottom:1px solid #e2d9cc;flex-wrap:wrap;align-items:center; position:relative; z-index:2;">
       ${ownerHtml('SA','Owner & Manager','Suit Ahmed','+880 1716-979082')}
       <div style="width:1px;height:38px;background:#e2d9cc;"></div>
       ${ownerHtml('AM','Owner & Manager','Asadujjaman Masum','+880 1885-878426')}
@@ -1246,7 +1305,7 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
       ${ownerHtml('HM','Co-Manager','Hadiujjaman Maruf','+880 1885-878487')}
     </div>
 
-    <div style="padding:14px 28px 10px;">
+    <div style="padding:14px 28px 10px; position:relative; z-index:2;">
       <table style="width:100%;border-collapse:collapse;">
         <thead>
           <tr style="background:#1a1612;">
@@ -1265,7 +1324,7 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
       </table>
     </div>
 
-    <div style="padding:0 28px 14px;display:flex;justify-content:flex-end;">
+    <div style="padding:0 28px 14px;display:flex;justify-content:flex-end; position:relative; z-index:2;">
       <div style="min-width:240px;border:1px solid #e2d9cc;border-radius:4px;overflow:hidden;">
         <div style="display:flex;justify-content:space-between;padding:7px 12px;border-bottom:1px solid #e2d9cc;font-size:11px;"><span style="color:#7a6f64;">Sub Total</span><span style="font-family:'Space Mono',monospace;font-weight:700;">${subtotalText}</span></div>
         <div style="display:flex;justify-content:space-between;padding:7px 12px;border-bottom:1px solid #e2d9cc;font-size:11px;"><span style="color:#7a6f64;">Transport</span><span style="font-family:'Space Mono',monospace;">৳ ${parseFloat(transport||0).toLocaleString('en-IN',{minimumFractionDigits:2})}</span></div>
@@ -1275,18 +1334,18 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
       </div>
     </div>
 
-    ${notes ? `<div style="padding:0 28px 12px;"><div style="font-size:7px;letter-spacing:3px;text-transform:uppercase;color:#7a6f64;font-weight:700;margin-bottom:5px;">Remarks / Notes</div><div style="border:1px solid #e2d9cc;border-radius:4px;padding:8px 12px;font-size:11px;background:#f2ece3;">${escHtml(notes)}</div></div>` : ''}
+    ${notes ? `<div style="padding:0 28px 12px; position:relative; z-index:2;"><div style="font-size:7px;letter-spacing:3px;text-transform:uppercase;color:#7a6f64;font-weight:700;margin-bottom:5px;">Remarks / Notes</div><div style="border:1px solid #e2d9cc;border-radius:4px;padding:8px 12px;font-size:11px;background:#f2ece3;">${escHtml(notes)}</div></div>` : ''}
 
-    <div style="padding:10px 28px 20px;display:flex;gap:20px;flex-wrap:wrap;">
+    <div style="padding:10px 28px 20px;display:flex;gap:20px;flex-wrap:wrap; position:relative; z-index:2;">
       ${sigHtml('Suit Ahmed','Owner & Manager')}
       ${sigHtml('Asadujjaman Masum','Owner & Manager')}
       ${sigHtml('Hadiujjaman Maruf','Co-Manager')}
-      ${sigHtml('Supplier / Vendor','Authorized Signature')}
+      ${sigHtml(supName || 'Supplier / Vendor','Authorized Signature')}
     </div>
 
-    <div style="background:#1a1612;padding:8px 28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px;">
+    <div style="background:#1a1612;padding:8px 28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px; position:relative; z-index:2;">
       <div style="font-family:'Playfair Display',serif;font-size:12px;color:#c9922a;font-weight:600;">Kitoo Footwear</div>
-      <div style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:#7a6f64;">Estimated memo — not a final invoice</div>
+      <div style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:#7a6f64;">Generated by Kitoo Memo System</div>
     </div>
   </div>
   </body></html>`;
@@ -1304,7 +1363,7 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
   }
 
   function sigHtml(name, role) {
-    return `<div style="flex:1;min-width:120px;">
+    return `<div style="flex:1;min-width:120px; text-align:center;">
       <div style="border-top:1.5px solid #1a1612;margin-top:26px;margin-bottom:4px;"></div>
       <div style="font-size:10px;font-weight:600;">${name}</div>
       <div style="font-size:9px;color:#7a6f64;">${role}</div>
@@ -1333,7 +1392,7 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
 
   window.showToast = function(msg) {
     const t = document.getElementById('toast');
-    t.textContent = msg;
+    document.getElementById('toast-msg').textContent = msg;
     t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 2500);
   }
