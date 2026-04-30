@@ -211,6 +211,8 @@ body {
 .editor-actions { display: flex; gap: 8px; flex-shrink: 0; }
 .save-btn { background: var(--green); color: #fff; border: none; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; padding: 7px 16px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s; }
 .save-btn:hover { background: #1e5233; }
+
+/* Added ID here to hide/show download button */
 .download-btn { background: var(--gold); color: #fff; border: none; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; padding: 7px 16px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s; }
 .download-btn:hover { background: #a87520; }
 
@@ -445,7 +447,8 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
     <div class="editor-title" id="editor-title">New Memo</div>
     <div class="editor-actions">
       <button class="save-btn" onclick="saveMemo()">💾 <span>Save</span></button>
-      <button class="download-btn" onclick="downloadMemo()">⬇ <span>Download PDF</span></button>
+      <!-- ID added to control visibility based on save state -->
+      <button class="download-btn" id="editor-download-btn" onclick="downloadMemo()">⬇ <span>Download PDF</span></button>
     </div>
   </div>
 
@@ -618,6 +621,7 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
   import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
   import { getFirestore, collection, doc, setDoc, getDocs, deleteDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
+  // Your Firebase Configuration
   const firebaseConfig = {
     apiKey: "AIzaSyDqrZ85kxTp9ByuHdTy9R5WCZk44ItOO20",
     authDomain: "kitoomemo-a767f.firebaseapp.com",
@@ -628,18 +632,20 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
     measurementId: "G-Z3BFPZ7020"
   };
 
+  // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
   const auth = getAuth(app);
   const db = getFirestore(app);
 
+  /* ═══════════════════════ STATE ═══════════════════════ */
   let memos = [];        
   let currentId = null;  
   let rowCount = 0;
   let deleteTargetId = null;
   window.dragSrcEl = null;
 
-  /* --- AUTH --- */
+  /* ═══════════════════════ AUTHENTICATION ═══════════════════════ */
   onAuthStateChanged(auth, async (user) => {
     if (user) {
       document.getElementById('screen-login').classList.remove('active');
@@ -656,6 +662,7 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
     const email = document.getElementById('login-email').value;
     const pass = document.getElementById('login-password').value;
     if(!email || !pass) { showToast('⚠ Email & Password required'); return; }
+    
     try {
       showToast('Logging in...');
       await signInWithEmailAndPassword(auth, email, pass);
@@ -666,25 +673,34 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
   };
 
   window.handleLogout = async () => {
-    try { await signOut(auth); } catch (e) { console.error(e); }
+    try { await signOut(auth); } 
+    catch (e) { console.error(e); }
   };
 
-  /* --- DATA FETCHING --- */
+  /* ═══════════════════════ CLOUD DATABASE ═══════════════════════ */
   async function fetchMemosFromCloud() {
     try {
       const q = query(collection(db, "memos"));
       const querySnapshot = await getDocs(q);
       memos = [];
-      querySnapshot.forEach((doc) => { memos.push(doc.data()); });
+      querySnapshot.forEach((doc) => {
+        memos.push(doc.data());
+      });
       renderDash();
-    } catch(e) { console.error(e); showToast('⚠ Error fetching memos from Cloud'); }
+    } catch(e) {
+      console.error(e);
+      showToast('⚠ Error fetching memos from Cloud');
+    }
   }
 
   async function saveMemoToCloud(memoData) {
     try {
       await setDoc(doc(db, "memos", memoData.id), memoData);
       showToast('✅ Saved to Cloud!');
-    } catch(e) { console.error(e); showToast('⚠ Error saving to Cloud'); }
+    } catch(e) {
+      console.error(e);
+      showToast('⚠ Error saving to Cloud');
+    }
   }
 
   async function deleteMemoFromCloud(id) {
@@ -693,10 +709,13 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
       memos = memos.filter(m => m.id !== id);
       renderDash();
       showToast('🗑 Memo deleted from Cloud');
-    } catch(e) { console.error(e); showToast('⚠ Error deleting from Cloud'); }
+    } catch(e) {
+      console.error(e);
+      showToast('⚠ Error deleting from Cloud');
+    }
   }
 
-  /* --- LOCAL BACKUP --- */
+  /* ═══════════════════════ BACKUP (JSON) ═══════════════════════ */
   window.exportBackup = function() {
     if (!memos.length) { showToast('⚠ কোনো মেমো নেই'); return; }
     const a = document.createElement('a');
@@ -722,7 +741,8 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
             const exists = memos.find(x => x.id === m.id);
             if(!exists) {
               await setDoc(doc(db, "memos", m.id), m);
-              memos.push(m); count++;
+              memos.push(m);
+              count++;
             }
           }
           renderDash();
@@ -734,7 +754,7 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
     inp.click();
   };
 
-  /* --- UI NAVIGATION --- */
+  /* ═══════════════════════ DASHBOARD UI ═══════════════════════ */
   window.showDash = function() {
     document.getElementById('screen-dash').classList.add('active');
     document.getElementById('screen-editor').classList.remove('active');
@@ -762,7 +782,15 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
 
     Array.from(list.children).forEach(c => { if(c.id !== 'empty-state') c.remove(); });
 
-    if (memos.length === 0) { empty.style.display = 'block'; return; }
+    if (memos.length === 0) {
+      empty.innerHTML = `
+        <div class="empty-icon">📋</div>
+        <div class="empty-title">No memos yet</div>
+        <div class="empty-sub">Create your first purchase memo to get started</div>
+      `;
+      empty.style.display = 'block';
+      return;
+    }
     empty.style.display = 'none';
 
     const sorted = [...memos].sort((a, b) => new Date(b.savedAt) - new Date(a.savedAt));
@@ -794,10 +822,14 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
     return date.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
   }
 
-  /* --- EDITOR LOGIC --- */
+  /* ═══════════════════════ NEW / EDIT MEMO ═══════════════════════ */
   window.newMemo = function() {
     currentId = 'memo-' + Date.now();
     document.getElementById('editor-title').textContent = 'New Memo';
+    
+    // ✅ Hide the download button when making a new memo
+    document.getElementById('editor-download-btn').style.display = 'none';
+
     clearEditor();
     const nextNum = memos.length + 1;
     document.getElementById('memo-num').value = 'KF-' + String(nextNum).padStart(4, '0');
@@ -813,6 +845,10 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
     if (!m) return;
     currentId = id;
     document.getElementById('editor-title').textContent = 'Edit Memo — ' + (m.memoNum || id);
+    
+    // ✅ Restore the download button when editing
+    document.getElementById('editor-download-btn').style.display = '';
+
     clearEditor();
 
     document.getElementById('memo-num').value = m.memoNum || '';
@@ -843,16 +879,18 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
 
   window.goBack = function() { window.showDash(); }
 
-  /* --- TABLE ROWS & DRAG DROP --- */
+  /* ═══════════════════════ TABLE ROWS & DRAG & DROP ═══════════════════════ */
   window.handleDragStart = function(e) {
     window.dragSrcEl = this;
     e.dataTransfer.effectAllowed = 'move';
     e.dataTransfer.setData('text/plain', this.id);
     this.classList.add('dragging');
   };
+
   window.handleDragOver = function(e) {
     if (e.preventDefault) e.preventDefault(); 
     e.dataTransfer.dropEffect = 'move';
+    
     const bounding = this.getBoundingClientRect();
     const offset = bounding.y + (bounding.height / 2);
     if (e.clientY - offset > 0) {
@@ -864,10 +902,12 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
     }
     return false;
   };
+
   window.handleDragLeave = function(e) {
     this.style['border-top'] = '';
     this.style['border-bottom'] = '';
   };
+
   window.handleDrop = function(e) {
     if (e.stopPropagation) e.stopPropagation();
     if (window.dragSrcEl !== this) {
@@ -885,6 +925,7 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
     this.style['border-bottom'] = '';
     return false;
   };
+
   window.handleDragEnd = function(e) {
     this.classList.remove('dragging');
     document.querySelectorAll('#table-body tr').forEach(row => {
@@ -970,6 +1011,7 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
     el.style.height = el.scrollHeight + 'px';
   }
 
+  /* ═══════════════════════ SAVE MEMO ═══════════════════════ */
   window.saveMemo = async function() {
     const rows = collectRows();
     const grand = parseFloat(document.getElementById('grand-total').textContent.replace(/[৳,\s]/g,'')) || 0;
@@ -999,6 +1041,9 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
 
     showToast('Saving to cloud...');
     await saveMemoToCloud(memoData);
+
+    // ✅ Make download button visible after a successful save
+    document.getElementById('editor-download-btn').style.display = '';
   }
 
   function collectRows() {
@@ -1016,7 +1061,7 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
     return rows;
   }
 
-  /* ═══════════════════════ DIRECT PDF DOWNLOAD ═══════════════════════ */
+  /* ═══════════════════════ VIEW & PDF DOWNLOAD ═══════════════════════ */
   window.viewMemo = function(id) {
     const m = memos.find(x => x.id === id);
     if (!m) return;
@@ -1070,7 +1115,7 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
     generateDirectPDF(html, m.memoNum || 'draft');
   }
 
-  // ✅ New function to convert HTML perfectly to PDF
+  // ✅ Converts HTML perfectly to PDF
   function generateDirectPDF(htmlContent, memoNum) {
     showToast('Generating PDF... Please wait');
     
@@ -1106,7 +1151,6 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
     });
   }
 
-  // Modified to not automatically print, as we now use html2pdf
   function buildPrintHTML(memoNum, date, rows, transport, other, discount, notes, subtotalText, grandText) {
     const rowsHtml = rows.map((r, i) => `
       <tr>
