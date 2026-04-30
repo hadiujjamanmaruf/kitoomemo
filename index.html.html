@@ -24,14 +24,12 @@
 body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--ink); min-height: 100vh; }
 .screen { display: none; } .screen.active { display: block; }
 
-/* ── LOGOS ── */
-.login-logo { height: 70px; object-fit: contain; margin: 0 auto 15px; display: block; }
-.dash-logo { height: 32px; object-fit: contain; display: block; }
-.brand-logo { height: 80px; object-fit: contain; display: block; }
-
 /* ── LOGIN ── */
 .login-wrapper { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
 .login-box { background: var(--paper); padding: 40px; border-radius: 12px; box-shadow: var(--shadow); width: 100%; max-width: 400px; text-align: center; border: 1px solid var(--line); }
+.login-brand { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 700; color: var(--ink); margin-bottom: 5px; display:flex; align-items:center; justify-content:center; gap:8px; }
+.login-brand i { color: var(--accent); }
+.login-brand span { color: var(--accent); }
 .login-sub { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 30px; }
 .login-input { width: 100%; padding: 14px; margin-bottom: 15px; border: 1px solid var(--line); border-radius: 6px; font-family: 'DM Sans', sans-serif; font-size: 14px; background: var(--soft); outline: none; transition: 0.2s; }
 .login-input:focus { border-color: var(--gold); }
@@ -40,7 +38,11 @@ body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--i
 
 /* ── DASHBOARD HEADER ── */
 .dash-header { background: var(--ink); padding: 0 32px; display: flex; align-items: center; justify-content: space-between; height: 64px; position: sticky; top: 0; z-index: 50; }
-.dash-brand-tag { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-left: 10px; }
+.dash-brand { display: flex; align-items: baseline; gap: 10px; }
+.dash-brand-name { font-family: 'Playfair Display', serif; font-size: 22px; color: #fff; font-weight: 700; display:flex; align-items:center; gap:6px;}
+.dash-brand-name i { color: var(--gold); font-size: 24px; }
+.dash-brand-name span { color: var(--gold); }
+.dash-brand-tag { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
 .dash-actions { display:flex; gap:8px; align-items:center; }
 .dash-btn { background: rgba(255,255,255,0.08); color: #fff; border: 1px solid rgba(255,255,255,0.15); font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; padding: 7px 14px; border-radius: 40px; cursor: pointer; transition: 0.2s; display:flex; align-items:center; gap:6px; }
 .dash-btn:hover { background: rgba(255,255,255,0.18); }
@@ -58,7 +60,7 @@ body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--i
 .stat-label { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-top: 6px; font-weight: 600; }
 
 /* ── CHART SECTION ── */
-.chart-container { background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 20px; box-shadow: var(--shadow); margin-bottom: 32px; height: 280px; }
+.chart-container { background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 16px 20px; box-shadow: var(--shadow); margin-bottom: 24px; height: 160px; }
 
 /* ── SEARCH & FILTER ── */
 .toolbar { display: flex; gap: 12px; margin-bottom: 16px; }
@@ -108,8 +110,12 @@ body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--i
 .page { max-width: 860px; margin: 0 auto; background: var(--paper); border-radius: 4px; box-shadow: 0 2px 40px rgba(0,0,0,0.10), 0 0 0 1px var(--line); overflow: hidden; position:relative;}
 .top-bar { height: 6px; background: linear-gradient(90deg, var(--accent) 0%, var(--gold) 50%, var(--accent) 100%); }
 
-.header { padding: 28px 40px 22px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); gap: 20px; flex-wrap: wrap; }
-.brand-block { display:flex; align-items:center; }
+.header { padding: 28px 40px 22px; display: flex; align-items: flex-start; justify-content: space-between; border-bottom: 1px solid var(--line); gap: 20px; flex-wrap: wrap; }
+.brand-block { display:flex; gap:12px; align-items:center; }
+.brand-icon { font-size: 40px; color: var(--accent); }
+.brand-name { font-family: 'Playfair Display', serif; font-size: 34px; font-weight: 700; color: var(--ink); line-height: 1; }
+.brand-name span { color: var(--accent); }
+.tagline { font-family: 'Space Mono', monospace; font-size: 9.5px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-top: 5px; }
 .address-block { text-align: right; font-size: 12px; color: var(--muted); line-height: 1.8; }
 .address-block strong { color: var(--ink); font-weight: 600; font-size: 12.5px; }
 
@@ -287,7 +293,7 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
 <div id="screen-login" class="screen active">
   <div class="login-wrapper">
     <div class="login-box">
-      <div class="login-brand"><img src="logo.png" class="login-logo" alt="Kitoo Logo"></div>
+      <div class="login-brand"><i class="ph-fill ph-sneaker"></i> Kitoo <span>Footwear</span></div>
       <div class="login-sub">Pro Memo System</div>
       <input type="email" id="login-email" class="login-input" placeholder="Email Address">
       <input type="password" id="login-password" class="login-input" placeholder="Password">
@@ -299,10 +305,7 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
 <!-- ═══════════════════════════════════ DASHBOARD ═══════════════════════════════════ -->
 <div id="screen-dash" class="screen">
   <div class="dash-header">
-    <div class="dash-brand">
-      <img src="logo.png" class="dash-logo" alt="Kitoo Logo">
-      <div class="dash-brand-tag">Dashboard</div>
-    </div>
+    <div class="dash-brand-name"><i class="ph-fill ph-sneaker"></i> Kitoo <span>Footwear</span></div>
     <div class="dash-actions">
       <button class="dash-btn" onclick="importBackup()" title="Import Data"><i class="ph-bold ph-upload-simple"></i></button>
       <button class="dash-btn" onclick="exportBackup()" title="Backup Data"><i class="ph-bold ph-download-simple"></i></button>
@@ -382,7 +385,11 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
 
       <div class="header">
         <div class="brand-block">
-          <img src="logo.png" class="brand-logo" alt="Kitoo Logo">
+          <div class="brand-icon"><i class="ph-fill ph-sneaker"></i></div>
+          <div>
+            <div class="brand-name">Kitoo <span>Footwear</span></div>
+            <div class="tagline">Comfort in every step</div>
+          </div>
         </div>
         <div class="address-block">
           <strong>Sandal Manufacturing Unit</strong><br>
@@ -419,10 +426,12 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
         <div class="supplier-inputs">
           <div class="sup-field">
             <label>Supplier / Vendor Name</label>
+            <!-- ✅ Input using the dynamically generated list -->
             <input type="text" id="supplier-name" list="supplier-name-suggestions" placeholder="e.g. Rahim Leathers">
           </div>
           <div class="sup-field">
             <label>Contact Info</label>
+            <!-- ✅ Input using the dynamically generated list -->
             <input type="text" id="supplier-contact" list="supplier-contact-suggestions" placeholder="Phone or Address">
           </div>
         </div>
@@ -535,7 +544,7 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
 
       <div class="bottom-bar">
         <div>
-          <div class="brand-small">Kitoo Footwear</div>
+          <div class="brand-small"><i class="ph-fill ph-sneaker"></i> Kitoo Footwear</div>
           <div class="tagline-small">Comfort in every step</div>
         </div>
         <div class="tagline-small">Generated by Kitoo Memo System</div>
@@ -713,7 +722,7 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
   /* --- SEARCH & FILTER --- */
   window.filterMemos = function() { renderDash(); }
 
-  /* ✅ DYNAMIC AUTO-SUGGEST ENGINE (EMPTY BY DEFAULT) */
+  /* ✅ DYNAMIC AUTO-SUGGEST ENGINE */
   function updateSuggestions() {
     const supNames = new Set();
     const supContacts = new Set();
@@ -793,7 +802,7 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
     });
   }
 
-  /* ✅ UNIQUE CURVED AREA CHART */
+  /* ✅ FIXED CHART (Smaller height & Removed Y-Axis Labels) */
   function updateChart() {
     const ctx = document.getElementById('expenseChart').getContext('2d');
     const monthlyData = {};
@@ -810,7 +819,7 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
 
     if (expenseChartInst) { expenseChartInst.destroy(); }
 
-    let gradient = ctx.createLinearGradient(0, 0, 0, 300);
+    let gradient = ctx.createLinearGradient(0, 0, 0, 160);
     gradient.addColorStop(0, 'rgba(181, 69, 27, 0.5)'); 
     gradient.addColorStop(1, 'rgba(181, 69, 27, 0.0)'); 
 
@@ -838,9 +847,8 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
         plugins: { legend: { display: false } },
         scales: { 
           y: { 
-              beginAtZero: true, 
-              grid: { borderDash: [5, 5], color: '#e2d9cc' }, 
-              ticks: { callback: function(value) { return '৳' + value.toLocaleString(); } } 
+              display: false, /* Hides the Y-Axis amounts completely */
+              beginAtZero: true 
           },
           x: { grid: { display: false } }
         },
@@ -1128,6 +1136,7 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
     showToast('Saving to cloud...');
     await saveMemoToCloud(memoData);
 
+    // Call updateSuggestions so the newly saved item names are instantly available
     updateSuggestions();
 
     document.getElementById('editor-download-btn').style.display = '';
@@ -1258,16 +1267,19 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
   body{font-family:'DM Sans',sans-serif;background:#e5e5e5;padding:20px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
   .paper-container {background:#fff;max-width:800px;margin:0 auto;border:1px solid #e2d9cc;box-shadow:0 10px 30px rgba(0,0,0,0.1); position:relative; overflow:hidden;}
   @media print { body{padding:0;background:#fff;} .paper-container {border:none;box-shadow:none;} }
-  .brand-logo { height: 80px; object-fit: contain; display: block; }
   </style>
   </head><body>
   <div class="paper-container">
     <div style="height:5px;background:linear-gradient(90deg,#b5451b,#c9922a,#b5451b);"></div>
     ${watermarkHtml}
     
-    <div style="padding:18px 28px 14px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #e2d9cc;flex-wrap:wrap;gap:12px; position:relative; z-index:2;">
-      <div style="display:flex; align-items:center;">
-        <img src="logo.png" class="brand-logo" alt="Kitoo Logo">
+    <div style="padding:18px 28px 14px;display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid #e2d9cc;flex-wrap:wrap;gap:12px; position:relative; z-index:2;">
+      <div style="display:flex; gap:12px; align-items:center;">
+        <div style="font-size:36px; color:#b5451b;">👟</div>
+        <div>
+          <div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:#1a1612;line-height:1;">Kitoo <span style="color:#b5451b;">Footwear</span></div>
+          <div style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:#c9922a;margin-top:4px;">Comfort in every step</div>
+        </div>
       </div>
       <div style="text-align:right;font-size:11px;color:#7a6f64;line-height:1.8;">
         <strong style="color:#1a1612;">Sandal Manufacturing Unit</strong><br>
