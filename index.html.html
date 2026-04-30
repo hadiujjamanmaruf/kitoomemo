@@ -88,6 +88,20 @@ body {
 }
 .dash-new-btn:hover { background: #8e2e0f; transform: translateY(-1px); }
 
+.backup-btn {
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.7);
+  border: 1px solid rgba(255,255,255,0.15);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 7px 14px;
+  border-radius: 40px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.backup-btn:hover { background: rgba(255,255,255,0.18); color: #fff; }
+
 .dash-body { padding: 32px; max-width: 1000px; margin: 0 auto; }
 
 .dash-stats {
@@ -573,7 +587,11 @@ td.del-cell { text-align: center; width: 28px; }
       <div class="dash-brand-name">Kitoo <span>Footwear</span></div>
       <div class="dash-brand-tag">Memo System</div>
     </div>
-    <button class="dash-new-btn" onclick="newMemo()">＋ <span>New Memo</span></button>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <button class="backup-btn" onclick="importBackup()" title="Import Backup">⬆ Import</button>
+      <button class="backup-btn" onclick="exportBackup()" title="Export Backup">⬇ Export</button>
+      <button class="dash-new-btn" onclick="newMemo()">＋ <span>New Memo</span></button>
+    </div>
   </div>
 
   <div class="dash-body">
@@ -783,22 +801,44 @@ let currentId = null;  // editing memo id
 let rowCount = 0;
 let deleteTargetId = null;
 
-/* ═══════════════════════ STORAGE ═══════════════════════ */
-async function loadMemos() {
-  try {
-    const res = await window.storage.get('kitoo-memos');
-    memos = res ? JSON.parse(res.value) : [];
-  } catch(e) {
-    memos = [];
-  }
+/* ═══ STORAGE (localStorage) ═══ */
+const STORAGE_KEY = 'kitoo_footwear_memos_v1';
+function loadMemos() {
+  try { memos = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
+  catch(e) { memos = []; }
 }
-
-async function saveMemos() {
-  try {
-    await window.storage.set('kitoo-memos', JSON.stringify(memos));
-  } catch(e) {
-    showToast('⚠ Storage error');
-  }
+function saveMemos() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(memos)); }
+  catch(e) { showToast('⚠ Storage error'); }
+}
+function exportBackup() {
+  if (!memos.length) { showToast('⚠ কোনো মেমো নেই'); return; }
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([JSON.stringify(memos,null,2)],{type:'application/json'}));
+  a.download = 'kitoo-backup-' + new Date().toISOString().slice(0,10) + '.json';
+  a.click();
+  showToast('✅ Backup exported!');
+}
+function importBackup() {
+  const inp = document.createElement('input');
+  inp.type = 'file'; inp.accept = '.json';
+  inp.onchange = e => {
+    const f = e.target.files[0]; if (!f) return;
+    const r = new FileReader();
+    r.onload = ev => {
+      try {
+        const data = JSON.parse(ev.target.result);
+        if (!Array.isArray(data)) throw 0;
+        const ids = new Set(memos.map(m => m.id));
+        const fresh = data.filter(m => !ids.has(m.id));
+        memos = [...memos, ...fresh];
+        saveMemos(); renderDash();
+        showToast('✅ ' + fresh.length + ' memo imported!');
+      } catch { showToast('⚠ Invalid file'); }
+    };
+    r.readAsText(f);
+  };
+  inp.click();
 }
 
 /* ═══════════════════════ DASHBOARD ═══════════════════════ */
@@ -984,7 +1024,7 @@ function autoResize(el) {
 }
 
 /* ═══════════════════════ SAVE MEMO ═══════════════════════ */
-async function saveMemo() {
+function saveMemo() {
   const rows = collectRows();
   const grand = parseFloat(document.getElementById('grand-total').textContent.replace(/[৳,\s]/g,'')) || 0;
   const memoNum = document.getElementById('memo-num').value.trim();
@@ -1011,7 +1051,7 @@ async function saveMemo() {
   if (idx >= 0) memos[idx] = memoData;
   else memos.push(memoData);
 
-  await saveMemos();
+  saveMemos();
   showToast('✅ Memo saved!');
 }
 
@@ -1208,9 +1248,9 @@ function escHtml(str) {
 function confirmDelete(id) {
   deleteTargetId = id;
   document.getElementById('modal').classList.add('show');
-  document.getElementById('modal-confirm-btn').onclick = async () => {
+  document.getElementById('modal-confirm-btn').onclick = () => {
     memos = memos.filter(m => m.id !== deleteTargetId);
-    await saveMemos();
+    saveMemos();
     closeModal();
     renderDash();
     showToast('🗑 Memo deleted');
@@ -1231,7 +1271,7 @@ function showToast(msg) {
 }
 
 /* ═══════════════════════ INIT ═══════════════════════ */
-loadMemos().then(() => renderDash());
+loadMemos(); renderDash();
 </script>
 </body>
 </html>
