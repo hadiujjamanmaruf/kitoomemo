@@ -1029,9 +1029,7 @@ td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-r
     
     const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
     const url = URL.createObjectURL(blob);
-    window.open(url, '_blank');
-    // Clear URL from memory after 10 seconds
-    setTimeout(() => URL.revokeObjectURL(url), 10000);
+    window.open(url, '_self');
   }
 
   window.downloadMemo = function() {
