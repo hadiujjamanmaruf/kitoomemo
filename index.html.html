@@ -44,6 +44,70 @@ body {
 .screen.active { display: block; }
 
 /* ════════════════════════════════
+   LOGIN SCREEN
+═══════════════════════════════ */
+.login-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+.login-box {
+  background: var(--paper);
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  border: 1px solid var(--line);
+}
+.login-brand {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 5px;
+}
+.login-brand span { color: var(--accent); }
+.login-sub {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 30px;
+}
+.login-input {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 15px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  background: var(--soft);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.login-input:focus { border-color: var(--gold); }
+.login-btn-submit {
+  width: 100%;
+  background: var(--ink);
+  color: #fff;
+  border: none;
+  padding: 14px;
+  border-radius: 6px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.login-btn-submit:hover { background: var(--accent); }
+
+/* ════════════════════════════════
    DASHBOARD SCREEN
 ═══════════════════════════════ */
 .dash-header {
@@ -58,184 +122,69 @@ body {
   z-index: 50;
 }
 
-.dash-brand {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-}
-
-.dash-brand-name {
-  font-family: 'Playfair Display', serif;
-  font-size: 22px;
-  color: #fff;
-  font-weight: 700;
-}
-
+.dash-brand { display: flex; align-items: baseline; gap: 10px; }
+.dash-brand-name { font-family: 'Playfair Display', serif; font-size: 22px; color: #fff; font-weight: 700; }
 .dash-brand-name span { color: var(--gold); }
+.dash-brand-tag { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
 
-.dash-brand-tag {
-  font-family: 'Space Mono', monospace;
-  font-size: 8px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--muted);
-}
+.dash-actions { display:flex; gap:8px; align-items:center; }
 
 .dash-new-btn {
-  background: var(--accent);
-  color: #fff;
-  border: none;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  padding: 9px 20px;
-  border-radius: 40px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: all 0.2s;
+  background: var(--accent); color: #fff; border: none; font-family: 'DM Sans', sans-serif;
+  font-size: 13px; font-weight: 600; padding: 9px 20px; border-radius: 40px;
+  cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s;
 }
 .dash-new-btn:hover { background: #8e2e0f; transform: translateY(-1px); }
 
 .backup-btn {
-  background: rgba(255,255,255,0.08);
-  color: rgba(255,255,255,0.7);
-  border: 1px solid rgba(255,255,255,0.15);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 12px;
-  font-weight: 500;
-  padding: 7px 14px;
-  border-radius: 40px;
-  cursor: pointer;
-  transition: all 0.2s;
+  background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.15);
+  font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; padding: 7px 14px;
+  border-radius: 40px; cursor: pointer; transition: all 0.2s;
 }
 .backup-btn:hover { background: rgba(255,255,255,0.18); color: #fff; }
+.logout-btn { background: rgba(255,0,0,0.15); border-color: rgba(255,0,0,0.3); color: #ffcccc; }
+.logout-btn:hover { background: rgba(255,0,0,0.3); color: #fff; }
 
 .dash-body { padding: 32px; max-width: 1000px; margin: 0 auto; }
 
-.dash-stats {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 28px;
-  flex-wrap: wrap;
-}
-
+.dash-stats { display: flex; gap: 16px; margin-bottom: 28px; flex-wrap: wrap; }
 .stat-card {
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 16px 22px;
-  flex: 1;
-  min-width: 130px;
-  box-shadow: var(--shadow);
+  background: var(--paper); border: 1px solid var(--line); border-radius: 8px;
+  padding: 16px 22px; flex: 1; min-width: 130px; box-shadow: var(--shadow);
 }
+.stat-val { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--accent); line-height: 1; }
+.stat-label { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
 
-.stat-val {
-  font-family: 'Playfair Display', serif;
-  font-size: 28px;
-  font-weight: 700;
-  color: var(--accent);
-  line-height: 1;
-}
-
-.stat-label {
-  font-size: 11px;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-top: 4px;
-}
-
-.section-heading {
-  font-size: 9px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--muted);
-  font-weight: 700;
-  margin-bottom: 14px;
-}
+.section-heading { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); font-weight: 700; margin-bottom: 14px; }
 
 .memo-list { display: flex; flex-direction: column; gap: 10px; }
 
+/* Desktop version of memo card */
 .memo-card {
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 16px 20px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  box-shadow: var(--shadow);
-  transition: all 0.2s;
-  cursor: default;
+  background: var(--paper); border: 1px solid var(--line); border-radius: 8px;
+  padding: 16px 20px; display: flex; align-items: center; gap: 16px; box-shadow: var(--shadow);
+  transition: all 0.2s; cursor: default;
 }
-
 .memo-card:hover { border-color: var(--gold); transform: translateY(-1px); box-shadow: 0 4px 24px rgba(0,0,0,0.1); }
-
 .memo-card-num {
-  font-family: 'Space Mono', monospace;
-  font-size: 11px;
-  color: var(--accent);
-  background: var(--soft);
-  padding: 4px 8px;
-  border-radius: 4px;
-  flex-shrink: 0;
-  font-weight: 700;
+  font-family: 'Space Mono', monospace; font-size: 11px; color: var(--accent);
+  background: var(--soft); padding: 4px 8px; border-radius: 4px; flex-shrink: 0; font-weight: 700;
 }
-
-.memo-card-info { flex: 1; }
-
-.memo-card-date {
-  font-size: 12px;
-  color: var(--muted);
-  margin-bottom: 2px;
-}
-
-.memo-card-items {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--ink);
-}
-
-.memo-card-total {
-  font-family: 'Space Mono', monospace;
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--green);
-  flex-shrink: 0;
-}
-
-.memo-card-actions {
-  display: flex;
-  gap: 8px;
-  flex-shrink: 0;
-}
+.memo-card-info { flex: 1; min-width: 0; }
+.memo-card-date { font-size: 12px; color: var(--muted); margin-bottom: 2px; }
+.memo-card-items { font-size: 13px; font-weight: 500; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.memo-card-total { font-family: 'Space Mono', monospace; font-size: 14px; font-weight: 700; color: var(--green); flex-shrink: 0; }
+.memo-card-actions { display: flex; gap: 8px; flex-shrink: 0; }
 
 .icon-btn {
-  border: 1px solid var(--line);
-  background: var(--soft);
-  border-radius: 6px;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  font-size: 14px;
-  transition: all 0.15s;
-  color: var(--muted);
+  border: 1px solid var(--line); background: var(--soft); border-radius: 6px;
+  width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 14px; transition: all 0.15s; color: var(--muted);
 }
-
 .icon-btn:hover { border-color: var(--accent); color: var(--accent); background: #fff; }
 .icon-btn.del:hover { border-color: var(--red); color: var(--red); }
 
-.empty-state {
-  text-align: center;
-  padding: 64px 32px;
-  color: var(--muted);
-}
-
+.empty-state { text-align: center; padding: 64px 32px; color: var(--muted); }
 .empty-icon { font-size: 48px; margin-bottom: 12px; }
 .empty-title { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--ink); margin-bottom: 6px; }
 .empty-sub { font-size: 13px; }
@@ -244,211 +193,60 @@ body {
    MEMO EDITOR SCREEN
 ═══════════════════════════════ */
 .editor-header {
-  background: var(--ink);
-  padding: 0 32px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 60px;
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  gap: 12px;
+  background: var(--ink); padding: 0 32px; display: flex; align-items: center;
+  justify-content: space-between; height: 60px; position: sticky; top: 0; z-index: 50; gap: 12px;
 }
 
 .back-btn {
-  background: none;
-  border: 1px solid rgba(255,255,255,0.2);
-  color: #fff;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 12px;
-  padding: 6px 14px;
-  border-radius: 20px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: all 0.2s;
-  flex-shrink: 0;
+  background: none; border: 1px solid rgba(255,255,255,0.2); color: #fff;
+  font-family: 'DM Sans', sans-serif; font-size: 12px; padding: 6px 14px;
+  border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s; flex-shrink: 0;
 }
 .back-btn:hover { background: rgba(255,255,255,0.1); }
-
-.editor-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 16px;
-  color: #fff;
-  flex: 1;
-  text-align: center;
-}
-
+.editor-title { font-family: 'Playfair Display', serif; font-size: 16px; color: #fff; flex: 1; text-align: center; }
 .editor-actions { display: flex; gap: 8px; flex-shrink: 0; }
-
-.save-btn {
-  background: var(--green);
-  color: #fff;
-  border: none;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 12px;
-  font-weight: 600;
-  padding: 7px 16px;
-  border-radius: 20px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: all 0.2s;
-}
+.save-btn { background: var(--green); color: #fff; border: none; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; padding: 7px 16px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s; }
 .save-btn:hover { background: #1e5233; }
-
-.download-btn {
-  background: var(--gold);
-  color: #fff;
-  border: none;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 12px;
-  font-weight: 600;
-  padding: 7px 16px;
-  border-radius: 20px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: all 0.2s;
-}
+.download-btn { background: var(--gold); color: #fff; border: none; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; padding: 7px 16px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s; }
 .download-btn:hover { background: #a87520; }
 
-/* ── MEMO PAPER ── */
 .editor-body { padding: 24px 16px 80px; }
-
-.page {
-  max-width: 860px;
-  margin: 0 auto;
-  background: var(--paper);
-  border-radius: 4px;
-  box-shadow: 0 2px 40px rgba(0,0,0,0.10), 0 0 0 1px var(--line);
-  overflow: hidden;
-}
-
+.page { max-width: 860px; margin: 0 auto; background: var(--paper); border-radius: 4px; box-shadow: 0 2px 40px rgba(0,0,0,0.10), 0 0 0 1px var(--line); overflow: hidden; }
 .top-bar { height: 6px; background: linear-gradient(90deg, var(--accent) 0%, var(--gold) 50%, var(--accent) 100%); }
 
-.header {
-  padding: 28px 40px 22px;
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  border-bottom: 1px solid var(--line);
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.brand-name {
-  font-family: 'Playfair Display', serif;
-  font-size: 34px;
-  font-weight: 700;
-  color: var(--ink);
-  line-height: 1;
-}
+.header { padding: 28px 40px 22px; display: flex; align-items: flex-start; justify-content: space-between; border-bottom: 1px solid var(--line); gap: 20px; flex-wrap: wrap; }
+.brand-name { font-family: 'Playfair Display', serif; font-size: 34px; font-weight: 700; color: var(--ink); line-height: 1; }
 .brand-name span { color: var(--accent); }
-
-.tagline {
-  font-family: 'Space Mono', monospace;
-  font-size: 9.5px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--gold);
-  margin-top: 5px;
-}
-
-.address-block {
-  text-align: right;
-  font-size: 12px;
-  color: var(--muted);
-  line-height: 1.8;
-}
+.tagline { font-family: 'Space Mono', monospace; font-size: 9.5px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-top: 5px; }
+.address-block { text-align: right; font-size: 12px; color: var(--muted); line-height: 1.8; }
 .address-block strong { color: var(--ink); font-weight: 600; font-size: 12.5px; }
 
-.memo-title-band {
-  background: var(--soft);
-  padding: 12px 40px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid var(--line);
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.memo-label {
-  font-family: 'Playfair Display', serif;
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--accent);
-}
-
+.memo-title-band { background: var(--soft); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); gap: 12px; flex-wrap: wrap; }
+.memo-label { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 600; color: var(--accent); }
 .memo-meta { display: flex; gap: 20px; align-items: center; }
-
 .meta-field { display: flex; flex-direction: column; align-items: flex-end; }
 .meta-label { font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 2px; }
-.meta-input {
-  border: none; border-bottom: 1.5px solid var(--gold);
-  background: transparent; font-family: 'Space Mono', monospace;
-  font-size: 11px; color: var(--ink); width: 120px; padding: 2px 4px;
-  text-align: right; outline: none;
-}
+.meta-input { border: none; border-bottom: 1.5px solid var(--gold); background: transparent; font-family: 'Space Mono', monospace; font-size: 11px; color: var(--ink); width: 120px; padding: 2px 4px; text-align: right; outline: none; }
 .meta-input:focus { border-bottom-color: var(--accent); }
 
-.owners-section {
-  padding: 14px 40px;
-  display: flex;
-  gap: 28px;
-  border-bottom: 1px solid var(--line);
-  flex-wrap: wrap;
-  align-items: center;
-}
-
+.owners-section { padding: 14px 40px; display: flex; gap: 28px; border-bottom: 1px solid var(--line); flex-wrap: wrap; align-items: center; }
 .owner-card { display: flex; align-items: center; gap: 10px; }
-
-.owner-avatar {
-  width: 34px; height: 34px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent), var(--gold));
-  display: flex; align-items: center; justify-content: center;
-  font-family: 'Playfair Display', serif; font-size: 13px;
-  color: #fff; font-weight: 700; flex-shrink: 0;
-}
-
+.owner-avatar { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--gold)); display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 13px; color: #fff; font-weight: 700; flex-shrink: 0; }
 .owner-role { font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); font-weight: 600; }
 .owner-name { font-size: 13px; font-weight: 600; color: var(--ink); line-height: 1.3; }
 .owner-phone { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--accent); }
 .owners-divider { width: 1px; height: 44px; background: var(--line); flex-shrink: 0; }
 
-.table-section { padding: 22px 40px 16px; }
-
-.table-header-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
+.table-section { padding: 22px 40px 16px; overflow-x: auto;}
+.table-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
 .section-label { font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); font-weight: 700; }
-
-.add-row-btn {
-  background: var(--soft); border: 1px solid var(--line);
-  color: var(--accent); font-family: 'DM Sans', sans-serif;
-  font-size: 11px; font-weight: 600; padding: 5px 12px;
-  border-radius: 20px; cursor: pointer; transition: all 0.2s;
-}
+.add-row-btn { background: var(--soft); border: 1px solid var(--line); color: var(--accent); font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 600; padding: 5px 12px; border-radius: 20px; cursor: pointer; transition: all 0.2s; }
 .add-row-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
 
-table { width: 100%; border-collapse: collapse; }
-
+table { width: 100%; border-collapse: collapse; min-width: 600px; }
 thead tr { background: var(--ink); }
-thead th {
-  font-family: 'Space Mono', monospace; font-size: 8.5px;
-  letter-spacing: 1.5px; text-transform: uppercase;
-  color: #fff; padding: 10px 8px; text-align: left; font-weight: 400;
-}
-thead th:last-child { text-align: right; }
+thead th { font-family: 'Space Mono', monospace; font-size: 8.5px; letter-spacing: 1.5px; text-transform: uppercase; color: #fff; padding: 10px 8px; text-align: left; font-weight: 400; }
+thead th:last-child { text-align: center; }
 thead th.num { text-align: center; width: 36px; }
 thead th.qty, thead th.rate, thead th.total { text-align: right; }
 
@@ -456,151 +254,155 @@ tbody tr { border-bottom: 1px solid var(--line); transition: background 0.15s; }
 tbody tr:hover { background: var(--soft); }
 tbody tr:nth-child(even) { background: #fdfbf8; }
 tbody tr:nth-child(even):hover { background: var(--soft); }
-
 tbody td { padding: 3px 5px; vertical-align: middle; }
 
-td.sl-num {
-  font-family: 'Space Mono', monospace; font-size: 10px;
-  color: var(--muted); text-align: center; width: 36px; padding-left: 8px;
-}
-
+td.sl-num { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--muted); text-align: center; width: 36px; padding-left: 8px; }
 td.spec-cell { min-width: 120px; }
-
-td.spec-cell textarea {
-  border: none; background: transparent; font-family: 'DM Sans', sans-serif;
-  font-size: 12px; color: var(--ink); width: 100%; padding: 5px 5px;
-  outline: none; resize: none; overflow: hidden; border-radius: 3px;
-  transition: background 0.15s; white-space: pre-wrap; word-break: break-word;
-  line-height: 1.4; display: block;
-}
+td.spec-cell textarea { border: none; background: transparent; font-family: 'DM Sans', sans-serif; font-size: 12px; color: var(--ink); width: 100%; padding: 5px 5px; outline: none; resize: none; overflow: hidden; border-radius: 3px; transition: background 0.15s; white-space: pre-wrap; word-break: break-word; line-height: 1.4; display: block; }
 td.spec-cell textarea:focus { background: rgba(181,69,27,0.06); }
-
-td input, td textarea {
-  border: none; background: transparent; font-family: 'DM Sans', sans-serif;
-  font-size: 12px; color: var(--ink); width: 100%; padding: 5px 5px;
-  outline: none; transition: background 0.15s; border-radius: 3px;
-}
+td input, td textarea { border: none; background: transparent; font-family: 'DM Sans', sans-serif; font-size: 12px; color: var(--ink); width: 100%; padding: 5px 5px; outline: none; transition: background 0.15s; border-radius: 3px; }
 td input:focus, td textarea:focus { background: rgba(181,69,27,0.06); }
-
-td.qty-cell input, td.rate-cell input, td.total-cell input {
-  text-align: right; font-family: 'Space Mono', monospace; font-size: 11px;
-}
+td.qty-cell input, td.rate-cell input, td.total-cell input { text-align: right; font-family: 'Space Mono', monospace; font-size: 11px; }
 td.unit-cell input { text-align: center; font-size: 11px; }
 td.total-cell input { color: var(--green); font-weight: 700; }
-td.del-cell { text-align: center; width: 28px; }
 
-.del-btn {
-  background: none; border: none; cursor: pointer;
-  color: #ccc; font-size: 14px; line-height: 1; padding: 3px;
-  border-radius: 3px; transition: color 0.2s;
-}
-.del-btn:hover { color: var(--accent); }
+/* ── ACTION BUTTONS & DRAG HANDLE ── */
+.drag-handle { cursor: grab; color: #b3a89e; font-size: 18px; line-height: 1; text-align: center; user-select: none; transition: color 0.2s; padding: 4px; }
+.drag-handle:hover { color: var(--accent); }
+.drag-handle:active { cursor: grabbing; }
+tr.dragging { opacity: 0.6; background: var(--soft) !important; }
+
+td.action-cell { white-space: nowrap; text-align: center; width: 30px; padding-right: 8px; }
+.action-btn { background: none; border: none; cursor: pointer; color: #ccc; font-size: 14px; font-weight: 600; line-height: 1; padding: 3px 4px; border-radius: 3px; transition: color 0.2s; }
+.action-btn:hover { color: var(--accent); }
+.action-btn.del:hover { color: var(--red); }
 
 .totals-section { padding: 0 40px 22px; display: flex; justify-content: flex-end; }
-
 .totals-box { min-width: 260px; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
-
-.totals-row {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 8px 14px; border-bottom: 1px solid var(--line); font-size: 12px;
-}
+.totals-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 14px; border-bottom: 1px solid var(--line); font-size: 12px; }
 .totals-row:last-child { border-bottom: none; }
 .totals-row label { color: var(--muted); font-size: 11px; }
 .totals-row .val { font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700; color: var(--ink); }
 .totals-row.grand { background: var(--ink); padding: 11px 14px; }
 .totals-row.grand label { color: #e2d9cc; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; }
 .totals-row.grand .val { color: var(--gold); font-size: 15px; }
-
-.extra-input {
-  border: none; border-bottom: 1px dashed var(--line);
-  background: transparent; font-family: 'Space Mono', monospace;
-  font-size: 12px; color: var(--ink); width: 80px;
-  text-align: right; outline: none; padding: 1px 3px;
-}
+.extra-input { border: none; border-bottom: 1px dashed var(--line); background: transparent; font-family: 'Space Mono', monospace; font-size: 12px; color: var(--ink); width: 80px; text-align: right; outline: none; padding: 1px 3px; }
 
 .notes-section { padding: 0 40px 22px; }
 .notes-label { font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); font-weight: 700; margin-bottom: 6px; }
-.notes-area {
-  width: 100%; min-height: 50px; border: 1px solid var(--line);
-  border-radius: 4px; font-family: 'DM Sans', sans-serif; font-size: 12px;
-  color: var(--ink); padding: 9px 12px; outline: none; resize: vertical;
-  background: var(--soft); transition: border-color 0.2s;
-}
+.notes-area { width: 100%; min-height: 50px; border: 1px solid var(--line); border-radius: 4px; font-family: 'DM Sans', sans-serif; font-size: 12px; color: var(--ink); padding: 9px 12px; outline: none; resize: vertical; background: var(--soft); transition: border-color 0.2s; }
 .notes-area:focus { border-color: var(--gold); }
 
-.sig-section {
-  padding: 16px 40px 26px; display: flex; gap: 30px; flex-wrap: wrap;
-}
+.sig-section { padding: 16px 40px 26px; display: flex; gap: 30px; flex-wrap: wrap; }
 .sig-block { flex: 1; min-width: 130px; }
 .sig-line { border-top: 1.5px solid var(--ink); margin-bottom: 5px; margin-top: 28px; }
 .sig-name { font-size: 11px; font-weight: 600; color: var(--ink); }
 .sig-role { font-size: 10px; color: var(--muted); }
 
-.bottom-bar {
-  background: var(--ink); padding: 10px 40px;
-  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px;
-}
+.bottom-bar { background: var(--ink); padding: 10px 40px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px; }
 .bottom-bar .brand-small { font-family: 'Playfair Display', serif; font-size: 13px; color: var(--gold); font-weight: 600; }
 .bottom-bar .tagline-small { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: #7a6f64; }
 
 /* Toast */
-.toast {
-  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
-  background: var(--ink); color: #fff; padding: 10px 20px; border-radius: 40px;
-  font-size: 13px; font-weight: 500; z-index: 999; transition: transform 0.3s;
-  pointer-events: none; white-space: nowrap;
-}
+.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--ink); color: #fff; padding: 10px 20px; border-radius: 40px; font-size: 13px; font-weight: 500; z-index: 999; transition: transform 0.3s; pointer-events: none; white-space: nowrap; }
 .toast.show { transform: translateX(-50%) translateY(0); }
 
 /* Confirm modal */
-.modal-overlay {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.5);
-  display: flex; align-items: center; justify-content: center; z-index: 900;
-  display: none;
-}
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 900; display: none; }
 .modal-overlay.show { display: flex; }
-.modal-box {
-  background: var(--paper); border-radius: 12px; padding: 28px 32px;
-  max-width: 360px; width: 90%; box-shadow: 0 8px 40px rgba(0,0,0,0.2);
-}
+.modal-box { background: var(--paper); border-radius: 12px; padding: 28px 32px; max-width: 360px; width: 90%; box-shadow: 0 8px 40px rgba(0,0,0,0.2); }
 .modal-title { font-family: 'Playfair Display', serif; font-size: 18px; margin-bottom: 8px; }
 .modal-sub { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
 .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
-.modal-cancel {
-  border: 1px solid var(--line); background: var(--soft);
-  color: var(--ink); font-family: 'DM Sans', sans-serif;
-  font-size: 13px; padding: 8px 18px; border-radius: 20px; cursor: pointer;
-}
-.modal-confirm {
-  border: none; background: var(--red); color: #fff;
-  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600;
-  padding: 8px 18px; border-radius: 20px; cursor: pointer;
-}
+.modal-cancel { border: 1px solid var(--line); background: var(--soft); color: var(--ink); font-family: 'DM Sans', sans-serif; font-size: 13px; padding: 8px 18px; border-radius: 20px; cursor: pointer; }
+.modal-confirm { border: none; background: var(--red); color: #fff; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; padding: 8px 18px; border-radius: 20px; cursor: pointer; }
 
-@media (max-width: 600px) {
-  .header, .memo-title-band, .owners-section, .table-section, .totals-section, .notes-section, .sig-section, .bottom-bar { padding-left: 16px; padding-right: 16px; }
-  .brand-name { font-size: 24px; }
-  .owners-divider { display: none; }
-  .totals-box { min-width: 100%; }
+/* ════════════════════════════════
+   100% RESPONSIVE MOBILE CSS FIX
+═══════════════════════════════ */
+@media (max-width: 768px) {
+  /* Dashboard Header */
+  .dash-header { padding: 0 16px; flex-direction: column; height: auto; padding-bottom: 12px; padding-top: 12px;}
+  .dash-brand { margin-bottom: 12px; }
+  .dash-actions { width: 100%; justify-content: space-between; overflow-x: auto; padding-bottom: 4px; }
+  
+  /* Body and Stats */
   .dash-body { padding: 16px; }
+  .dash-stats { gap: 10px; }
+  .stat-card { min-width: 45%; padding: 12px 16px;}
+  
+  /* ✅ Fix for Memo Card on Mobile */
+  .memo-card { 
+    flex-direction: column; /* Stack everything vertically */
+    align-items: flex-start; /* Align to the left */
+    padding: 16px;
+    gap: 12px;
+  }
+  .memo-card-info { width: 100%; }
+  
+  /* Important: Allow text to wrap naturally on phone instead of squeezing */
+  .memo-card-items { 
+    white-space: normal; 
+    line-height: 1.4;
+    color: var(--muted);
+  }
+  
+  .memo-card-total { 
+    width: 100%;
+    font-size: 18px;
+  }
+  
+  /* Push buttons to the bottom right properly */
+  .memo-card-actions { 
+    width: 100%; 
+    justify-content: flex-end; 
+    border-top: 1px solid var(--soft); 
+    padding-top: 12px; 
+  }
+  
+  /* Editor Header & Table */
   .editor-header { padding: 0 12px; }
   .editor-actions .download-btn span, .save-btn span { display: none; }
+  .header { padding: 20px; flex-direction: column; text-align: center; gap: 15px;}
+  .address-block { text-align: center; }
+  .memo-title-band { flex-direction: column; align-items: flex-start; }
+  .memo-meta { width: 100%; justify-content: space-between; margin-top: 10px;}
+  .owners-section { flex-direction: column; align-items: flex-start; gap: 15px;}
+  .owners-divider { display: none; }
+  .table-section { padding: 16px; }
+  .totals-section { padding: 16px; }
+  .totals-box { min-width: 100%; }
+  .notes-section, .sig-section, .bottom-bar { padding-left: 16px; padding-right: 16px; }
 }
 </style>
 </head>
 <body>
 
+<!-- ═══════════════════════════════════ LOGIN SCREEN ═══════════════════════════════════ -->
+<div id="screen-login" class="screen active">
+  <div class="login-wrapper">
+    <div class="login-box">
+      <div class="login-brand">Kitoo <span>Footwear</span></div>
+      <div class="login-sub">Secure Memo System</div>
+      <input type="email" id="login-email" class="login-input" placeholder="Email Address">
+      <input type="password" id="login-password" class="login-input" placeholder="Password">
+      <button class="login-btn-submit" onclick="handleLogin()">Login to Dashboard</button>
+    </div>
+  </div>
+</div>
+
 <!-- ═══════════════════════════════════ DASHBOARD ═══════════════════════════════════ -->
-<div id="screen-dash" class="screen active">
+<div id="screen-dash" class="screen">
   <div class="dash-header">
     <div class="dash-brand">
       <div class="dash-brand-name">Kitoo <span>Footwear</span></div>
       <div class="dash-brand-tag">Memo System</div>
     </div>
-    <div style="display:flex;gap:8px;align-items:center;">
-      <button class="backup-btn" onclick="importBackup()" title="Import Backup">⬆ Import</button>
+    <div class="dash-actions">
+      <button class="backup-btn" onclick="importBackup()" title="Import Local Backup">⬆ Import</button>
       <button class="backup-btn" onclick="exportBackup()" title="Export Backup">⬇ Export</button>
       <button class="dash-new-btn" onclick="newMemo()">＋ <span>New Memo</span></button>
+      <button class="backup-btn logout-btn" onclick="handleLogout()" title="Logout">🚪 Logout</button>
     </div>
   </div>
 
@@ -614,19 +416,19 @@ td.del-cell { text-align: center; width: 28px; }
         <div class="stat-val" id="stat-month">0</div>
         <div class="stat-label">This Month</div>
       </div>
-      <div class="stat-card">
+      <div class="stat-card" style="width: 100%;">
         <div class="stat-val" id="stat-amount">৳0</div>
         <div class="stat-label">Total Estimated</div>
       </div>
     </div>
 
-    <div class="section-label" style="margin-bottom:14px">Memo History</div>
+    <div class="section-label" style="margin-bottom:14px">Memo History (Cloud Synced)</div>
 
     <div class="memo-list" id="memo-list">
       <div class="empty-state" id="empty-state">
         <div class="empty-icon">📋</div>
-        <div class="empty-title">No memos yet</div>
-        <div class="empty-sub">Create your first purchase memo to get started</div>
+        <div class="empty-title">Loading memos...</div>
+        <div class="empty-sub">Please wait</div>
       </div>
     </div>
   </div>
@@ -711,6 +513,7 @@ td.del-cell { text-align: center; width: 28px; }
         <table id="memo-table">
           <thead>
             <tr>
+              <th style="width:24px"></th>
               <th class="num">SL</th>
               <th>Item Description</th>
               <th>Specification / Size</th>
@@ -718,7 +521,7 @@ td.del-cell { text-align: center; width: 28px; }
               <th>Unit</th>
               <th class="rate">Unit Price (৳)</th>
               <th class="total">Amount (৳)</th>
-              <th style="width:28px"></th>
+              <th style="width:30px"></th>
             </tr>
           </thead>
           <tbody id="table-body"></tbody>
@@ -804,484 +607,668 @@ td.del-cell { text-align: center; width: 28px; }
   </div>
 </div>
 
-<script>
-/* ═══════════════════════ STATE ═══════════════════════ */
-let memos = [];        // loaded from storage
-let currentId = null;  // editing memo id
-let rowCount = 0;
-let deleteTargetId = null;
+<!-- ═══════════════════════════════════ FIREBASE & LOGIC ═══════════════════════════════════ -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-analytics.js";
+  import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+  import { getFirestore, collection, doc, setDoc, getDocs, deleteDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
-/* ═══ STORAGE (localStorage) ═══ */
-const STORAGE_KEY = 'kitoo_footwear_memos_v1';
-function loadMemos() {
-  try { memos = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
-  catch(e) { memos = []; }
-}
-function saveMemos() {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(memos)); }
-  catch(e) { showToast('⚠ Storage error'); }
-}
-function exportBackup() {
-  if (!memos.length) { showToast('⚠ কোনো মেমো নেই'); return; }
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([JSON.stringify(memos,null,2)],{type:'application/json'}));
-  a.download = 'kitoo-backup-' + new Date().toISOString().slice(0,10) + '.json';
-  a.click();
-  showToast('✅ Backup exported!');
-}
-function importBackup() {
-  const inp = document.createElement('input');
-  inp.type = 'file'; inp.accept = '.json';
-  inp.onchange = e => {
-    const f = e.target.files[0]; if (!f) return;
-    const r = new FileReader();
-    r.onload = ev => {
-      try {
-        const data = JSON.parse(ev.target.result);
-        if (!Array.isArray(data)) throw 0;
-        const ids = new Set(memos.map(m => m.id));
-        const fresh = data.filter(m => !ids.has(m.id));
-        memos = [...memos, ...fresh];
-        saveMemos(); renderDash();
-        showToast('✅ ' + fresh.length + ' memo imported!');
-      } catch { showToast('⚠ Invalid file'); }
-    };
-    r.readAsText(f);
+  // Your Firebase Configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyDqrZ85kxTp9ByuHdTy9R5WCZk44ItOO20",
+    authDomain: "kitoomemo-a767f.firebaseapp.com",
+    projectId: "kitoomemo-a767f",
+    storageBucket: "kitoomemo-a767f.firebasestorage.app",
+    messagingSenderId: "790537793318",
+    appId: "1:790537793318:web:dadc6dce25de68c5dbdbe7",
+    measurementId: "G-Z3BFPZ7020"
   };
-  inp.click();
-}
 
-/* ═══════════════════════ DASHBOARD ═══════════════════════ */
-function showDash() {
-  document.getElementById('screen-dash').classList.add('active');
-  document.getElementById('screen-editor').classList.remove('active');
-  renderDash();
-}
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
 
-function showEditor() {
-  document.getElementById('screen-editor').classList.add('active');
-  document.getElementById('screen-dash').classList.remove('active');
-}
+  /* ═══════════════════════ STATE ═══════════════════════ */
+  let memos = [];        
+  let currentId = null;  
+  let rowCount = 0;
+  let deleteTargetId = null;
+  window.dragSrcEl = null;
 
-function renderDash() {
-  const list = document.getElementById('memo-list');
-  const empty = document.getElementById('empty-state');
+  /* ═══════════════════════ AUTHENTICATION ═══════════════════════ */
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      document.getElementById('screen-login').classList.remove('active');
+      showDash();
+      await fetchMemosFromCloud();
+    } else {
+      document.getElementById('screen-dash').classList.remove('active');
+      document.getElementById('screen-editor').classList.remove('active');
+      document.getElementById('screen-login').classList.add('active');
+    }
+  });
 
-  // Stats
-  document.getElementById('stat-total').textContent = memos.length;
+  window.handleLogin = async () => {
+    const email = document.getElementById('login-email').value;
+    const pass = document.getElementById('login-password').value;
+    if(!email || !pass) { showToast('⚠ Email & Password required'); return; }
+    
+    try {
+      showToast('Logging in...');
+      await signInWithEmailAndPassword(auth, email, pass);
+    } catch (e) {
+      showToast('⚠ Login Failed! Check credentials.');
+      console.error(e);
+    }
+  };
 
-  const now = new Date();
-  const thisMonth = memos.filter(m => {
-    const d = new Date(m.date);
-    return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
-  }).length;
-  document.getElementById('stat-month').textContent = thisMonth;
+  window.handleLogout = async () => {
+    try { await signOut(auth); } 
+    catch (e) { console.error(e); }
+  };
 
-  const totalAmt = memos.reduce((s, m) => s + (parseFloat(m.grandTotal) || 0), 0);
-  document.getElementById('stat-amount').textContent = '৳' + Math.round(totalAmt).toLocaleString('en-IN');
-
-  // List
-  // Remove old cards
-  Array.from(list.children).forEach(c => { if(c.id !== 'empty-state') c.remove(); });
-
-  if (memos.length === 0) {
-    empty.style.display = 'block';
-    return;
+  /* ═══════════════════════ CLOUD DATABASE ═══════════════════════ */
+  async function fetchMemosFromCloud() {
+    try {
+      const q = query(collection(db, "memos"));
+      const querySnapshot = await getDocs(q);
+      memos = [];
+      querySnapshot.forEach((doc) => {
+        memos.push(doc.data());
+      });
+      renderDash();
+    } catch(e) {
+      console.error(e);
+      showToast('⚠ Error fetching memos from Cloud');
+    }
   }
-  empty.style.display = 'none';
 
-  // Sort newest first
-  const sorted = [...memos].sort((a, b) => new Date(b.savedAt) - new Date(a.savedAt));
+  async function saveMemoToCloud(memoData) {
+    try {
+      await setDoc(doc(db, "memos", memoData.id), memoData);
+      showToast('✅ Saved to Cloud!');
+    } catch(e) {
+      console.error(e);
+      showToast('⚠ Error saving to Cloud');
+    }
+  }
 
-  sorted.forEach(m => {
-    const card = document.createElement('div');
-    card.className = 'memo-card';
-    card.innerHTML = `
-      <div class="memo-card-num">${m.memoNum || 'N/A'}</div>
-      <div class="memo-card-info">
-        <div class="memo-card-date">${formatDate(m.date)} &nbsp;·&nbsp; ${m.itemCount} item${m.itemCount !== 1 ? 's' : ''}</div>
-        <div class="memo-card-items">${m.preview || 'No items'}</div>
-      </div>
-      <div class="memo-card-total">৳ ${parseFloat(m.grandTotal || 0).toLocaleString('en-IN', {minimumFractionDigits:2})}</div>
-      <div class="memo-card-actions">
-        <button class="icon-btn" title="Edit" onclick="editMemo('${m.id}')">✏️</button>
-        <button class="icon-btn" title="Download" onclick="downloadMemoById('${m.id}')">⬇️</button>
-        <button class="icon-btn del" title="Delete" onclick="confirmDelete('${m.id}')">🗑</button>
-      </div>
-    `;
-    list.appendChild(card);
-  });
-}
+  async function deleteMemoFromCloud(id) {
+    try {
+      await deleteDoc(doc(db, "memos", id));
+      memos = memos.filter(m => m.id !== id);
+      renderDash();
+      showToast('🗑 Memo deleted from Cloud');
+    } catch(e) {
+      console.error(e);
+      showToast('⚠ Error deleting from Cloud');
+    }
+  }
 
-function formatDate(d) {
-  if (!d) return '—';
-  const date = new Date(d);
-  return date.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
-}
-
-/* ═══════════════════════ NEW / EDIT MEMO ═══════════════════════ */
-function newMemo() {
-  currentId = 'memo-' + Date.now();
-  document.getElementById('editor-title').textContent = 'New Memo';
-  clearEditor();
-  // Auto memo number
-  const nextNum = memos.length + 1;
-  document.getElementById('memo-num').value = 'KF-' + String(nextNum).padStart(4, '0');
-  document.getElementById('memo-date').valueAsDate = new Date();
-  rowCount = 0;
-  document.getElementById('table-body').innerHTML = '';
-  for (let i = 0; i < 5; i++) addRow();
-  showEditor();
-}
-
-function editMemo(id) {
-  const m = memos.find(x => x.id === id);
-  if (!m) return;
-  currentId = id;
-  document.getElementById('editor-title').textContent = 'Edit Memo — ' + (m.memoNum || id);
-  clearEditor();
-
-  document.getElementById('memo-num').value = m.memoNum || '';
-  document.getElementById('memo-date').value = m.date || '';
-  document.getElementById('transport').value = m.transport || '';
-  document.getElementById('other').value = m.other || '';
-  document.getElementById('discount').value = m.discount || '';
-  document.getElementById('notes').value = m.notes || '';
-
-  rowCount = 0;
-  document.getElementById('table-body').innerHTML = '';
-  (m.rows || []).forEach(r => addRow(r));
-
-  updateTotals();
-  showEditor();
-}
-
-function clearEditor() {
-  document.getElementById('memo-num').value = '';
-  document.getElementById('memo-date').value = '';
-  document.getElementById('transport').value = '';
-  document.getElementById('other').value = '';
-  document.getElementById('discount').value = '';
-  document.getElementById('notes').value = '';
-  document.getElementById('subtotal').textContent = '৳ 0.00';
-  document.getElementById('grand-total').textContent = '৳ 0.00';
-}
-
-function goBack() {
-  showDash();
-}
-
-/* ═══════════════════════ TABLE ROWS ═══════════════════════ */
-function addRow(data) {
-  rowCount++;
-  const tbody = document.getElementById('table-body');
-  const tr = document.createElement('tr');
-  tr.id = `row-${rowCount}`;
-  tr.innerHTML = `
-    <td class="sl-num">${String(rowCount).padStart(2,'0')}</td>
-    <td><input type="text" placeholder="e.g. PVC Sole Sheet" value="${data ? escHtml(data.desc) : ''}"></td>
-    <td class="spec-cell"><textarea rows="1" placeholder="e.g. Size 7-10, Black" oninput="autoResize(this)">${data ? escHtml(data.spec) : ''}</textarea></td>
-    <td class="qty-cell"><input type="number" placeholder="0" min="0" value="${data ? data.qty : ''}" oninput="calcRow(${rowCount})" data-qty></td>
-    <td class="unit-cell"><input type="text" placeholder="Pcs" value="${data ? escHtml(data.unit) : ''}"></td>
-    <td class="rate-cell"><input type="number" placeholder="0.00" min="0" step="0.01" value="${data ? data.rate : ''}" oninput="calcRow(${rowCount})" data-rate></td>
-    <td class="total-cell"><input type="number" placeholder="0.00" readonly value="${data ? data.total : ''}" data-total></td>
-    <td class="del-cell"><button class="del-btn" onclick="deleteRow(${rowCount})" title="Remove">✕</button></td>
-  `;
-  tbody.appendChild(tr);
-  // auto resize textarea
-  const ta = tr.querySelector('textarea');
-  if (ta) setTimeout(() => autoResize(ta), 0);
-}
-
-function calcRow(id) {
-  const row = document.getElementById(`row-${id}`);
-  if (!row) return;
-  const qty = parseFloat(row.querySelector('[data-qty]').value) || 0;
-  const rate = parseFloat(row.querySelector('[data-rate]').value) || 0;
-  row.querySelector('[data-total]').value = (qty * rate).toFixed(2);
-  updateTotals();
-}
-
-function deleteRow(id) {
-  const row = document.getElementById(`row-${id}`);
-  if (row) row.remove();
-  renumberRows();
-  updateTotals();
-}
-
-function renumberRows() {
-  const rows = document.querySelectorAll('#table-body tr');
-  rows.forEach((r, i) => {
-    const sl = r.querySelector('.sl-num');
-    if (sl) sl.textContent = String(i + 1).padStart(2, '0');
-  });
-}
-
-function updateTotals() {
-  let sub = 0;
-  document.querySelectorAll('[data-total]').forEach(el => { sub += parseFloat(el.value) || 0; });
-  const transport = parseFloat(document.getElementById('transport').value) || 0;
-  const other = parseFloat(document.getElementById('other').value) || 0;
-  const discount = parseFloat(document.getElementById('discount').value) || 0;
-  const grand = sub + transport + other - discount;
-  document.getElementById('subtotal').textContent = `৳ ${sub.toLocaleString('en-IN', {minimumFractionDigits:2})}`;
-  document.getElementById('grand-total').textContent = `৳ ${grand.toLocaleString('en-IN', {minimumFractionDigits:2})}`;
-}
-
-function autoResize(el) {
-  el.style.height = 'auto';
-  el.style.height = el.scrollHeight + 'px';
-}
-
-/* ═══════════════════════ SAVE MEMO ═══════════════════════ */
-function saveMemo() {
-  const rows = collectRows();
-  const grand = parseFloat(document.getElementById('grand-total').textContent.replace(/[৳,\s]/g,'')) || 0;
-  const memoNum = document.getElementById('memo-num').value.trim();
-  const date = document.getElementById('memo-date').value;
-
-  const preview = rows.filter(r => r.desc).map(r => r.desc).slice(0, 3).join(', ') || 'No items';
-
-  const memoData = {
-    id: currentId,
-    memoNum,
-    date,
-    savedAt: new Date().toISOString(),
-    transport: document.getElementById('transport').value,
-    other: document.getElementById('other').value,
-    discount: document.getElementById('discount').value,
-    notes: document.getElementById('notes').value,
-    rows,
-    grandTotal: grand,
-    itemCount: rows.filter(r => r.desc).length,
-    preview
+  /* ═══════════════════════ BACKUP (JSON) ═══════════════════════ */
+  window.exportBackup = function() {
+    if (!memos.length) { showToast('⚠ কোনো মেমো নেই'); return; }
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([JSON.stringify(memos,null,2)],{type:'application/json'}));
+    a.download = 'kitoo-backup-' + new Date().toISOString().slice(0,10) + '.json';
+    a.click();
+    showToast('✅ Backup exported!');
   };
 
-  const idx = memos.findIndex(m => m.id === currentId);
-  if (idx >= 0) memos[idx] = memoData;
-  else memos.push(memoData);
+  window.importBackup = function() {
+    const inp = document.createElement('input');
+    inp.type = 'file'; inp.accept = '.json';
+    inp.onchange = async (e) => {
+      const f = e.target.files[0]; if (!f) return;
+      const r = new FileReader();
+      r.onload = async (ev) => {
+        try {
+          const data = JSON.parse(ev.target.result);
+          if (!Array.isArray(data)) throw 0;
+          showToast('Syncing to cloud, please wait...');
+          let count = 0;
+          for (let m of data) {
+            const exists = memos.find(x => x.id === m.id);
+            if(!exists) {
+              await setDoc(doc(db, "memos", m.id), m);
+              memos.push(m);
+              count++;
+            }
+          }
+          renderDash();
+          showToast(`✅ ${count} new memos imported!`);
+        } catch { showToast('⚠ Invalid file'); }
+      };
+      r.readAsText(f);
+    };
+    inp.click();
+  };
 
-  saveMemos();
-  showToast('✅ Memo saved!');
-}
-
-function collectRows() {
-  const rows = [];
-  document.querySelectorAll('#table-body tr').forEach(tr => {
-    const inputs = tr.querySelectorAll('input, textarea');
-    const desc = inputs[0] ? inputs[0].value : '';
-    const spec = inputs[1] ? inputs[1].value : '';
-    const qty  = inputs[2] ? inputs[2].value : '';
-    const unit = inputs[3] ? inputs[3].value : '';
-    const rate = inputs[4] ? inputs[4].value : '';
-    const total= inputs[5] ? inputs[5].value : '';
-    rows.push({ desc, spec, qty, unit, rate, total });
-  });
-  return rows;
-}
-
-/* ═══════════════════════ DOWNLOAD ═══════════════════════ */
-function downloadMemo() {
-  const html = buildPrintHTML(
-    document.getElementById('memo-num').value,
-    document.getElementById('memo-date').value,
-    collectRows(),
-    document.getElementById('transport').value,
-    document.getElementById('other').value,
-    document.getElementById('discount').value,
-    document.getElementById('notes').value,
-    document.getElementById('subtotal').textContent,
-    document.getElementById('grand-total').textContent
-  );
-  triggerDownload(html, `kitoo-memo-${document.getElementById('memo-num').value || 'draft'}.html`);
-}
-
-function downloadMemoById(id) {
-  const m = memos.find(x => x.id === id);
-  if (!m) return;
-
-  let sub = 0;
-  (m.rows || []).forEach(r => { sub += parseFloat(r.total) || 0; });
-  const transport = parseFloat(m.transport) || 0;
-  const other = parseFloat(m.other) || 0;
-  const discount = parseFloat(m.discount) || 0;
-  const grand = sub + transport + other - discount;
-
-  const html = buildPrintHTML(
-    m.memoNum, m.date, m.rows || [],
-    m.transport, m.other, m.discount, m.notes,
-    `৳ ${sub.toLocaleString('en-IN', {minimumFractionDigits:2})}`,
-    `৳ ${grand.toLocaleString('en-IN', {minimumFractionDigits:2})}`
-  );
-  triggerDownload(html, `kitoo-memo-${m.memoNum || m.id}.html`);
-}
-
-function triggerDownload(html, filename) {
-  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = filename; a.click();
-  URL.revokeObjectURL(url);
-  showToast('⬇ Downloaded!');
-}
-
-function buildPrintHTML(memoNum, date, rows, transport, other, discount, notes, subtotalText, grandText) {
-  const rowsHtml = rows.map((r, i) => `
-    <tr>
-      <td style="text-align:center;font-family:'Space Mono',monospace;font-size:10px;color:#7a6f64;padding:6px 8px;">${String(i+1).padStart(2,'0')}</td>
-      <td style="padding:6px 8px;font-size:12px;">${escHtml(r.desc)}</td>
-      <td style="padding:6px 8px;font-size:12px;word-break:break-word;">${escHtml(r.spec)}</td>
-      <td style="padding:6px 8px;font-size:11px;text-align:right;font-family:'Space Mono',monospace;">${r.qty}</td>
-      <td style="padding:6px 8px;font-size:11px;text-align:center;">${escHtml(r.unit)}</td>
-      <td style="padding:6px 8px;font-size:11px;text-align:right;font-family:'Space Mono',monospace;">${r.rate}</td>
-      <td style="padding:6px 8px;font-size:11px;text-align:right;font-family:'Space Mono',monospace;color:#2a6b45;font-weight:700;">${parseFloat(r.total || 0).toLocaleString('en-IN', {minimumFractionDigits:2})}</td>
-    </tr>`).join('');
-
-  return `<!DOCTYPE html>
-<html><head><meta charset="UTF-8">
-<title>Kitoo Footwear Memo ${memoNum}</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<style>
-@page { size: A4 portrait; margin: 6mm 8mm; }
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'DM Sans',sans-serif;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-</style>
-</head><body>
-<div style="background:#fff;max-width:860px;margin:0 auto;border:1px solid #e2d9cc;">
-  <div style="height:5px;background:linear-gradient(90deg,#b5451b,#c9922a,#b5451b);"></div>
-
-  <div style="padding:18px 28px 14px;display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid #e2d9cc;flex-wrap:wrap;gap:12px;">
-    <div>
-      <div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:#1a1612;line-height:1;">Kitoo <span style="color:#b5451b;">Footwear</span></div>
-      <div style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:#c9922a;margin-top:4px;">Comfort in every step</div>
-    </div>
-    <div style="text-align:right;font-size:11px;color:#7a6f64;line-height:1.8;">
-      <strong style="color:#1a1612;">Sandal Manufacturing Unit</strong><br>
-      Jatahara Bajar, Gomostapur<br>
-      Chapainawabganj, Bangladesh
-    </div>
-  </div>
-
-  <div style="background:#f2ece3;padding:10px 28px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #e2d9cc;flex-wrap:wrap;gap:8px;">
-    <div style="font-family:'Playfair Display',serif;font-size:14px;font-weight:600;color:#b5451b;">Estimated Purchase Memo</div>
-    <div style="display:flex;gap:20px;">
-      <div style="text-align:right;">
-        <div style="font-size:7px;letter-spacing:2px;text-transform:uppercase;color:#7a6f64;">Memo No.</div>
-        <div style="font-family:'Space Mono',monospace;font-size:11px;font-weight:700;">${escHtml(memoNum)}</div>
-      </div>
-      <div style="text-align:right;">
-        <div style="font-size:7px;letter-spacing:2px;text-transform:uppercase;color:#7a6f64;">Date</div>
-        <div style="font-family:'Space Mono',monospace;font-size:11px;">${date ? new Date(date).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}) : '—'}</div>
-      </div>
-    </div>
-  </div>
-
-  <div style="padding:10px 28px;display:flex;gap:20px;border-bottom:1px solid #e2d9cc;flex-wrap:wrap;align-items:center;">
-    ${ownerHtml('SA','Owner & Manager','Suit Ahmed','+880 1716-979082')}
-    <div style="width:1px;height:38px;background:#e2d9cc;"></div>
-    ${ownerHtml('AM','Owner & Manager','Asadujjaman Masum','+880 1885-878426')}
-    <div style="width:1px;height:38px;background:#e2d9cc;"></div>
-    ${ownerHtml('HM','Co-Manager','Hadiujjaman Maruf','+880 1885-878487')}
-  </div>
-
-  <div style="padding:14px 28px 10px;">
-    <table style="width:100%;border-collapse:collapse;">
-      <thead>
-        <tr style="background:#1a1612;">
-          <th style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:#fff;padding:8px 8px;text-align:center;width:34px;font-weight:400;">SL</th>
-          <th style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:#fff;padding:8px 8px;text-align:left;font-weight:400;">Item Description</th>
-          <th style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:#fff;padding:8px 8px;text-align:left;font-weight:400;">Specification / Size</th>
-          <th style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:#fff;padding:8px 8px;text-align:right;font-weight:400;">Qty</th>
-          <th style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:#fff;padding:8px 8px;text-align:center;font-weight:400;">Unit</th>
-          <th style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:#fff;padding:8px 8px;text-align:right;font-weight:400;">Unit Price (৳)</th>
-          <th style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:#fff;padding:8px 8px;text-align:right;font-weight:400;">Amount (৳)</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${rowsHtml}
-      </tbody>
-    </table>
-  </div>
-
-  <div style="padding:0 28px 14px;display:flex;justify-content:flex-end;">
-    <div style="min-width:240px;border:1px solid #e2d9cc;border-radius:4px;overflow:hidden;">
-      <div style="display:flex;justify-content:space-between;padding:7px 12px;border-bottom:1px solid #e2d9cc;font-size:11px;"><span style="color:#7a6f64;">Sub Total</span><span style="font-family:'Space Mono',monospace;font-weight:700;">${subtotalText}</span></div>
-      <div style="display:flex;justify-content:space-between;padding:7px 12px;border-bottom:1px solid #e2d9cc;font-size:11px;"><span style="color:#7a6f64;">Transport</span><span style="font-family:'Space Mono',monospace;">৳ ${parseFloat(transport||0).toLocaleString('en-IN',{minimumFractionDigits:2})}</span></div>
-      <div style="display:flex;justify-content:space-between;padding:7px 12px;border-bottom:1px solid #e2d9cc;font-size:11px;"><span style="color:#7a6f64;">Other Charges</span><span style="font-family:'Space Mono',monospace;">৳ ${parseFloat(other||0).toLocaleString('en-IN',{minimumFractionDigits:2})}</span></div>
-      <div style="display:flex;justify-content:space-between;padding:7px 12px;border-bottom:1px solid #e2d9cc;font-size:11px;"><span style="color:#7a6f64;">Discount</span><span style="font-family:'Space Mono',monospace;">৳ ${parseFloat(discount||0).toLocaleString('en-IN',{minimumFractionDigits:2})}</span></div>
-      <div style="display:flex;justify-content:space-between;padding:10px 12px;background:#1a1612;"><span style="color:#e2d9cc;font-size:9px;letter-spacing:2px;text-transform:uppercase;font-weight:600;">Grand Total</span><span style="font-family:'Space Mono',monospace;font-size:15px;font-weight:700;color:#c9922a;">${grandText}</span></div>
-    </div>
-  </div>
-
-  ${notes ? `<div style="padding:0 28px 12px;"><div style="font-size:7px;letter-spacing:3px;text-transform:uppercase;color:#7a6f64;font-weight:700;margin-bottom:5px;">Remarks / Notes</div><div style="border:1px solid #e2d9cc;border-radius:4px;padding:8px 12px;font-size:11px;background:#f2ece3;">${escHtml(notes)}</div></div>` : ''}
-
-  <div style="padding:10px 28px 20px;display:flex;gap:20px;flex-wrap:wrap;">
-    ${sigHtml('Suit Ahmed','Owner & Manager')}
-    ${sigHtml('Asadujjaman Masum','Owner & Manager')}
-    ${sigHtml('Hadiujjaman Maruf','Co-Manager')}
-    ${sigHtml('Supplier / Vendor','Authorized Signature')}
-  </div>
-
-  <div style="background:#1a1612;padding:8px 28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px;">
-    <div style="font-family:'Playfair Display',serif;font-size:12px;color:#c9922a;font-weight:600;">Kitoo Footwear</div>
-    <div style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:#7a6f64;">Estimated memo — not a final invoice</div>
-  </div>
-</div>
-<script>window.onload=()=>window.print()<\/script>
-</body></html>`;
-}
-
-function ownerHtml(initials, role, name, phone) {
-  return `<div style="display:flex;align-items:center;gap:8px;">
-    <div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#b5451b,#c9922a);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:11px;color:#fff;font-weight:700;flex-shrink:0;">${initials}</div>
-    <div>
-      <div style="font-size:7px;letter-spacing:2px;text-transform:uppercase;color:#7a6f64;">${role}</div>
-      <div style="font-size:12px;font-weight:600;">${name}</div>
-      <div style="font-family:'Space Mono',monospace;font-size:9px;color:#b5451b;">${phone}</div>
-    </div>
-  </div>`;
-}
-
-function sigHtml(name, role) {
-  return `<div style="flex:1;min-width:120px;">
-    <div style="border-top:1.5px solid #1a1612;margin-top:26px;margin-bottom:4px;"></div>
-    <div style="font-size:10px;font-weight:600;">${name}</div>
-    <div style="font-size:9px;color:#7a6f64;">${role}</div>
-  </div>`;
-}
-
-function escHtml(str) {
-  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-/* ═══════════════════════ DELETE ═══════════════════════ */
-function confirmDelete(id) {
-  deleteTargetId = id;
-  document.getElementById('modal').classList.add('show');
-  document.getElementById('modal-confirm-btn').onclick = () => {
-    memos = memos.filter(m => m.id !== deleteTargetId);
-    saveMemos();
-    closeModal();
+  /* ═══════════════════════ DASHBOARD UI ═══════════════════════ */
+  window.showDash = function() {
+    document.getElementById('screen-dash').classList.add('active');
+    document.getElementById('screen-editor').classList.remove('active');
     renderDash();
-    showToast('🗑 Memo deleted');
+  }
+
+  window.showEditor = function() {
+    document.getElementById('screen-editor').classList.add('active');
+    document.getElementById('screen-dash').classList.remove('active');
+  }
+
+  window.renderDash = function() {
+    const list = document.getElementById('memo-list');
+    const empty = document.getElementById('empty-state');
+
+    document.getElementById('stat-total').textContent = memos.length;
+    const now = new Date();
+    const thisMonth = memos.filter(m => {
+      const d = new Date(m.date);
+      return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+    }).length;
+    document.getElementById('stat-month').textContent = thisMonth;
+    const totalAmt = memos.reduce((s, m) => s + (parseFloat(m.grandTotal) || 0), 0);
+    document.getElementById('stat-amount').textContent = '৳' + Math.round(totalAmt).toLocaleString('en-IN');
+
+    Array.from(list.children).forEach(c => { if(c.id !== 'empty-state') c.remove(); });
+
+    if (memos.length === 0) {
+      empty.innerHTML = `
+        <div class="empty-icon">📋</div>
+        <div class="empty-title">No memos yet</div>
+        <div class="empty-sub">Create your first purchase memo to get started</div>
+      `;
+      empty.style.display = 'block';
+      return;
+    }
+    empty.style.display = 'none';
+
+    const sorted = [...memos].sort((a, b) => new Date(b.savedAt) - new Date(a.savedAt));
+
+    sorted.forEach(m => {
+      const card = document.createElement('div');
+      card.className = 'memo-card';
+      card.innerHTML = `
+        <div class="memo-card-num">${m.memoNum || 'N/A'}</div>
+        <div class="memo-card-info">
+          <div class="memo-card-date">${formatDate(m.date)} &nbsp;·&nbsp; ${m.itemCount} item${m.itemCount !== 1 ? 's' : ''}</div>
+          <div class="memo-card-items">${m.preview || 'No items'}</div>
+        </div>
+        <div class="memo-card-total">৳ ${parseFloat(m.grandTotal || 0).toLocaleString('en-IN', {minimumFractionDigits:2})}</div>
+        <div class="memo-card-actions">
+          <button class="icon-btn" title="View" onclick="viewMemo('${m.id}')">👁️</button>
+          <button class="icon-btn" title="Edit" onclick="editMemo('${m.id}')">✏️</button>
+          <button class="icon-btn" title="Download" onclick="downloadMemoById('${m.id}')">⬇️</button>
+          <button class="icon-btn del" title="Delete" onclick="confirmDelete('${m.id}')">🗑</button>
+        </div>
+      `;
+      list.appendChild(card);
+    });
+  }
+
+  function formatDate(d) {
+    if (!d) return '—';
+    const date = new Date(d);
+    return date.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
+  }
+
+  /* ═══════════════════════ NEW / EDIT MEMO ═══════════════════════ */
+  window.newMemo = function() {
+    currentId = 'memo-' + Date.now();
+    document.getElementById('editor-title').textContent = 'New Memo';
+    clearEditor();
+    const nextNum = memos.length + 1;
+    document.getElementById('memo-num').value = 'KF-' + String(nextNum).padStart(4, '0');
+    document.getElementById('memo-date').valueAsDate = new Date();
+    rowCount = 0;
+    document.getElementById('table-body').innerHTML = '';
+    for (let i = 0; i < 5; i++) window.addRow();
+    window.showEditor();
+  }
+
+  window.editMemo = function(id) {
+    const m = memos.find(x => x.id === id);
+    if (!m) return;
+    currentId = id;
+    document.getElementById('editor-title').textContent = 'Edit Memo — ' + (m.memoNum || id);
+    clearEditor();
+
+    document.getElementById('memo-num').value = m.memoNum || '';
+    document.getElementById('memo-date').value = m.date || '';
+    document.getElementById('transport').value = m.transport || '';
+    document.getElementById('other').value = m.other || '';
+    document.getElementById('discount').value = m.discount || '';
+    document.getElementById('notes').value = m.notes || '';
+
+    rowCount = 0;
+    document.getElementById('table-body').innerHTML = '';
+    (m.rows || []).forEach(r => window.addRow(r));
+
+    window.updateTotals();
+    window.showEditor();
+  }
+
+  function clearEditor() {
+    document.getElementById('memo-num').value = '';
+    document.getElementById('memo-date').value = '';
+    document.getElementById('transport').value = '';
+    document.getElementById('other').value = '';
+    document.getElementById('discount').value = '';
+    document.getElementById('notes').value = '';
+    document.getElementById('subtotal').textContent = '৳ 0.00';
+    document.getElementById('grand-total').textContent = '৳ 0.00';
+  }
+
+  window.goBack = function() { window.showDash(); }
+
+  /* ═══════════════════════ TABLE ROWS & DRAG & DROP ═══════════════════════ */
+  window.handleDragStart = function(e) {
+    window.dragSrcEl = this;
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', this.id);
+    this.classList.add('dragging');
   };
-}
 
-function closeModal() {
-  document.getElementById('modal').classList.remove('show');
-  deleteTargetId = null;
-}
+  window.handleDragOver = function(e) {
+    if (e.preventDefault) e.preventDefault(); 
+    e.dataTransfer.dropEffect = 'move';
+    
+    const bounding = this.getBoundingClientRect();
+    const offset = bounding.y + (bounding.height / 2);
+    if (e.clientY - offset > 0) {
+      this.style['border-bottom'] = '2px solid var(--accent)';
+      this.style['border-top'] = '';
+    } else {
+      this.style['border-top'] = '2px solid var(--accent)';
+      this.style['border-bottom'] = '';
+    }
+    return false;
+  };
 
-/* ═══════════════════════ TOAST ═══════════════════════ */
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2500);
-}
+  window.handleDragLeave = function(e) {
+    this.style['border-top'] = '';
+    this.style['border-bottom'] = '';
+  };
 
-/* ═══════════════════════ INIT ═══════════════════════ */
-loadMemos(); renderDash();
+  window.handleDrop = function(e) {
+    if (e.stopPropagation) e.stopPropagation();
+    if (window.dragSrcEl !== this) {
+       const tbody = this.parentNode;
+       const bounding = this.getBoundingClientRect();
+       const offset = bounding.y + (bounding.height / 2);
+       if (e.clientY - offset > 0) {
+          tbody.insertBefore(window.dragSrcEl, this.nextSibling);
+       } else {
+          tbody.insertBefore(window.dragSrcEl, this);
+       }
+       window.renumberRows();
+    }
+    this.style['border-top'] = '';
+    this.style['border-bottom'] = '';
+    return false;
+  };
+
+  window.handleDragEnd = function(e) {
+    this.classList.remove('dragging');
+    document.querySelectorAll('#table-body tr').forEach(row => {
+      row.style['border-top'] = '';
+      row.style['border-bottom'] = '';
+    });
+  };
+
+  window.addRow = function(data) {
+    rowCount++;
+    const tbody = document.getElementById('table-body');
+    const tr = document.createElement('tr');
+    tr.id = `row-${rowCount}`;
+    
+    tr.addEventListener('dragstart', window.handleDragStart);
+    tr.addEventListener('dragover', window.handleDragOver);
+    tr.addEventListener('dragleave', window.handleDragLeave);
+    tr.addEventListener('drop', window.handleDrop);
+    tr.addEventListener('dragend', window.handleDragEnd);
+
+    tr.innerHTML = `
+      <td style="width:24px">
+        <div class="drag-handle" title="Drag to move" 
+             onmousedown="this.closest('tr').setAttribute('draggable', true)"
+             onmouseup="this.closest('tr').setAttribute('draggable', false)"
+             onmouseleave="this.closest('tr').setAttribute('draggable', false)">
+          ⋮⋮
+        </div>
+      </td>
+      <td class="sl-num">${String(rowCount).padStart(2,'0')}</td>
+      <td><input type="text" placeholder="e.g. PVC Sole Sheet" value="${data ? escHtml(data.desc) : ''}"></td>
+      <td class="spec-cell"><textarea rows="1" placeholder="e.g. Size 7-10, Black" oninput="autoResize(this)">${data ? escHtml(data.spec) : ''}</textarea></td>
+      <td class="qty-cell"><input type="number" placeholder="0" min="0" value="${data ? data.qty : ''}" oninput="calcRow(${rowCount})" data-qty></td>
+      <td class="unit-cell"><input type="text" placeholder="Pcs" value="${data ? escHtml(data.unit) : ''}"></td>
+      <td class="rate-cell"><input type="number" placeholder="0.00" min="0" step="0.01" value="${data ? data.rate : ''}" oninput="calcRow(${rowCount})" data-rate></td>
+      <td class="total-cell"><input type="number" placeholder="0.00" readonly value="${data ? data.total : ''}" data-total></td>
+      <td class="action-cell">
+        <button class="action-btn del" onclick="deleteRow(${rowCount})" title="Remove">✕</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+    const ta = tr.querySelector('textarea');
+    if (ta) setTimeout(() => window.autoResize(ta), 0);
+  }
+
+  window.calcRow = function(id) {
+    const row = document.getElementById(`row-${id}`);
+    if (!row) return;
+    const qty = parseFloat(row.querySelector('[data-qty]').value) || 0;
+    const rate = parseFloat(row.querySelector('[data-rate]').value) || 0;
+    row.querySelector('[data-total]').value = (qty * rate).toFixed(2);
+    window.updateTotals();
+  }
+
+  window.deleteRow = function(id) {
+    const row = document.getElementById(`row-${id}`);
+    if (row) row.remove();
+    window.renumberRows();
+    window.updateTotals();
+  }
+
+  window.renumberRows = function() {
+    const rows = document.querySelectorAll('#table-body tr');
+    rows.forEach((r, i) => {
+      const sl = r.querySelector('.sl-num');
+      if (sl) sl.textContent = String(i + 1).padStart(2, '0');
+    });
+  }
+
+  window.updateTotals = function() {
+    let sub = 0;
+    document.querySelectorAll('[data-total]').forEach(el => { sub += parseFloat(el.value) || 0; });
+    const transport = parseFloat(document.getElementById('transport').value) || 0;
+    const other = parseFloat(document.getElementById('other').value) || 0;
+    const discount = parseFloat(document.getElementById('discount').value) || 0;
+    const grand = sub + transport + other - discount;
+    document.getElementById('subtotal').textContent = `৳ ${sub.toLocaleString('en-IN', {minimumFractionDigits:2})}`;
+    document.getElementById('grand-total').textContent = `৳ ${grand.toLocaleString('en-IN', {minimumFractionDigits:2})}`;
+  }
+
+  window.autoResize = function(el) {
+    el.style.height = 'auto';
+    el.style.height = el.scrollHeight + 'px';
+  }
+
+  /* ═══════════════════════ SAVE MEMO ═══════════════════════ */
+  window.saveMemo = async function() {
+    const rows = collectRows();
+    const grand = parseFloat(document.getElementById('grand-total').textContent.replace(/[৳,\s]/g,'')) || 0;
+    const memoNum = document.getElementById('memo-num').value.trim();
+    const date = document.getElementById('memo-date').value;
+
+    const preview = rows.filter(r => r.desc).map(r => r.desc).slice(0, 3).join(', ') || 'No items';
+
+    const memoData = {
+      id: currentId,
+      memoNum,
+      date,
+      savedAt: new Date().toISOString(),
+      transport: document.getElementById('transport').value,
+      other: document.getElementById('other').value,
+      discount: document.getElementById('discount').value,
+      notes: document.getElementById('notes').value,
+      rows,
+      grandTotal: grand,
+      itemCount: rows.filter(r => r.desc).length,
+      preview
+    };
+
+    const idx = memos.findIndex(m => m.id === currentId);
+    if (idx >= 0) memos[idx] = memoData;
+    else memos.push(memoData);
+
+    showToast('Saving to cloud...');
+    await saveMemoToCloud(memoData);
+  }
+
+  function collectRows() {
+    const rows = [];
+    document.querySelectorAll('#table-body tr').forEach(tr => {
+      const inputs = tr.querySelectorAll('input, textarea');
+      const desc = inputs[0] ? inputs[0].value : '';
+      const spec = inputs[1] ? inputs[1].value : '';
+      const qty  = inputs[2] ? inputs[2].value : '';
+      const unit = inputs[3] ? inputs[3].value : '';
+      const rate = inputs[4] ? inputs[4].value : '';
+      const total= inputs[5] ? inputs[5].value : '';
+      rows.push({ desc, spec, qty, unit, rate, total });
+    });
+    return rows;
+  }
+
+  /* ═══════════════════════ VIEW & DOWNLOAD ═══════════════════════ */
+  window.viewMemo = function(id) {
+    const m = memos.find(x => x.id === id);
+    if (!m) return;
+
+    let sub = 0;
+    (m.rows || []).forEach(r => { sub += parseFloat(r.total) || 0; });
+    const transport = parseFloat(m.transport) || 0;
+    const other = parseFloat(m.other) || 0;
+    const discount = parseFloat(m.discount) || 0;
+    const grand = sub + transport + other - discount;
+
+    const html = buildPrintHTML(
+      m.memoNum, m.date, m.rows || [],
+      m.transport, m.other, m.discount, m.notes,
+      `৳ ${sub.toLocaleString('en-IN', {minimumFractionDigits:2})}`,
+      `৳ ${grand.toLocaleString('en-IN', {minimumFractionDigits:2})}`,
+      false // false means do not auto-print
+    );
+    
+    const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    window.open(url, '_self');
+  }
+
+  window.downloadMemo = function() {
+    const html = buildPrintHTML(
+      document.getElementById('memo-num').value,
+      document.getElementById('memo-date').value,
+      collectRows(),
+      document.getElementById('transport').value,
+      document.getElementById('other').value,
+      document.getElementById('discount').value,
+      document.getElementById('notes').value,
+      document.getElementById('subtotal').textContent,
+      document.getElementById('grand-total').textContent,
+      true // auto-print enabled
+    );
+    triggerDownload(html, `kitoo-memo-${document.getElementById('memo-num').value || 'draft'}.html`);
+  }
+
+  window.downloadMemoById = function(id) {
+    const m = memos.find(x => x.id === id);
+    if (!m) return;
+
+    let sub = 0;
+    (m.rows || []).forEach(r => { sub += parseFloat(r.total) || 0; });
+    const transport = parseFloat(m.transport) || 0;
+    const other = parseFloat(m.other) || 0;
+    const discount = parseFloat(m.discount) || 0;
+    const grand = sub + transport + other - discount;
+
+    const html = buildPrintHTML(
+      m.memoNum, m.date, m.rows || [],
+      m.transport, m.other, m.discount, m.notes,
+      `৳ ${sub.toLocaleString('en-IN', {minimumFractionDigits:2})}`,
+      `৳ ${grand.toLocaleString('en-IN', {minimumFractionDigits:2})}`,
+      true // auto-print enabled
+    );
+    triggerDownload(html, `kitoo-memo-${m.memoNum || m.id}.html`);
+  }
+
+  function triggerDownload(html, filename) {
+    const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = filename; a.click();
+    URL.revokeObjectURL(url);
+    showToast('⬇ Downloaded!');
+  }
+
+  function buildPrintHTML(memoNum, date, rows, transport, other, discount, notes, subtotalText, grandText, autoPrint = true) {
+    const rowsHtml = rows.map((r, i) => `
+      <tr>
+        <td style="text-align:center;font-family:'Space Mono',monospace;font-size:10px;color:#7a6f64;padding:6px 8px;">${String(i+1).padStart(2,'0')}</td>
+        <td style="padding:6px 8px;font-size:12px;">${escHtml(r.desc)}</td>
+        <td style="padding:6px 8px;font-size:12px;word-break:break-word;">${escHtml(r.spec)}</td>
+        <td style="padding:6px 8px;font-size:11px;text-align:right;font-family:'Space Mono',monospace;">${r.qty}</td>
+        <td style="padding:6px 8px;font-size:11px;text-align:center;">${escHtml(r.unit)}</td>
+        <td style="padding:6px 8px;font-size:11px;text-align:right;font-family:'Space Mono',monospace;">${r.rate}</td>
+        <td style="padding:6px 8px;font-size:11px;text-align:right;font-family:'Space Mono',monospace;color:#2a6b45;font-weight:700;">${parseFloat(r.total || 0).toLocaleString('en-IN', {minimumFractionDigits:2})}</td>
+      </tr>`).join('');
+
+    return `<!DOCTYPE html>
+  <html><head><meta charset="UTF-8">
+  <title>Kitoo Footwear Memo ${memoNum}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+  @page { size: A4 portrait; margin: 6mm 8mm; }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;background:#e5e5e5;padding:20px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .paper-container {background:#fff;max-width:860px;margin:0 auto;border:1px solid #e2d9cc;box-shadow:0 10px 30px rgba(0,0,0,0.1);}
+  @media print { body{padding:0;background:#fff;} .paper-container {border:none;box-shadow:none;} }
+  </style>
+  </head><body>
+  <div class="paper-container">
+    <div style="height:5px;background:linear-gradient(90deg,#b5451b,#c9922a,#b5451b);"></div>
+
+    <div style="padding:18px 28px 14px;display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid #e2d9cc;flex-wrap:wrap;gap:12px;">
+      <div>
+        <div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:#1a1612;line-height:1;">Kitoo <span style="color:#b5451b;">Footwear</span></div>
+        <div style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:#c9922a;margin-top:4px;">Comfort in every step</div>
+      </div>
+      <div style="text-align:right;font-size:11px;color:#7a6f64;line-height:1.8;">
+        <strong style="color:#1a1612;">Sandal Manufacturing Unit</strong><br>
+        Jatahara Bajar, Gomostapur<br>
+        Chapainawabganj, Bangladesh
+      </div>
+    </div>
+
+    <div style="background:#f2ece3;padding:10px 28px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #e2d9cc;flex-wrap:wrap;gap:8px;">
+      <div style="font-family:'Playfair Display',serif;font-size:14px;font-weight:600;color:#b5451b;">Estimated Purchase Memo</div>
+      <div style="display:flex;gap:20px;">
+        <div style="text-align:right;">
+          <div style="font-size:7px;letter-spacing:2px;text-transform:uppercase;color:#7a6f64;">Memo No.</div>
+          <div style="font-family:'Space Mono',monospace;font-size:11px;font-weight:700;">${escHtml(memoNum)}</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:7px;letter-spacing:2px;text-transform:uppercase;color:#7a6f64;">Date</div>
+          <div style="font-family:'Space Mono',monospace;font-size:11px;">${date ? new Date(date).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}) : '—'}</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="padding:10px 28px;display:flex;gap:20px;border-bottom:1px solid #e2d9cc;flex-wrap:wrap;align-items:center;">
+      ${ownerHtml('SA','Owner & Manager','Suit Ahmed','+880 1716-979082')}
+      <div style="width:1px;height:38px;background:#e2d9cc;"></div>
+      ${ownerHtml('AM','Owner & Manager','Asadujjaman Masum','+880 1885-878426')}
+      <div style="width:1px;height:38px;background:#e2d9cc;"></div>
+      ${ownerHtml('HM','Co-Manager','Hadiujjaman Maruf','+880 1885-878487')}
+    </div>
+
+    <div style="padding:14px 28px 10px;">
+      <table style="width:100%;border-collapse:collapse;">
+        <thead>
+          <tr style="background:#1a1612;">
+            <th style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:#fff;padding:8px 8px;text-align:center;width:34px;font-weight:400;">SL</th>
+            <th style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:#fff;padding:8px 8px;text-align:left;font-weight:400;">Item Description</th>
+            <th style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:#fff;padding:8px 8px;text-align:left;font-weight:400;">Specification / Size</th>
+            <th style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:#fff;padding:8px 8px;text-align:right;font-weight:400;">Qty</th>
+            <th style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:#fff;padding:8px 8px;text-align:center;font-weight:400;">Unit</th>
+            <th style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:#fff;padding:8px 8px;text-align:right;font-weight:400;">Unit Price (৳)</th>
+            <th style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:#fff;padding:8px 8px;text-align:right;font-weight:400;">Amount (৳)</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rowsHtml}
+        </tbody>
+      </table>
+    </div>
+
+    <div style="padding:0 28px 14px;display:flex;justify-content:flex-end;">
+      <div style="min-width:240px;border:1px solid #e2d9cc;border-radius:4px;overflow:hidden;">
+        <div style="display:flex;justify-content:space-between;padding:7px 12px;border-bottom:1px solid #e2d9cc;font-size:11px;"><span style="color:#7a6f64;">Sub Total</span><span style="font-family:'Space Mono',monospace;font-weight:700;">${subtotalText}</span></div>
+        <div style="display:flex;justify-content:space-between;padding:7px 12px;border-bottom:1px solid #e2d9cc;font-size:11px;"><span style="color:#7a6f64;">Transport</span><span style="font-family:'Space Mono',monospace;">৳ ${parseFloat(transport||0).toLocaleString('en-IN',{minimumFractionDigits:2})}</span></div>
+        <div style="display:flex;justify-content:space-between;padding:7px 12px;border-bottom:1px solid #e2d9cc;font-size:11px;"><span style="color:#7a6f64;">Other Charges</span><span style="font-family:'Space Mono',monospace;">৳ ${parseFloat(other||0).toLocaleString('en-IN',{minimumFractionDigits:2})}</span></div>
+        <div style="display:flex;justify-content:space-between;padding:7px 12px;border-bottom:1px solid #e2d9cc;font-size:11px;"><span style="color:#7a6f64;">Discount</span><span style="font-family:'Space Mono',monospace;">৳ ${parseFloat(discount||0).toLocaleString('en-IN',{minimumFractionDigits:2})}</span></div>
+        <div style="display:flex;justify-content:space-between;padding:10px 12px;background:#1a1612;"><span style="color:#e2d9cc;font-size:9px;letter-spacing:2px;text-transform:uppercase;font-weight:600;">Grand Total</span><span style="font-family:'Space Mono',monospace;font-size:15px;font-weight:700;color:#c9922a;">${grandText}</span></div>
+      </div>
+    </div>
+
+    ${notes ? `<div style="padding:0 28px 12px;"><div style="font-size:7px;letter-spacing:3px;text-transform:uppercase;color:#7a6f64;font-weight:700;margin-bottom:5px;">Remarks / Notes</div><div style="border:1px solid #e2d9cc;border-radius:4px;padding:8px 12px;font-size:11px;background:#f2ece3;">${escHtml(notes)}</div></div>` : ''}
+
+    <div style="padding:10px 28px 20px;display:flex;gap:20px;flex-wrap:wrap;">
+      ${sigHtml('Suit Ahmed','Owner & Manager')}
+      ${sigHtml('Asadujjaman Masum','Owner & Manager')}
+      ${sigHtml('Hadiujjaman Maruf','Co-Manager')}
+      ${sigHtml('Supplier / Vendor','Authorized Signature')}
+    </div>
+
+    <div style="background:#1a1612;padding:8px 28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px;">
+      <div style="font-family:'Playfair Display',serif;font-size:12px;color:#c9922a;font-weight:600;">Kitoo Footwear</div>
+      <div style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:#7a6f64;">Estimated memo — not a final invoice</div>
+    </div>
+  </div>
+  ${autoPrint ? '<script>window.onload=()=>window.print()<\/script>' : ''}
+  </body></html>`;
+  }
+
+  function ownerHtml(initials, role, name, phone) {
+    return `<div style="display:flex;align-items:center;gap:8px;">
+      <div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#b5451b,#c9922a);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:11px;color:#fff;font-weight:700;flex-shrink:0;">${initials}</div>
+      <div>
+        <div style="font-size:7px;letter-spacing:2px;text-transform:uppercase;color:#7a6f64;">${role}</div>
+        <div style="font-size:12px;font-weight:600;">${name}</div>
+        <div style="font-family:'Space Mono',monospace;font-size:9px;color:#b5451b;">${phone}</div>
+      </div>
+    </div>`;
+  }
+
+  function sigHtml(name, role) {
+    return `<div style="flex:1;min-width:120px;">
+      <div style="border-top:1.5px solid #1a1612;margin-top:26px;margin-bottom:4px;"></div>
+      <div style="font-size:10px;font-weight:600;">${name}</div>
+      <div style="font-size:9px;color:#7a6f64;">${role}</div>
+    </div>`;
+  }
+
+  function escHtml(str) {
+    return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  /* ═══════════════════════ DELETE ═══════════════════════ */
+  window.confirmDelete = function(id) {
+    deleteTargetId = id;
+    document.getElementById('modal').classList.add('show');
+    document.getElementById('modal-confirm-btn').onclick = async () => {
+      showToast('Deleting from cloud...');
+      await deleteMemoFromCloud(deleteTargetId);
+      window.closeModal();
+    };
+  }
+
+  window.closeModal = function() {
+    document.getElementById('modal').classList.remove('show');
+    deleteTargetId = null;
+  }
+
+  /* ═══════════════════════ TOAST ═══════════════════════ */
+  window.showToast = function(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
 </script>
 </body>
 </html>
